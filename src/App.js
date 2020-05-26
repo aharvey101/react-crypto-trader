@@ -1,15 +1,47 @@
-import React, {useState, useEffect} from 'react';
+import React, { Component } from "react"
+import axios from "axios"
 
-import './App.css';
+import "./App.css"
 
-function App() {
+class App extends Component {
+  constructor() {
+    super()
+    this.state = {
+      data: [],
+    }
+  }
 
-  const [daata, getData] = useState();
+  componentDidMount() {
+    axios
+      .get("http://localhost:3001/position")
+      .then((response) => {
+        this.setState({ data: response.data.result })
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  }
 
-  return (
-    <div className="App">
-    </div>
-  );
+  markets() {
+    return this.state.data.map((item) => {
+      return <p>{JSON.stringify(item)}</p>
+    })
+  }
+
+  render() {
+    return (
+      <div className="App">
+        <h1>Title</h1>
+        <form
+          onSubmit={(event) => {
+            event.preventDefault()
+          }}
+        >
+          {this.markets()}
+        </form>
+      </div>
+    )
+  }
 }
 
-export default App;
+export default App
