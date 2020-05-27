@@ -32,13 +32,7 @@ class App extends Component {
     return (
       <div className="App">
         <h1>Title</h1>
-        <form
-          onSubmit={(event) => {
-            event.preventDefault()
-          }}
-        >
-          {this.markets()}
-        </form>
+        {this.markets()}
       </div>
     )
   }
