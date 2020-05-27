@@ -1,4 +1,10 @@
+body {
+  background-color: orange;
+  text-align: center;
+}
+
 .App {
+  align-items: center;
   text-align: center;
 }
 
