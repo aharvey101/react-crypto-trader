@@ -1,31 +1,40 @@
 const express = require("express")
 const router = express.Router()
+// const position = require("../scripts/position")
+
 const ftxrest = require("ftx-api-rest")
 
 const ftx = new ftxrest({
-  key: "1",
-  secret: "1",
+  key: process.env.API_KEY,
+  secret: process.env.API_SECRET,
 })
+let response
 
-router.get("/", (req, res) => {
+function placeOrder(order) {
+  const { pair, amount, entry } = order
   ftx
     .request({
-      method: "GET",
-      path: "/markets",
+      method: "POST",
+      path: "/orders",
+      data: {
+        market: pair,
+        type: "limit",
+        side: "buy",
+        price: entry,
+        size: amount,
+      },
     })
-    .then((market) => {
-      res.send(market)
+    .then((res) => {
+      response = res
+      console.log(response)
     })
-    .catch((err) => console.log(err))
-  console.log("got market data and sent")
-})
+}
 
 router.post("/", (req, res) => {
   console.log("they be posting orders")
-  const { pair, amount, entry, stop } = req.body
-  console.log(pair, amount, entry, stop)
-  console.log(req.body)
-  res.send(JSON.stringify(req.body))
+  const order = req.body
+  placeOrder(order)
+  res.send(response)
 })
 
 module.exports = router

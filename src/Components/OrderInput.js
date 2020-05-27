@@ -6,7 +6,7 @@ class OrderInput extends Component {
     super()
     this.state = {
       order: {
-        pair: "BTCPERP",
+        pair: "BTC-PERP",
         amount: 0.1,
         entry: 10000,
         stop: 9000,
