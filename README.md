@@ -10,9 +10,16 @@
   - [x] Logic for posting order to backend
 
 - Backend
-  - [] Logic for posting order to FTX
-  - [] Logic for managing stop breach before entry (already made, reuse from ftx script)
-  - [] Mongodb Schema
+  - [x] Logic for posting order to FTX
+
+# Managing Order
+
+- Backend
+  - [x] Watching price, ping serever every 10th of a second
+  - [] Build Mongodb Schema for position
+  - [] Stop Breach function for managing stop breach before entry (already made, reuse from ftx script)
+  - [] Three candle function for
+  - [] Stop order place function
 
 # Trading Account Size
 

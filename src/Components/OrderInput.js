@@ -7,7 +7,7 @@ class OrderInput extends Component {
     this.state = {
       order: {
         pair: "BTC-PERP",
-        amount: 0.1,
+        amount: 0.01,
         entry: 10000,
         stop: 9000,
       },
@@ -41,8 +41,8 @@ class OrderInput extends Component {
     axios
       .post("http://localhost:3001/position/", order)
       .then((res) => {
-        this.setState({ response: JSON.stringify(res.data) })
         console.log(res.data)
+        this.setState({ response: JSON.stringify(res.data) })
       })
       .catch((err) => console.log(err))
   }
