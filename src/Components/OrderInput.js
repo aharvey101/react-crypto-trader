@@ -5,12 +5,11 @@ class OrderInput extends Component {
   constructor() {
     super()
     this.state = {
-      order: {
-        pair: "BTC-PERP",
-        amount: 0.01,
-        entry: 10000,
-        stop: 9000,
-      },
+      pair: "BTC-PERP",
+      amount: 0.01,
+      entry: 10000,
+      stop: 9000,
+
       response: [],
     }
 
@@ -19,22 +18,20 @@ class OrderInput extends Component {
   }
 
   updateOrder(e) {
-    const name = e.target.name
-    const value =
-      e.target.type === "number" ? parseFloat(e.target.value) : e.target.value
+    const { name, value } = e.target
+    console.log(value)
     this.setState({
-      ...this.state,
-      [name]: value.type === "number" ? parseInt(value) : value,
+      [name]: value,
     })
-    console.log(this.state)
+    console.log(this.state.pair)
   }
 
   submitForm() {
     const order = {
-      pair: this.state.order.pair,
-      amount: this.state.order.amount,
-      entry: this.state.order.entry,
-      stop: this.state.order.stop,
+      pair: this.state.pair,
+      amount: this.state.amount,
+      entry: this.state.entry,
+      stop: this.state.stop,
     }
     console.log(order)
 
@@ -60,7 +57,7 @@ class OrderInput extends Component {
           <label>
             Pair
             <input
-              name="Pair"
+              name="pair"
               placeholder="Pair"
               onChange={this.updateOrder}
             ></input>
@@ -69,7 +66,9 @@ class OrderInput extends Component {
             Amount
             <input
               type="number"
-              name="Amount"
+              name="amount"
+              min="0.0001"
+              max="99999"
               placeholder="Amount"
               onChange={this.updateOrder}
             ></input>
@@ -78,7 +77,7 @@ class OrderInput extends Component {
             Entry
             <input
               type="number"
-              name="Entry"
+              name="entry"
               placeholder="Entry"
               onChange={this.updateOrder}
             ></input>
@@ -87,7 +86,7 @@ class OrderInput extends Component {
             Stop
             <input
               type="number"
-              name="Stop"
+              name="stop"
               placeholder="Stop"
               onChange={this.updateOrder}
             ></input>

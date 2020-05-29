@@ -5,6 +5,8 @@ const ftx = new ftxrest({
   secret: process.env.API_SECRET,
 })
 
+// the pairwatch function should be
+
 module.exports = {
   placeOrder: function (order) {
     const { pair, amount, entry: entryPrice, stop: stopPrice } = order
