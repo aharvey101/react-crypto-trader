@@ -3,27 +3,22 @@ const router = express.Router()
 const position = require('../scripts/position')
 const pairWatch = require('../scripts/pairWatch')
 
+let tradingPairsArray = []
 router.post('/', (req, res) => {
   let pair = req.body.pair
-  let tradingPairsArray = []
-  let tradingPairsObject = {}
-
-  function addPairToArray(pair, tpa) {
-    return tpa.push(pair)
-  }
-
-  tradingPairsObject = {
+  console.log(`the pair variable = ${pair}`)
+  let tradingPairsObject = {
     pair: pair,
     price: req.body.price,
   }
 
-  addPairToArray(pair, tradingPairsArray)
+  tradingPairsArray.push(tradingPairsObject)
+  console.log(`the trading Pairs Array is ${tradingPairsArray}`)
 
   console.log('they be posting orders')
   const order = req.body
-  console.log(typeof position.placeOrder)
   // position.placeOrder(order)
-  pairWatch.pairWatch(tradingPairsArray, tradingPairsObject)
+  pairWatch.pairWatch(tradingPairsArray)
   res.send('I placed the order')
 })
 

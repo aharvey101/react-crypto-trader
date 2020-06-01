@@ -15,57 +15,47 @@ const ftx = new ftxrest({
 // it loops over the array and for each item in the array, makes a request,
 // When the request is recieved, the tradingPairsObject is updated to contain the current object
 // And the new price. Then the object is returned
-let array = [
-  {
-    pair: 'BTC-PERP',
-    price: 10000,
-  },
-  {
-    pair: 'ETH-PERP',
-    price: 150,
-  },
-]
 
 module.exports = {
-  pairWatch: function (tradingPairsArray, tradingPairsObject) {
-    console.log(tradingPairsArray)
+  pairWatch: async function (tradingPairsArray) {
+    console.log(
+      `When tradingPairs Array is ingested ${JSON.stringify(tradingPairsArray)}`
+    )
     console.log('Watching pairs')
 
-    // push object into array
-    tradingPairsArray.push(tradingPairsObject)
-    tradingPairsArray.map((pair) => {
-      if (pair === '') {
-        return console.log('empty pair')
-      }
-      console.log(pair)
-      console.log('maping over pairs')
-      setInterval(
-        function () {
-          ftx
-            .request({
-              method: 'GET',
-              path: `/markets/${pair}`,
-            })
-            .then((res) => {
-              let lastprice = res.result.last
-
-              console.log(tradingPairsObject)
-              // find pair in array
-              // tradingPairsArray.find(pair)
-
-              tradingPairsArray.find((item) => {
-                item.price = lastprice
-                return (item.pair = pair)
+    //Seems that getting specific data for each pair and updating it isn't a great idea.
+    // I will now try to get a list of all the data from the server and filter it by the tradingPairsArray
+    let fromFTX = []
+    setInterval(
+      () => {
+        ftx
+          .request({
+            method: 'GET',
+            path: `/markets`,
+          })
+          .then((response) => {
+            let res = response
+            // if the array in result includes our tradingPairArray
+            // add it to a new array
+            fromFTX = sort(res, tradingPairsArray)
+            // filter function
+            function sort(res, tpa) {
+              //map over trading Pairs Array, filter server results by each item in trading Pairs Array
+              return tpa.map((pair) => {
+                // console.log(`the pair to find is ${JSON.stringify(pair.pair)}`)
+                return res.result.filter((i) => i.name === pair.pair)
               })
-              // update Array
-            })
-        },
-        2000,
-        pair,
-        tradingPairsObject
-      )
-      return array.push(tradingPairsObject)
-      // return console.log(tradingPairsObject)
-    })
+            }
+            console.log(fromFTX)
+            // const myPairs = res.result.filter(
+            //   (i) => i.name === tradingPairsArray.pair
+            // )
+            // console.log(this)
+          })
+      },
+      3000,
+      tradingPairsArray,
+      fromFTX
+    )
   },
 }
