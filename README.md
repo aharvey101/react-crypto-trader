@@ -17,7 +17,9 @@
 - Backend
   - [x] Watching price, ping serever every 10th of a second
   - [] Setup MongoDB
-    - [] app.js setup
+    - [x] app.js setup
+    - [x] Schema
+    - [] make position entry
   - [] Stop Breach function for managing stop breach before entry (already made, reuse from ftx script)
   - [] Three candle function for
   - [] Stop order place function

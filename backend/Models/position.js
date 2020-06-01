@@ -1,10 +1,11 @@
 const mongoose = require('mongoose')
 
-const positionSchema = new mongoose.Schema({
+var positionSchema = new mongoose.Schema({
   pair: String,
+  amount: Number,
   entry: Number,
   stop: Number,
   timeframe: String,
 })
 
-module.exprots = mongoose.model('Position', positionSchema)
+module.exports = mongoose.model('Position', positionSchema)
