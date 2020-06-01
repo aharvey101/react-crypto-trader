@@ -7,14 +7,21 @@ const Position = require('../Models/position')
 let tradingPairsArray = []
 router.post('/', (req, res) => {
   let pair = req.body.pair
-  console.log(`the pair variable = ${pair}`)
+  console.log(`the pair variable = ${JSON.stringify(pair)}`)
   let tradingPairsObject = {
     pair: pair,
-    price: req.body.entry,
   }
 
-  tradingPairsArray.push(tradingPairsObject)
-  console.log(`the trading Pairs Array is ${tradingPairsArray}`)
+  function push(tpa, tpo) {
+    console.log(tpo.pair)
+    if (tpa.includes(tpo.pair)) {
+      return console.log('pair already included')
+    } else {
+      tradingPairsArray.push(tradingPairsObject)
+    }
+  }
+  push(tradingPairsArray, tradingPairsObject)
+  console.log(`the trading Pairs Array is ${JSON.stringify(tradingPairsArray)}`)
 
   // Push position to database, only temporary, will need to actually push position when entry is executed in future
 
@@ -39,7 +46,7 @@ router.post('/', (req, res) => {
   const order = req.body
   // position.placeOrder(order)
   const prices = pairWatch.pairWatch(tradingPairsArray)
-
+  const p = []
   prices.then((res) => console.log(res))
 
   res.send('I placed the order')
