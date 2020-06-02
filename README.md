@@ -19,8 +19,8 @@
   - [] Setup MongoDB
     - [x] app.js setup
     - [x] Schema
-    - [] Post position to database on entry order creation (temporary way to test, wil)
-    - [] make position entry
+    - [x] Post position to database on entry order creation (temporary way to test, wil)
+    - [x] make position entry
   - [] Stop Breach function for managing stop breach before entry (already made, reuse from ftx script)
   - [] Three candle function for
   - [] Stop order place function

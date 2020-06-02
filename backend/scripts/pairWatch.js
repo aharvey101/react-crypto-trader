@@ -1,4 +1,5 @@
 const ftxrest = require('ftx-api-rest')
+// const ast = require('util')
 const ftx = new ftxrest({
   key: process.env.API_KEY,
   secret: process.env.API_SECRET,
@@ -21,31 +22,54 @@ module.exports = {
       `When tradingPairs Array is ingested ${JSON.stringify(tradingPairsArray)}`
     )
     console.log('Watching pairs')
-
-    //Seems that getting specific data for each pair and updating it isn't a great idea.
-    // I will now try to get a list of all the data from the server and filter it by the tradingPairsArray
     let d = []
-    let goOn = true
-    const func = await getData(goOn)
-    async function wait(goOn) {
-      while ((goOn = true)) {}
+
+    // const setAsyncSetInterval = require('util').promisify(setTimeout)
+    const setAsyncSetInterval = (cb, timeout = 500) => {
+      return new Promise((resolve) => {
+        setInterval(() => {
+          cb()
+          resolve()
+        }, timeout)
+      })
     }
-    async function getData() {
-      await ftx
-        .request({
-          method: 'GET',
-          path: '/markets',
-        })
-        .then((res) => {
-          d = sort(res, tradingPairsArray)
-          function sort(res, tpa) {
-            //map over trading Pairs Array, filter server results by each item in trading Pairs Array
-            return tpa.map((pair) => {
-              return res.result.filter((i) => i.name === pair.pair)
+    const getData = async (d) => {
+      await setAsyncSetInterval(
+        null,
+        () => {
+          ftx
+            .request({
+              method: 'GET',
+              path: '/markets',
             })
-          }
-        })
+            .then((res) => {
+              d = sort(res, tradingPairsArray)
+              console.log(d)
+              function sort(res, tpa) {
+                //map over trading Pairs Array, filter server results by each item in trading Pairs Array
+                return tpa.map((pair) => {
+                  return res.result.filter((i) => i.name === pair.pair)
+                })
+              }
+              return d
+            })
+        },
+        500,
+        d
+      )
     }
+    getData(d)
+    console.log(d)
     return d
   },
+
+  // two alternate options:
+  //idea 1:
+  // have a variable set to a boolean value
+  // have a setInterval run that turns the boolean to true or false
+  // have another loop that while the boolean value is true, runs the function
+  // idea 2:
+  // global variable taht sets delay measured in ms
+  //
+  //inside of a while lo
 }

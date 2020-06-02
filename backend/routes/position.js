@@ -45,9 +45,7 @@ router.post('/', (req, res) => {
   console.log('they be posting orders')
   const order = req.body
   // position.placeOrder(order)
-  const prices = pairWatch.pairWatch(tradingPairsArray)
-  const p = []
-  prices.then((res) => console.log(res))
+  // const prices = pairWatch.pairWatch(tradingPairsArray)
 
   res.send('I placed the order')
 })
