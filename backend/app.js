@@ -12,19 +12,22 @@ app.use(express.urlencoded({ extended: false }))
 //Database Connect
 const uri = process.env.DATABASEURI
 mongoose
-  .connect(uri)
+  .connect(uri, { useUnifiedTopology: true, useNewUrlParser: true })
   .then((res) => {
     console.log('connected to remote DB')
   })
   .catch((err) => console.log(err))
 
 //Routes
+const getBalances = require('./routes/getBalances')
 const position = require('./routes/position')
 
 app.get('/', (req, res) => res.send('Hello World!'))
 
 //Use Routes
+
 app.use('/position', position)
+app.use('/getBalances', getBalances)
 
 app.listen(port, () =>
   console.log(`Example app listening at http://localhost:${port}`)

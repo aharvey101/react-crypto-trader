@@ -27,4 +27,9 @@
 
 # Trading Account Size
 
+- [x] Front-end to ask backend for data
+- [x] backend to ask servers for database
+- [] Send balance information back to frontend
+- [] set trade amount based on portfoliosize
+
 - [] on app load, get account size from etherscan.io and ftx (using environment variables for privacy)

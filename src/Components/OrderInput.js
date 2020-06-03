@@ -1,20 +1,24 @@
-import React, { Component } from "react"
-import axios from "axios"
+import React, { Component } from 'react'
+import axios from 'axios'
 
 class OrderInput extends Component {
   constructor() {
     super()
     this.state = {
-      pair: "BTC-PERP",
+      pair: 'BTC-PERP',
       amount: 0.01,
       entry: 10000,
       stop: 9000,
-
+      portfolioSize: 0,
       response: [],
     }
 
     this.updateOrder = this.updateOrder.bind(this)
     this.submitForm = this.submitForm.bind(this)
+  }
+
+  componentDidUpdate() {
+    // fetch balancse from backend
   }
 
   updateOrder(e) {
@@ -24,6 +28,17 @@ class OrderInput extends Component {
       [name]: value,
     })
     console.log(this.state.pair)
+    axios
+      .get('http://localhost:3001/getBalances')
+      .then((res) => {
+        console.log(res.data.balance)
+        let balance = res.data.balance
+        this.setState({ ...this.state, portfolioSize: balance })
+        console.log(this.state)
+      })
+
+      .catch((err) => console.log(err))
+    // after balances are fetched, update the 'amount' in state to reflect the portfolio risk
   }
 
   submitForm() {
@@ -36,7 +51,7 @@ class OrderInput extends Component {
     console.log(order)
 
     axios
-      .post("http://localhost:3001/position/", order)
+      .post('http://localhost:3001/position/', order)
       .then((res) => {
         console.log(res.data)
         this.setState({ response: JSON.stringify(res.data) })
