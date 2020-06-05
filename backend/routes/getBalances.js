@@ -1,6 +1,7 @@
 const router = require('express').Router()
 const ftxrest = require('ftx-api-rest')
 const axios = require('axios')
+const prettyNum = require('pretty-num')
 
 const ftxr = new ftxrest({
   key: process.env.API_KEY,
@@ -16,17 +17,12 @@ router.get('/', async (req, res) => {
     const hardwareWalletBalance = await axios
       .get(process.env.ethPlorerURI)
       .then((res) => {
-        console.log(Number(res.data.tokens[3].balance).toPrecision())
-
-        function enlargeBalance(hwb) {
-          return Number(hwb)
-        }
-        const hwb = enlargeBalance(res.data.tokens[3].balance)
-        console.log(hwb)
-        return res.data.tokens[3].balance * 1000
+        //TODO:
+        // Currently this works, but it would be better to map over the tokens array instead of referencing a specific element
+        const hwb = res.data.tokens[3].balance / 1000000000000000000
+        return hwb
       })
-    console.log(hardwareWalletBalance)
-    const total = ftxBalance.result.collateral
+    const total = ftxBalance.result.collateral + hardwareWalletBalance
     return total
   })()
   let data = await b

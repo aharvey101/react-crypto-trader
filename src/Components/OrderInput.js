@@ -6,22 +6,20 @@ class OrderInput extends Component {
     super()
     this.state = {
       pair: 'BTC-PERP',
-      amount: 0.01,
       entry: 10000,
       stop: 9000,
-      portfolioSize: 0,
+      positionSize: 0,
+      portfolioSize: 1000,
+      portolioRisk: 0.01,
       response: [],
     }
 
     this.updateOrder = this.updateOrder.bind(this)
     this.submitForm = this.submitForm.bind(this)
+    this.updateBalances = this.updateBalances.bind(this)
   }
 
-  componentDidUpdate() {
-    // fetch balancse from backend
-  }
-
-  updateOrder(e) {
+  updateBalances(e) {
     const { name, value } = e.target
     console.log(value)
     this.setState({
@@ -31,20 +29,36 @@ class OrderInput extends Component {
     axios
       .get('http://localhost:3001/getBalances')
       .then((res) => {
-        console.log(res.data.balance)
         let balance = res.data.balance
         this.setState({ ...this.state, portfolioSize: balance })
         console.log(this.state)
-      })
+        // after balances are fetched, update the 'amount' in state to reflect the portfolio risk
+        const tradeRisk = 1 - this.state.stop / this.state.entry
 
+        // variables: portfolio size, trade risk, entry price, stop price, position size, trade amount, portolio risk
+        let newTradeAmount =
+          (this.state.portfolioSize * this.state.portolioRisk) / tradeRisk
+        let newPositionSize = newTradeAmount / this.state.entry
+        this.setState({
+          ...this.state,
+          positionSize: newPositionSize,
+        })
+      })
       .catch((err) => console.log(err))
-    // after balances are fetched, update the 'amount' in state to reflect the portfolio risk
+  }
+  updateOrder(e) {
+    const { name, value } = e.target
+    console.log(value)
+    this.setState({
+      [name]: value,
+    })
+    console.log(this.state.pair)
   }
 
   submitForm() {
     const order = {
       pair: this.state.pair,
-      amount: this.state.amount,
+      positionSize: this.state.positionSize,
       entry: this.state.entry,
       stop: this.state.stop,
     }
@@ -54,7 +68,7 @@ class OrderInput extends Component {
       .post('http://localhost:3001/position/', order)
       .then((res) => {
         console.log(res.data)
-        this.setState({ response: JSON.stringify(res.data) })
+        this.setState({ response: res.data })
       })
       .catch((err) => console.log(err))
   }
@@ -77,7 +91,7 @@ class OrderInput extends Component {
               onChange={this.updateOrder}
             ></input>
           </label>
-          <label>
+          {/* <label>
             Amount
             <input
               type="number"
@@ -87,7 +101,7 @@ class OrderInput extends Component {
               placeholder="Amount"
               onChange={this.updateOrder}
             ></input>
-          </label>
+          </label> */}
           <label>
             Entry
             <input
@@ -103,7 +117,7 @@ class OrderInput extends Component {
               type="number"
               name="stop"
               placeholder="Stop"
-              onChange={this.updateOrder}
+              onChange={this.updateBalances}
             ></input>
           </label>
           <button>Submit</button>
