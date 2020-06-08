@@ -73,4 +73,45 @@ module.exports = {
   //
   //
   //inside of a while lo
+
+  // let prices = []
+  // function pairWatch(tpa, prices) {
+  //   console.log(
+  //     `When tradingPairs Array is ingested ${JSON.stringify(tradingPairsArray)}`
+  //   )
+  //   console.log('Watching pairs')
+  //   function getPrices(tpa, p) {
+  //     ftx
+  //       .request({
+  //         method: 'GET',
+  //         path: '/markets',
+  //       })
+  //       .then((res) => {
+  //         return (p = sort(res, tpa))
+  //         // console.log(p/ )
+  //         function sort(res, tpa) {
+  //           //map over trading Pairs Array, filter server results by each item in trading Pairs Array
+  //           return tpa.map((pair) => {
+  //             return res.result.filter((i) => i.name === pair.pair)
+  //           })
+  //         }
+  //       })
+  //   }
+
+  //   function timer(delayTime) {
+  //     return new Promise(function (resolve) {
+  //       setInterval(function () {
+  //         let response = getPrices(tpa, prices)
+  //         console.log(`response is ` + response)
+  //         resolve(getPrices(tpa, prices))
+  //       }, delayTime)
+  //     })
+  //   }
+
+  //   timer(1000).then(function (t) {
+  //     console.log(t)
+  //   })
+  // }
+  // const p = pairWatch(tradingPairsArray, prices)
+  // console.log(prices)
 }

@@ -1,7 +1,6 @@
 const router = require('express').Router()
 const ftxrest = require('ftx-api-rest')
 const axios = require('axios')
-const prettyNum = require('pretty-num')
 
 const ftxr = new ftxrest({
   key: process.env.API_KEY,

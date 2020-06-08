@@ -9,24 +9,29 @@ const ftx = new ftxrest({
 
 module.exports = {
   placeOrder: function (order) {
-    const { pair, amount, entry: entryPrice, stop: stopPrice } = order
+    const {
+      pair,
+      positionSize: amount,
+      entry: entryPrice,
+      stop: stopPrice,
+    } = order
+
+    console.log(entryPrice + ' ' + stopPrice)
 
     let entrySide,
       entryType,
       entryTriggerPrice,
-      ccxtOverride,
       stopSide,
       stopType,
       cancelPrice,
-      alreadyOrdered = false,
-      isShort = entryPrice < stopPrice
+      isShort = false
 
     if (isShort) {
       console.log('position is short')
       // Short entry Paramaters
       entrySide = 'sell'
       entryType = 'stop'
-      entryTriggerPrice = entryPrice + 0.01
+      entryTriggerPrice = entryPrice
 
       // Short exit paramaters
       stopSide = 'buy'
@@ -60,6 +65,7 @@ module.exports = {
       .then((res) => {
         console.log(res)
       })
+      .catch((err) => console.log(err))
   },
   //Stop watch function is for watching to mare sure that in the event of the stop being breached before entry,
   // the entry order is cancelled and position is closed
@@ -81,17 +87,6 @@ module.exports = {
       //if short
       (entryPrice < stopPrice && price.pair <= entryPrice)
     ) {
-      //get entry order fill details
-      // ftxccxt
-      //   .fetchOrders(pair, (since = undefined), 1)
-      //   //place stop and target
-      //   .then((res) => {
-      //     // stop(res)
-      //     // alreadyOrdered = true
-      //   })
-      //   .catch((err) => console.log("Eror getting order" + err))
     }
-
-    //place Stoploss orderPrice
   },
 }

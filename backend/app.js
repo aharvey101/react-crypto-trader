@@ -20,7 +20,7 @@ mongoose
 
 //Routes
 const getBalances = require('./routes/getBalances')
-const position = require('./routes/position')
+const position = require('./routes/enterPosition')
 
 app.get('/', (req, res) => res.send('Hello World!'))
 

@@ -1,6 +1,27 @@
 ### Trading App React Testing
 
+## SCOPE OF APP:
+
+The itnention of this app is to place and manage positions, without the main strategy but with the order management rules
+
 ## TODO
+
+# Tidy Up code:
+
+The code is all over the place, Clean it up:
+
+- [x] No functions inside of the routes
+- [] Have different modules for different core functionality such as managing orders and tracking getPrices
+  - [] Order Manager:
+    - [x] Post order function - posts an order with paramaters
+    - [] Stop breach before entry function - takes in price and cancels orders on pair when stop is breached
+    - []
+  - [] Pair Manager:
+    -[] Track Price function - takes in an array of pairs, tracks price (Maybe use a promise, on resolve, set variable to new array of prices)
+  - [] Positon Manager(for the position logic? takes in the order from the route and does calls in other modules such as Pair Manager and Order Manager):
+  - [] Database Manager
+    - [] push new position function - pushes new position to database
+    - [] Update position function - updates previously pushed position with new information (ie. closed price)
 
 # Order Input:
 
@@ -31,5 +52,4 @@
 - [x] backend to ask servers for database
 - [x] Send balance information back to frontend
 - [x] set trade amount based on portfoliosize
-
-- [] on app load, get account size from etherscan.io and ftx (using environment variables for privacy)
+- [x] on app load, get account size from etherscan.io and ftx (using environment variables for privacy)
