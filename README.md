@@ -13,9 +13,9 @@ The code is all over the place, Clean it up:
 - [x] No functions inside of the routes
 - [] Have different modules for different core functionality such as managing orders and tracking getPrices
   - [] Order Manager:
-    - [x] Post order function - posts an order with paramaters
+    - [x] Post order function - posts an order with paramaters - [X] TESTED
     - [] Stop breach before entry function - takes in price and cancels orders on pair when stop is breached
-    - []
+    - [] TEST
   - [] Pair Manager:
     -[] Track Price function - takes in an array of pairs, tracks price (Maybe use a promise, on resolve, set variable to new array of prices)
   - [] Positon Manager(for the position logic? takes in the order from the route and does calls in other modules such as Pair Manager and Order Manager):

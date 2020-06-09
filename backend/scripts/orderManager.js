@@ -8,7 +8,7 @@ const ftx = new ftxrest({
 // the pairwatch function should be
 
 module.exports = {
-  placeOrder: function (order) {
+  entryOrder: function (order, isShort) {
     const {
       pair,
       positionSize: amount,
@@ -18,13 +18,7 @@ module.exports = {
 
     console.log(entryPrice + ' ' + stopPrice)
 
-    let entrySide,
-      entryType,
-      entryTriggerPrice,
-      stopSide,
-      stopType,
-      cancelPrice,
-      isShort = false
+    let entrySide, entryType, entryTriggerPrice
 
     if (isShort) {
       console.log('position is short')
@@ -32,21 +26,11 @@ module.exports = {
       entrySide = 'sell'
       entryType = 'stop'
       entryTriggerPrice = entryPrice
-
-      // Short exit paramaters
-      stopSide = 'buy'
-      stopType = 'stop'
-      cancelPrice = stopPrice - 0.01
     } else if (!isShort) {
       // Long entry Paramaters
       entrySide = 'buy'
       entryType = 'stop' //stop limit, so use a conditional order with a trigger price
-      entryTriggerPrice = entryPrice + 0.01
-
-      //Long stop paramaters
-      stopSide = 'sell'
-      stopType = 'stop'
-      cancelPrice = stopPrice + 0.01
+      entryTriggerPrice = entryPrice
     }
 
     ftx
@@ -69,8 +53,41 @@ module.exports = {
   },
   //Stop watch function is for watching to mare sure that in the event of the stop being breached before entry,
   // the entry order is cancelled and position is closed
-  stopWatch: function (order) {
-    console.log('I watch for the stop to be breached')
+  stoporder: function (order, isShort) {
+    const {
+      pair,
+      positionSize: amount,
+      entry: entryPrice,
+      stop: stopPrice,
+    } = order
+
+    let stopSide, stopType
+
+    if (isShort) {
+      // Short stop paramaters
+      stopSide = 'buy'
+      stopType = 'stop'
+    } else {
+      //Long stop paramaters
+      stopSide = 'sell'
+      stopType = 'stop'
+    }
+    ftx
+      .request({
+        method: 'POST',
+        path: '/conditional_orders',
+        data: {
+          market: pair,
+          type: stopType,
+          side: stopSide,
+          price: stopPrice,
+          size: amount,
+        },
+      })
+      .then((res) => {
+        console.log(res)
+      })
+      .catch((err) => console.log(err))
   },
 
   // Position entry function,
