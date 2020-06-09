@@ -9,7 +9,6 @@ async function managePosition(order) {
   let tradingPairsObject = {
     pair: pair,
   }
-  console.log(tradingPairsObject)
   //pushes object into array
   function push(tpa, tpo) {
     console.log(tpo.pair)
@@ -21,7 +20,7 @@ async function managePosition(order) {
     return tpa.push(tpo)
   }
   const newPairsArray = push(tradingPairsArray, tradingPairsObject)
-  console.log(newPairsArray)
+  console.log(`the new pairsArray is ${JSON.stringify(newPairsArray)}`)
 
   //detect if short
   let isShort = order.entry < order.stopPrice
@@ -35,7 +34,7 @@ async function managePosition(order) {
   // orderManager.entryOrder(order, isShort)
 
   const pairs = await pairManager.pairWatch(tradingPairsArray)
-  console.log(pairs)
+  // console.log(pairs)
 
   // these functions need to be moduled out later into the databaseManager script, however, rn, they are here
 }
