@@ -6,6 +6,8 @@ var positionSchema = new mongoose.Schema({
   entry: Number,
   stop: Number,
   timeframe: String,
+  exchangeOrderID: Number,
+  averageFillPrice: Number,
 })
 
 module.exports = mongoose.model('Position', positionSchema)

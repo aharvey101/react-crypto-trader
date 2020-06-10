@@ -53,7 +53,7 @@ module.exports = {
   },
   //Stop watch function is for watching to mare sure that in the event of the stop being breached before entry,
   // the entry order is cancelled and position is closed
-  stoporder: function (order, isShort) {
+  stopOrder: async function (order, isShort) {
     const {
       pair,
       positionSize: amount,
@@ -61,7 +61,9 @@ module.exports = {
       stop: stopPrice,
     } = order
 
-    let stopSide, stopType
+    let stopSide,
+      stopType,
+      stopTriggerPrice = stopPrice
 
     if (isShort) {
       // Short stop paramaters
@@ -72,7 +74,7 @@ module.exports = {
       stopSide = 'sell'
       stopType = 'stop'
     }
-    ftx
+    const response = await ftx
       .request({
         method: 'POST',
         path: '/conditional_orders',
@@ -82,28 +84,35 @@ module.exports = {
           side: stopSide,
           price: stopPrice,
           size: amount,
+          triggerPrice: stopTriggerPrice,
         },
       })
-      .then((res) => {
-        console.log(res)
-      })
       .catch((err) => console.log(err))
+    return response
   },
 
-  // Position entry function,
-  // this function takes in the pair price, if entry order is executed, posts stoploss order and post position to database
-  positionEntry: function (order, price) {
-    console.log('I do things once the position has been entered ')
-    const { pair, amount, entry: entryPrice, stop: stopPrice } = order
-    // Logic:
-    //  if order has been filled (avg price?) place stoploss
-
-    if (
-      //if long
-      (entryPrice > stopPrice && price.pair >= entryPrice) ||
-      //if short
-      (entryPrice < stopPrice && price.pair <= entryPrice)
-    ) {
-    }
+  cancelOrdersOnpair: async function (order, price) {
+    console.log('cancelOrdersOnpair')
+    const response = await ftx.request({
+      method: 'DELETE',
+      path: '/orders',
+      data: {
+        pair: order.pair,
+      },
+    })
+    return response
+  },
+  getEntryOrderInformation: async function (order) {
+    console.log('getting Entry Order Information')
+    const response = await ftx.request({
+      method: 'GET',
+      path: '/conditional_orders/history?market=' + order.pair,
+    })
+    //fitler response
+    const newRes = response.result.filter(
+      (order) => order.avgFillPrice !== null
+    )
+    console.log(newRes)
+    return newRes[0]
   },
 }

@@ -35,11 +35,11 @@ class OrderInput extends Component {
         let newTradeAmount =
           (this.state.portfolioSize * this.state.portolioRisk) / tradeRisk
         let newPositionSize = newTradeAmount / this.state.entry
-        // if positionSize is negative, make it positive
 
         this.setState({
           ...this.state,
           positionSize:
+            // if positionSize is negative, make it positive
             newPositionSize < 0 ? newPositionSize * -1 : newPositionSize,
         })
       })

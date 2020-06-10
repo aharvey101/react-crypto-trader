@@ -1,42 +1,72 @@
-const orderManager = require('./orderManager')
-const pairManager = require('./pairManager')
-const databaseManager = require('./databaseManager')``
+const {
+  entryOrder,
+  stopOrder,
+  cancelOrdersOnpair,
+  getEntryOrderInformation,
+} = require('./orderManager')
+const { pairWatch } = require('./pairManager')
+const databaseManager = require('./databaseManager')
+
 async function managePosition(order) {
-  // make array for storing pairs to track their price
-  let tradingPairsArray = []
-  let pair = order.pair
-  console.log(`the pair variable = ${JSON.stringify(pair)}`)
-  let tradingPairsObject = {
-    pair: pair,
-  }
-  //pushes object into array
-  function push(tpa, tpo) {
-    console.log(tpo.pair)
-    // // this doesn't work but needs to exist
-    // if (tpa.filter((pair) => pair === tpo.pair)) {
-    //   return console.log('pair already included')
-    // } else {
-    // }
-    return tpa.push(tpo)
-  }
-  const newPairsArray = push(tradingPairsArray, tradingPairsObject)
-  console.log(`the new pairsArray is ${JSON.stringify(newPairsArray)}`)
-
-  //detect if short
+  // One order per call of this function
+  let shouldGo = true
   let isShort = order.entry < order.stopPrice
-
-  //stop breach
-
-  function stopBreach() {}
-
-  console.log(`the trading Pairs Array is ${JSON.stringify(tradingPairsArray)}`)
   // place entry order
-  // orderManager.entryOrder(order, isShort)
+  // entryOrder(order, isShort)
+  while (shouldGo) {
+    // Start tracking pair price
+    function getPairsPrices(order) {
+      return new Promise((resolve, reject) => {
+        console.log('promise made')
+        setTimeout(
+          async () => {
+            console.log('resolving')
+            return resolve(await pairWatch(order))
+          },
+          100,
+          order
+        )
+      })
+    }
+    //Get prices
+    let pairPrice = await getPairsPrices(order)
+    console.log(pairPrice)
+    // console.log(pairPrice)
+    let alreadyEntered = false
+    let ordersCancelled = false
+    // logic for checking to see if stop was breached
+    if (ordersCancelled !== true) {
+      if (
+        (isShort && pairPrice > order.stop) ||
+        (!isShort && pairPrice < order.stop)
+      ) {
+        //cancel all orders on pair
+        console.log('cancelling orders on pair')
+        const response = await cancelOrdersOnpair(order)
+        console.log(response)
+        return response
+      }
+    }
+    // if position has been entered, place stop ,get entry Order information and post to database
+    if (alreadyEntered !== true) {
+      alreadyEntered = true
+      // if (
+      //   (isShort && pairPrice < order.entry) ||
+      //   (!isShort && pairPrice > order.entry)
+      // ) {
+      console.log('placing stop')
+      // // place stop
+      const response = await stopOrder(order)
+      console.log(response)
 
-  const pairs = await pairManager.pairWatch(tradingPairsArray)
-  // console.log(pairs)
-
-  // these functions need to be moduled out later into the databaseManager script, however, rn, they are here
+      //get Entry Order Information
+      // const entryOrderInfo = await getEntryOrderInformation(order)
+      // console.log(entryOrderInfo)
+      //database Entry
+      // databaseManager(order, entryOrderInfo.result)
+      // }
+    }
+  }
 }
 
 module.exports = managePosition
