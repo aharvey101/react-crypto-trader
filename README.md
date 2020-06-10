@@ -8,10 +8,8 @@ The itnention of this app is to place and manage positions, without the main str
 
 # Tidy Up code:
 
-The code is all over the place, Clean it up:
-
 - [x] No functions inside of the routes
-- [] Have different modules for different core functionality such as managing orders and tracking getPrices
+- [x] Have different modules for different core functionality such as managing orders and tracking getPrices
   - [x] Order Manager:
     - [x] Post order function - posts an order with paramaters - [X] TESTED
     - [x] Stop breach before entry function - takes in price and cancels orders on pair when stop is breached
@@ -20,7 +18,7 @@ The code is all over the place, Clean it up:
     - [x] Track Price function - takes in an array of pairs, tracks price (Maybe use a promise, on resolve, set variable to new array of prices)
   - [x] Positon Manager(for the position logic? takes in the order from the route and does calls in other modules such as Pair Manager and Order Manager):
   - [] Database Manager
-    - [] push new position function - pushes new position to database
+    - [x] push new position function - pushes new position to database
     - [] Update position function - updates previously pushed position with new information (ie. closed price)
 
 # Order Input:
@@ -42,7 +40,7 @@ The code is all over the place, Clean it up:
     - [x] Schema
     - [x] Post position to database on entry order creation (temporary way to test, wil)
     - [x] make position entry
-  - [] Stop Breach function for managing stop breach before entry (already made, reuse from ftx script)
+  - [x] Stop Breach function for managing stop breach before entry (already made, reuse from ftx script)
   - [] Three candle function for
   - [] Stop order place function
 
