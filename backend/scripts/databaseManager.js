@@ -2,23 +2,24 @@ const Position = require('../Models/position')
 
 function newPositionToDB(order, entryOrder) {
   //create position
-  const ncp = {
+  const newPosition = {
     pair: order.pair,
-    amount: order.amount,
+    positionSize: order.positionSize,
     entry: order.entry,
     stop: order.stop,
     timeframe: order.timeframe,
-    exchangeOrderID: entryOrder.avgFillPrice,
-    averageFillPrice: Number,
+    averageFillPrice: entryOrder[0].recentAverageOpenPrice,
   }
-  Position.create(ncp, function (err, newlyCreated) {
+  Position.create(newPosition, function (err, newlyCreated) {
     if (err) {
       console.log(err)
     } else {
-      //redirect back to campgrounds page
-      console.log(newlyCreated)
+      console.log(
+        `the newly created position is: ${JSON.stringify(newlyCreated)}`
+      )
     }
   })
+  return
 }
 
 module.exports = newPositionToDB

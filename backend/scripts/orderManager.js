@@ -8,13 +8,8 @@ const ftx = new ftxrest({
 // the pairwatch function should be
 
 module.exports = {
-  entryOrder: function (order, isShort) {
-    const {
-      pair,
-      positionSize: amount,
-      entry: entryPrice,
-      stop: stopPrice,
-    } = order
+  entryOrder: async function (order, isShort) {
+    const { pair, positionSize, entry: entryPrice, stop: stopPrice } = order
 
     console.log(entryPrice + ' ' + stopPrice)
 
@@ -33,7 +28,7 @@ module.exports = {
       entryTriggerPrice = entryPrice
     }
 
-    ftx
+    const response = await ftx
       .request({
         method: 'POST',
         path: '/conditional_orders',
@@ -42,24 +37,17 @@ module.exports = {
           type: entryType,
           side: entrySide,
           price: entryPrice,
-          size: amount,
+          size: positionSize,
           triggerPrice: entryTriggerPrice,
         },
       })
-      .then((res) => {
-        console.log(res)
-      })
       .catch((err) => console.log(err))
+    return response
   },
   //Stop watch function is for watching to mare sure that in the event of the stop being breached before entry,
   // the entry order is cancelled and position is closed
   stopOrder: async function (order, isShort) {
-    const {
-      pair,
-      positionSize: amount,
-      entry: entryPrice,
-      stop: stopPrice,
-    } = order
+    const { pair, positionSize, stop: stopPrice } = order
 
     let stopSide,
       stopType,
@@ -83,7 +71,7 @@ module.exports = {
           type: stopType,
           side: stopSide,
           price: stopPrice,
-          size: amount,
+          size: positionSize,
           triggerPrice: stopTriggerPrice,
         },
       })
@@ -102,17 +90,17 @@ module.exports = {
     })
     return response
   },
-  getEntryOrderInformation: async function (order) {
+  getEntryOrderInformation: async function (order, entryOrder) {
     console.log('getting Entry Order Information')
     const response = await ftx.request({
       method: 'GET',
-      path: '/conditional_orders/history?market=' + order.pair,
+      path: '/positions',
+      data: {
+        showAvgPrice: true,
+      },
     })
     //fitler response
-    const newRes = response.result.filter(
-      (order) => order.avgFillPrice !== null
-    )
-    console.log(newRes)
-    return newRes[0]
+    const newRes = response.result.filter((position) => position.size !== 0)
+    return newRes
   },
 }

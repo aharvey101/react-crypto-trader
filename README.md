@@ -18,7 +18,7 @@ The code is all over the place, Clean it up:
     - [] TEST
   - [x] Pair Manager:
     - [x] Track Price function - takes in an array of pairs, tracks price (Maybe use a promise, on resolve, set variable to new array of prices)
-  - [] Positon Manager(for the position logic? takes in the order from the route and does calls in other modules such as Pair Manager and Order Manager):
+  - [x] Positon Manager(for the position logic? takes in the order from the route and does calls in other modules such as Pair Manager and Order Manager):
   - [] Database Manager
     - [] push new position function - pushes new position to database
     - [] Update position function - updates previously pushed position with new information (ie. closed price)

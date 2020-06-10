@@ -12,8 +12,9 @@ async function managePosition(order) {
   let shouldGo = true
   let isShort = order.entry < order.stopPrice
   // place entry order
-  // entryOrder(order, isShort)
+  const entryOrderPlace = await entryOrder(order, isShort)
   while (shouldGo) {
+    console.log(order)
     // Start tracking pair price
     function getPairsPrices(order) {
       return new Promise((resolve, reject) => {
@@ -49,22 +50,22 @@ async function managePosition(order) {
     }
     // if position has been entered, place stop ,get entry Order information and post to database
     if (alreadyEntered !== true) {
-      alreadyEntered = true
-      // if (
-      //   (isShort && pairPrice < order.entry) ||
-      //   (!isShort && pairPrice > order.entry)
-      // ) {
-      console.log('placing stop')
-      // // place stop
-      const response = await stopOrder(order)
-      console.log(response)
+      if (
+        (isShort && pairPrice < order.entry) ||
+        (!isShort && pairPrice > order.entry)
+      ) {
+        console.log('placing stop')
+        // place stop
+        const response = await stopOrder(order)
+        console.log(response)
 
-      //get Entry Order Information
-      // const entryOrderInfo = await getEntryOrderInformation(order)
-      // console.log(entryOrderInfo)
-      //database Entry
-      // databaseManager(order, entryOrderInfo.result)
-      // }
+        //get Entry Order Information
+        const entryOrderInfo = await getEntryOrderInformation(order)
+        console.log(entryOrderInfo)
+        //database Entry
+        databaseManager(order, entryOrderInfo)
+        return (alreadyEntered = true)
+      }
     }
   }
 }

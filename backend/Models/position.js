@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 
 var positionSchema = new mongoose.Schema({
   pair: String,
-  amount: Number,
+  positionSize: Number,
   entry: Number,
   stop: Number,
   timeframe: String,
