@@ -44,8 +44,6 @@ module.exports = {
       .catch((err) => console.log(err))
     return response
   },
-  //Stop watch function is for watching to mare sure that in the event of the stop being breached before entry,
-  // the entry order is cancelled and position is closed
   stopOrder: async function (order, isShort) {
     const { pair, positionSize, stop: stopPrice } = order
 
@@ -90,7 +88,7 @@ module.exports = {
     })
     return response
   },
-  getEntryOrderInformation: async function (order, entryOrder) {
+  getPositionInfo: async function (order, entryOrder) {
     console.log('getting Entry Order Information')
     const response = await ftx.request({
       method: 'GET',
@@ -100,7 +98,16 @@ module.exports = {
       },
     })
     //fitler response
-    const newRes = response.result.filter((position) => position.size !== 0)
+
+    //TODO:
+    //- [] Error handle so that if the position does not exist, it doesn't go on but breaks
+    const newRes = response.result.filter((position) => {
+      if (position.size !== 0 && position.future === order.pair) {
+        return true
+      } else {
+        return false
+      }
+    })
     return newRes
   },
 }

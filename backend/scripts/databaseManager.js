@@ -1,6 +1,6 @@
 const Position = require('../Models/position')
 
-function newPositionToDB(order, entryOrder) {
+function newPositionToDB(order, position) {
   //create position
   const newPosition = {
     pair: order.pair,
@@ -8,7 +8,7 @@ function newPositionToDB(order, entryOrder) {
     entry: order.entry,
     stop: order.stop,
     timeframe: order.timeframe,
-    averageFillPrice: entryOrder[0].recentAverageOpenPrice,
+    averageFillPrice: position[0].recentAverageOpenPrice,
   }
   Position.create(newPosition, function (err, newlyCreated) {
     if (err) {
