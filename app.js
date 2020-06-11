@@ -12,7 +12,10 @@ app.use(express.urlencoded({ extended: false }))
 //Database Connect
 const uri = process.env.DATABASEURI
 mongoose
-  .connect(uri, { useUnifiedTopology: true, useNewUrlParser: true })
+  .connect(process.env.MONGODB_URI || uri, {
+    useUnifiedTopology: true,
+    useNewUrlParser: true,
+  })
   .then((res) => {
     console.log('connected to remote DB')
   })
@@ -28,6 +31,11 @@ app.get('/', (req, res) => res.send('Hello World!'))
 
 app.use('/position', position)
 app.use('/getBalances', getBalances)
+
+// if in production
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static('./client/build'))
+}
 
 app.listen(port, () =>
   console.log(`Example app listening at http://localhost:${port}`)
