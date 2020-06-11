@@ -3,6 +3,7 @@ const express = require('express')
 const app = express()
 const port = process.env.PORT || 3001
 const mongoose = require('mongoose')
+const path = require('path')
 const cors = require('cors')
 //Middleware?
 app.use(cors())
@@ -34,7 +35,11 @@ app.use('/getBalances', getBalances)
 
 // if in production
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static('./client/build'))
+  app.use(express.static('client/build'))
+
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'))
+  })
 }
 
 app.listen(port, () =>
