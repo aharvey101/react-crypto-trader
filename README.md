@@ -1,10 +1,10 @@
 ### Trading App React Testing
 
-## SCOPE OF APP:
+# SCOPE OF APP:
 
 The itnention of this app is to place and manage positions, without the main strategy but with the order management rules
 
-## TODO
+# TODO
 
 # Tidy Up code:
 
@@ -51,3 +51,7 @@ The itnention of this app is to place and manage positions, without the main str
 - [x] Send balance information back to frontend
 - [x] set trade amount based on portfoliosize
 - [x] on app load, get account size from etherscan.io and ftx (using environment variables for privacy)
+
+# Frontend order input form make better:
+
+- [] Get PERP pairs to autofill pairs input
