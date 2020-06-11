@@ -50,8 +50,9 @@ class OrderInput extends Component {
   }
   updatePair(e) {
     const { name, value } = e.target
+
     this.setState({
-      [name]: `${value}-perp`,
+      [name]: `${value}-perp`.toUpperCase(),
     })
     console.log(this.state)
   }
@@ -117,6 +118,13 @@ class OrderInput extends Component {
           ></input>
 
           <button className="submit-button">Submit</button>
+          <label>Order:</label>
+          <p>{this.state.pair}</p>
+          <p>{this.state.entry}</p>
+          <p>{this.state.stop}</p>
+          <p>{this.state.positionSize}</p>
+          <p>{this.state.portfolioSize}</p>
+          <label>Response From Server</label>
           <textarea
             className="text-field"
             readOnly

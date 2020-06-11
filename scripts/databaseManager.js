@@ -1,6 +1,8 @@
 const Position = require('../Models/position')
 
-async function newPositionToDB(order, position) {
+const databaseManager = {}
+
+databaseManager.createPostion = async (order, position) => {
   //create position
   const newPosition = {
     pair: order.pair,
@@ -25,4 +27,14 @@ async function newPositionToDB(order, position) {
   return response
 }
 
-module.exports = newPositionToDB
+databaseManager.updatePosition = async (
+  existingPositionInfo,
+  newPositionInfo
+) => {
+  // process new position info
+  const newInfo = newPositionInfo
+  // use incoming positionInfo to call position
+  Position.findByIdAndUpdate(existingPositionInfo._id)
+}
+
+module.exports = databaseManager

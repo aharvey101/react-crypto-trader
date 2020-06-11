@@ -5,9 +5,7 @@ const ftx = new ftxrest({
   secret: process.env.API_SECRET,
 })
 
-// the pairwatch function should be
-
-module.exports = {
+const exchange = {
   entryOrder: async function (order, isShort) {
     const { pair, positionSize, entry: entryPrice, stop: stopPrice } = order
 
@@ -111,4 +109,17 @@ module.exports = {
     console.log('the filtered response is', newRes)
     return newRes
   },
+  getStopInfo: async (order) => {
+    console.log('getting stop info for', order.pair)
+    const orders = await ftx.request({
+      method: 'GET',
+      path: '/conditional_orders/history?market=' + order.pair,
+    })
+    const positionStopOrder = orders.filter((stopOrder) => {
+      stopOrder.result.future === order.pair
+    })
+    return positionStopOrder
+  },
 }
+
+module.exports = exchange

@@ -3,7 +3,8 @@ const {
   stopOrder,
   cancelOrdersOnpair,
   getPositionInfo,
-} = require('./orderManager')
+  getStopInfo,
+} = require('./exchange')
 const { pairWatch } = require('./pairManager')
 const databaseManager = require('./databaseManager')
 
@@ -45,20 +46,26 @@ async function managePosition(order) {
 
     console.log(pairPrice)
     let alreadyEntered = false
-    let ordersCancelled = false
     // logic for checking to see if stop was breached
-    if (ordersCancelled !== true) {
+    if (alreadyEntered !== true) {
       if (
         (isShort && pairPrice > order.stop) ||
         (!isShort && pairPrice < order.stop)
       ) {
         //cancel all orders on pair
+        //TODO: Error handle if orders aren't cancelled
         console.log('cancelling orders on pair')
-        const response = await cancelOrdersOnpair(order)
-        console.log(response)
+        cancelOrdersOnpair(order)
+          .then((res) => {
+            console.log(res)
+          })
+          .catch((err) => {
+            console.log(err)
+          })
         return
       }
     }
+    let dbPosition
     // if position has been entered, place stop ,get entry Order information and post to database
     if (alreadyEntered !== true) {
       if (
@@ -67,16 +74,24 @@ async function managePosition(order) {
       ) {
         console.log('placing stop')
         // place stop
-        const response = await stopOrder(order)
-        console.log(response)
+        stopOrder(order)
+          .then((result) => console.log(result))
+          .catch((err) => console.log(err))
 
         //get Entry Order Information
         const positionInfo = await getPositionInfo(order)
-        console.log(positionInfo)
+
         //database Entry
-        await databaseManager(order, positionInfo)
+        dbPosition = await databaseManager(order, positionInfo)
         alreadyEntered = true
       }
+    }
+
+    // if stop was executed?
+    const stopOrderInfo = await getStopInfo(order)
+    if (stopOrderInfo.result.averageFillPrice !== null) {
+      databaseManager.updatePosition(dbPosition, stopOrderInfo)
+      return
     }
   }
 }
