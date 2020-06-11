@@ -14,6 +14,7 @@ function inputNewPosition(order) {
     pairsWithOrdersArray.push(order)
   }
   updateOrdersArray(order)
+  console.log(pairsWithOrdersArray)
   // start managing new position
   managePosition(order)
 }
@@ -27,14 +28,11 @@ async function managePosition(order) {
   // place entry order
   entryOrder(order, isShort)
   while (shouldGo) {
-    console.log(order)
     // Start tracking pair price
     function getPairsPrices(order) {
       return new Promise((resolve, reject) => {
-        console.log('promise made')
         setTimeout(
           async () => {
-            console.log('resolving')
             return resolve(await pairWatch(order))
           },
           100,
@@ -44,8 +42,8 @@ async function managePosition(order) {
     }
     //Get prices
     let pairPrice = await getPairsPrices(order)
+
     console.log(pairPrice)
-    // console.log(pairPrice)
     let alreadyEntered = false
     let ordersCancelled = false
     // logic for checking to see if stop was breached
@@ -58,7 +56,7 @@ async function managePosition(order) {
         console.log('cancelling orders on pair')
         const response = await cancelOrdersOnpair(order)
         console.log(response)
-        return response
+        return
       }
     }
     // if position has been entered, place stop ,get entry Order information and post to database
@@ -76,8 +74,8 @@ async function managePosition(order) {
         const positionInfo = await getPositionInfo(order)
         console.log(positionInfo)
         //database Entry
-        databaseManager(order, positionInfo)
-        return
+        await databaseManager(order, positionInfo)
+        alreadyEntered = true
       }
     }
   }

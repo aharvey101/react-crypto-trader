@@ -89,7 +89,7 @@ module.exports = {
     return response
   },
   getPositionInfo: async function (order, entryOrder) {
-    console.log('getting Entry Order Information')
+    console.log('getting Entry Order Information', order)
     const response = await ftx.request({
       method: 'GET',
       path: '/positions',
@@ -108,6 +108,7 @@ module.exports = {
         return false
       }
     })
+    console.log('the filtered response is', newRes)
     return newRes
   },
 }

@@ -6,10 +6,8 @@ const ftx = new ftxrest({
 
 module.exports = {
   pairWatch: async function (order) {
-    console.log('Watching pairs')
     let pair = order.pair
-
-    // function that gets getPrices
+    // function that gets price
     async function getPrices() {
       const response = await new Promise((resolve, reject) => {
         resolve(

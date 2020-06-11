@@ -1,6 +1,6 @@
 const Position = require('../Models/position')
 
-function newPositionToDB(order, position) {
+async function newPositionToDB(order, position) {
   //create position
   const newPosition = {
     pair: order.pair,
@@ -10,7 +10,10 @@ function newPositionToDB(order, position) {
     timeframe: order.timeframe,
     averageFillPrice: position[0].recentAverageOpenPrice,
   }
-  Position.create(newPosition, function (err, newlyCreated) {
+  const response = await Position.create(newPosition, function (
+    err,
+    newlyCreated
+  ) {
     if (err) {
       console.log(err)
     } else {
@@ -19,7 +22,7 @@ function newPositionToDB(order, position) {
       )
     }
   })
-  return
+  return response
 }
 
 module.exports = newPositionToDB

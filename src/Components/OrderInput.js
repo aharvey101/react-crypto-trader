@@ -77,44 +77,51 @@ class OrderInput extends Component {
 
   render() {
     return (
-      <div className="App">
+      <div className="order-component">
         <h1>Order Input</h1>
         <form
           onSubmit={(event) => {
             event.preventDefault()
             this.submitForm()
           }}
+          className="orderInputForm"
         >
-          <label>
-            Pair
-            <input
-              name="pair"
-              placeholder="Pair"
-              onChange={this.updateOrder}
-            ></input>
-          </label>
-          <label>
-            Entry
-            <input
-              type="number"
-              name="entry"
-              placeholder="Entry"
-              // value={this.state.entry}
-              onChange={this.updateOrder}
-            ></input>
-          </label>
-          <label>
-            Stop
-            <input
-              type="number"
-              name="stop"
-              placeholder="Stop"
-              // value={this.state.stop}
-              onChange={this.updateBalances}
-            ></input>
-          </label>
-          <button>Submit</button>
-          <textarea readOnly value={this.state.response}></textarea>
+          <label className="input-label">Pair</label>
+
+          <input
+            name="pair"
+            placeholder="Pair"
+            className="input-field"
+            onChange={this.updateOrder}
+          ></input>
+
+          <label className="input-label">Entry</label>
+
+          <input
+            type="number"
+            name="entry"
+            placeholder="Entry"
+            className="input-field"
+            onChange={this.updateOrder}
+          ></input>
+
+          <label className="input-label">Stop</label>
+
+          <input
+            type="number"
+            name="stop"
+            placeholder="Stop"
+            className="input-field"
+            onChange={this.updateBalances}
+          ></input>
+
+          <button className="submit-button">Submit</button>
+          <textarea
+            className="text-field"
+            readOnly
+            rows="5"
+            value={this.state.response}
+          ></textarea>
         </form>
       </div>
     )
