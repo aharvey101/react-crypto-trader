@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import axios from 'axios'
+const backendURL = process.env.backendURL || 'http://localhost:3001/'
 
 class OrderInput extends Component {
   constructor() {
@@ -24,8 +25,9 @@ class OrderInput extends Component {
     this.setState({
       [name]: parseInt(value),
     })
+    const route = 'getBalances'
     axios
-      .get('http://localhost:3001/getBalances')
+      .get(`${backendURL}${route}`)
       .then((res) => {
         let balance = res.data.balance
         this.setState({ ...this.state, portfolioSize: balance })
@@ -65,9 +67,9 @@ class OrderInput extends Component {
       stop: this.state.stop,
     }
     console.log(order)
-
+    const route = 'position'
     axios
-      .post('http://localhost:3001/position/', order)
+      .post(`${backendURL}${route}`, order)
       .then((res) => {
         console.log(res.data)
         this.setState({ response: res.data })
