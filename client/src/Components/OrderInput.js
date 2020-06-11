@@ -15,7 +15,7 @@ class OrderInput extends Component {
       response: [],
     }
 
-    this.updateOrder = this.updateOrder.bind(this)
+    this.updatePair = this.updatePair.bind(this)
     this.submitForm = this.submitForm.bind(this)
     this.updateBalances = this.updateBalances.bind(this)
   }
@@ -48,13 +48,10 @@ class OrderInput extends Component {
       .catch((err) => console.log(err))
     console.log(this.state)
   }
-  updateOrder(e) {
-    const { name, value, type } = e.target
-    // if (name === 'entry') {
-    //   return (value = parseInt(value))
-    // }
+  updatePair(e) {
+    const { name, value } = e.target
     this.setState({
-      [name]: type === 'number' ? parseInt(value, 10) : value,
+      [name]: `${value}-perp`,
     })
     console.log(this.state)
   }
@@ -88,13 +85,15 @@ class OrderInput extends Component {
           }}
           className="orderInputForm"
         >
-          <label className="input-label">Pair</label>
+          <label className="input-label">
+            Pair - no need to add -perp, it automatically adds it
+          </label>
 
           <input
             name="pair"
             placeholder="Pair"
             className="input-field"
-            onChange={this.updateOrder}
+            onChange={this.updatePair}
           ></input>
 
           <label className="input-label">Entry</label>
@@ -104,7 +103,7 @@ class OrderInput extends Component {
             name="entry"
             placeholder="Entry"
             className="input-field"
-            onChange={this.updateOrder}
+            onChange={this.updateBalances}
           ></input>
 
           <label className="input-label">Stop</label>
