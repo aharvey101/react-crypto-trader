@@ -29,12 +29,20 @@ databaseManager.createPostion = async (order, position) => {
 
 databaseManager.updatePosition = async (
   existingPositionInfo,
-  newPositionInfo
+  stopOrderInfo
 ) => {
   // process new position info
-  const newInfo = newPositionInfo
+  const { averageFillPrice } = stopOrderInfo
+  const newDBPosition = { ...existingPositionInfo, averageFillPrice }
   // use incoming positionInfo to call position
-  Position.findByIdAndUpdate(existingPositionInfo._id)
+  Position.findByIdAndUpdate(existingPositionInfo.id, newDBPosition, function (
+    err,
+    foundPosition
+  ) {
+    if (err) {
+      console.log(err)
+    }
+  })
 }
 
 module.exports = databaseManager

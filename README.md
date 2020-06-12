@@ -19,7 +19,7 @@ The itnention of this app is to place and manage positions, without the main str
   - [x] Positon Manager(for the position logic? takes in the order from the route and does calls in other modules such as Pair Manager and Order Manager):
   - [] Database Manager
     - [x] push new position function - pushes new position to database
-    - [] Update position function - updates previously pushed position with new information (ie. closed price)
+    - [x] Update position function - updates previously pushed position with new information (ie. closed price)
 
 # Order Input:
 
