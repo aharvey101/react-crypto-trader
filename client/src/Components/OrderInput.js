@@ -18,6 +18,7 @@ class OrderInput extends Component {
     this.updatePair = this.updatePair.bind(this)
     this.submitForm = this.submitForm.bind(this)
     this.updateBalances = this.updateBalances.bind(this)
+    this.exitPosition = this.exitPosition.bind(this)
   }
 
   updateBalances(e) {
@@ -75,6 +76,21 @@ class OrderInput extends Component {
       .catch((err) => console.log(err))
   }
 
+  exitPosition(e) {
+    e.preventDefault()
+
+    const order = this.state
+
+    const route = 'exitPosition'
+    axios
+      .post(`${backendURL}${route}`, order)
+      .then((res) => {
+        console.log(res)
+        this.setState({ response: res.data })
+      })
+      .catch((err) => console.log(err))
+  }
+
   render() {
     return (
       <div className="order-component">
@@ -89,41 +105,37 @@ class OrderInput extends Component {
           <label className="input-label">
             Pair - no need to add -perp, it automatically adds it
           </label>
-
           <input
             name="pair"
             placeholder="Pair"
             className="input-field"
             onChange={this.updatePair}
           ></input>
-
           <label className="input-label">Entry</label>
-
           <input
             type="number"
             name="entry"
+            step="0.000001"
             placeholder="Entry"
             className="input-field"
             onChange={this.updateBalances}
           ></input>
-
           <label className="input-label">Stop</label>
-
           <input
             type="number"
             name="stop"
+            step="0.000001"
             placeholder="Stop"
             className="input-field"
             onChange={this.updateBalances}
           ></input>
-
           <button className="submit-button">Submit</button>
           <label>Order:</label>
-          <p>{this.state.pair}</p>
-          <p>{this.state.entry}</p>
-          <p>{this.state.stop}</p>
-          <p>{this.state.positionSize}</p>
-          <p>{this.state.portfolioSize}</p>
+          <p>Pair: {this.state.pair}</p>
+          <p>Entry: {this.state.entry}</p>
+          <p>Stop: {this.state.stop}</p>
+          <p>Posision Size: {this.state.positionSize}</p>
+          <p>Portfolio Size: {this.state.portfolioSize}</p>
           <label>Response From Server</label>
           <textarea
             className="text-field"
@@ -131,6 +143,9 @@ class OrderInput extends Component {
             rows="5"
             value={this.state.response}
           ></textarea>
+          <button className="exit-position" onClick={this.exitPosition}>
+            Exit Position
+          </button>
         </form>
       </div>
     )

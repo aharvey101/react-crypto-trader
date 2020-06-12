@@ -37,10 +37,12 @@ databaseManager.updatePosition = async (
   // use incoming positionInfo to call position
   Position.findByIdAndUpdate(existingPositionInfo.id, newDBPosition, function (
     err,
-    foundPosition
+    newPostionEntry
   ) {
     if (err) {
       console.log(err)
+    } else {
+      console.log(newPositionEntry)
     }
   })
 }

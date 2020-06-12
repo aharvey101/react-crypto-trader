@@ -45,30 +45,17 @@ const exchange = {
   stopOrder: async function (order, isShort) {
     const { pair, positionSize, stop: stopPrice } = order
 
-    let stopSide,
-      stopType,
-      stopTriggerPrice = stopPrice
-
-    if (isShort) {
-      // Short stop paramaters
-      stopSide = 'buy'
-      stopType = 'stop'
-    } else {
-      //Long stop paramaters
-      stopSide = 'sell'
-      stopType = 'stop'
-    }
     const response = await ftx
       .request({
         method: 'POST',
         path: '/conditional_orders',
         data: {
           market: pair,
-          type: stopType,
-          side: stopSide,
+          type: 'stop',
+          side: isShort ? 'buy' : 'sell',
           price: stopPrice,
           size: positionSize,
-          triggerPrice: stopTriggerPrice,
+          triggerPrice: stopPrice,
         },
       })
       .catch((err) => console.log(err))
@@ -119,6 +106,23 @@ const exchange = {
       stopOrder.result.future === order.pair
     })
     return positionStopOrder
+  },
+  exitPosition: async (order, isShort) => {
+    console.log(order)
+    console.log('exiting position')
+    const response = await ftx.request({
+      method: 'POST',
+      path: '/orders',
+      data: {
+        market: order.pair,
+        side: isShort ? 'buy' : 'sell',
+        type: 'market',
+        size: order.positionSize,
+        reduceOnly: true,
+        price: order.stop,
+      },
+    })
+    return response
   },
 }
 

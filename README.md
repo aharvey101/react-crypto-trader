@@ -20,6 +20,9 @@ The itnention of this app is to place and manage positions, without the main str
   - [] Database Manager
     - [x] push new position function - pushes new position to database
     - [x] Update position function - updates previously pushed position with new information (ie. closed price)
+  - [x] Exit Position button
+    - [x] Frontend:
+      - [x] button that posts to backend, asking to exit position of the pair
 
 # Order Input:
 

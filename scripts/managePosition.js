@@ -4,12 +4,14 @@ const {
   cancelOrdersOnpair,
   getPositionInfo,
   getStopInfo,
+  exitPosition,
 } = require('./exchange')
 const { pairWatch } = require('./pairManager')
 const databaseManager = require('./databaseManager')
+const managePosition = {}
 
 let pairsWithOrdersArray = []
-function inputNewPosition(order) {
+managePosition.inputNewPosition = (order) => {
   //update pairsWithOrdersArray
   function updateOrdersArray(order) {
     pairsWithOrdersArray.push(order)
@@ -17,12 +19,15 @@ function inputNewPosition(order) {
   updateOrdersArray(order)
   console.log(pairsWithOrdersArray)
   // start managing new position
-  managePosition(order)
+  managePosition.position(order)
 }
 
-console.log(pairsWithOrdersArray)
+managePosition.exitPositon = async (order) => {
+  const orderExited = await exitPosition(order)
+  return orderExited
+}
 
-async function managePosition(order) {
+managePosition.position = async (order) => {
   //logic:
   let shouldGo = true
   let isShort = order.entry < order.stopPrice
@@ -66,6 +71,7 @@ async function managePosition(order) {
       }
     }
     let dbPosition
+    let positionStopOrder
     // if position has been entered, place stop ,get entry Order information and post to database
     if (alreadyEntered !== true) {
       if (
@@ -74,7 +80,7 @@ async function managePosition(order) {
       ) {
         console.log('placing stop')
         // place stop
-        stopOrder(order)
+        positionStopOrder = await stopOrder(order)
           .then((result) => console.log(result))
           .catch((err) => console.log(err))
 
@@ -88,12 +94,12 @@ async function managePosition(order) {
     }
 
     // if stop was executed?
-    const stopOrderInfo = await getStopInfo(order)
-    if (stopOrderInfo.result.averageFillPrice !== null) {
+
+    if (alreadyEntered && positionStopOrder.result.averageFillPrice !== null) {
       databaseManager.updatePosition(dbPosition, stopOrderInfo)
       return
     }
   }
 }
 
-module.exports = inputNewPosition
+module.exports = managePosition
