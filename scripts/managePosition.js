@@ -102,6 +102,7 @@ managePosition.position = async (order) => {
     }
 
     // if stop was executed?
+
     setTimeout(() => {
       if (
         alreadyEntered &&
