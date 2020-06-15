@@ -102,11 +102,15 @@ managePosition.position = async (order) => {
     }
 
     // if stop was executed?
-
-    if (alreadyEntered && positionStopOrder.result.averageFillPrice !== null) {
-      databaseManager.updatePosition(dbPosition, stopOrderInfo)
-      return
-    }
+    setTimeout(() => {
+      if (
+        alreadyEntered &&
+        positionStopOrder.result.averageFillPrice !== null
+      ) {
+        databaseManager.updatePosition(dbPosition, stopOrderInfo)
+        return
+      }
+    }, 250)
   }
 }
 
