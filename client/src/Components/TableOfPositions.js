@@ -7,6 +7,6 @@ export default class TableOfPositions extends Component {
     super()
     this.state = {}
 
-    // this.getPositions = this.getPositions.bind(this)
+    this.getPositions = this.getPositions.bind(this)
   }
 }

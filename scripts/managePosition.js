@@ -24,14 +24,17 @@ managePosition.inputNewPosition = (order) => {
 
 managePosition.exitPositon = async (order) => {
   const orderExited = await exitPosition(order)
+  // update database
   return orderExited
 }
 
 managePosition.position = async (order) => {
   //logic:
   let shouldGo = true
-  let isShort = order.entry < order.stopPrice
+  let isShort = order.entry < order.stop
+  console.log(isShort)
   // place entry order
+  console.log(order)
   entryOrder(order, isShort)
   while (shouldGo) {
     // Start tracking pair price
@@ -70,8 +73,9 @@ managePosition.position = async (order) => {
         return
       }
     }
+
     let dbPosition
-    let positionStopOrder
+    let positionStopOrder = null
     // if position has been entered, place stop ,get entry Order information and post to database
     if (alreadyEntered !== true) {
       if (
@@ -81,15 +85,19 @@ managePosition.position = async (order) => {
         console.log('placing stop')
         // place stop
         positionStopOrder = await stopOrder(order)
-          .then((result) => console.log(result))
+          .then(async (result) => {
+            console.log(result)
+            //get Entry Order Information
+            const positionInfo = await getPositionInfo(order)
+
+            //database Entry
+            dbPosition = await databaseManager.createPosition(
+              order,
+              positionInfo
+            )
+            alreadyEntered = true
+          })
           .catch((err) => console.log(err))
-
-        //get Entry Order Information
-        const positionInfo = await getPositionInfo(order)
-
-        //database Entry
-        dbPosition = await databaseManager(order, positionInfo)
-        alreadyEntered = true
       }
     }
 

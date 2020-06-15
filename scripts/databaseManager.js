@@ -2,7 +2,7 @@ const Position = require('../Models/position')
 
 const databaseManager = {}
 
-databaseManager.createPostion = async (order, position) => {
+databaseManager.createPosition = async (order, position) => {
   //create position
   const newPosition = {
     pair: order.pair,

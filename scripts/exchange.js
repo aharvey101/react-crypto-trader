@@ -11,32 +11,17 @@ const exchange = {
 
     console.log(entryPrice + ' ' + stopPrice)
 
-    let entrySide, entryType, entryTriggerPrice
-
-    if (isShort) {
-      console.log('position is short')
-      // Short entry Paramaters
-      entrySide = 'sell'
-      entryType = 'stop'
-      entryTriggerPrice = entryPrice
-    } else if (!isShort) {
-      // Long entry Paramaters
-      entrySide = 'buy'
-      entryType = 'stop' //stop limit, so use a conditional order with a trigger price
-      entryTriggerPrice = entryPrice
-    }
-
     const response = await ftx
       .request({
         method: 'POST',
         path: '/conditional_orders',
         data: {
           market: pair,
-          type: entryType,
-          side: entrySide,
+          type: 'stop',
+          side: isShort ? 'sell' : 'buy',
           price: entryPrice,
           size: positionSize,
-          triggerPrice: entryTriggerPrice,
+          triggerPrice: entryPrice,
         },
       })
       .catch((err) => console.log(err))

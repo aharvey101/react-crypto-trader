@@ -11,7 +11,7 @@ class OrderInput extends Component {
       stop: 0,
       positionSize: 0,
       portfolioSize: 10000,
-      portolioRisk: 0.01,
+      portolioRisk: 0.001,
       response: [],
     }
 
@@ -24,7 +24,7 @@ class OrderInput extends Component {
   updateBalances(e) {
     const { name, value } = e.target
     this.setState({
-      [name]: parseInt(value),
+      [name]: parseFloat(value),
     })
     const route = 'getBalances'
     axios
@@ -32,7 +32,6 @@ class OrderInput extends Component {
       .then((res) => {
         let balance = res.data.balance
         this.setState({ ...this.state, portfolioSize: balance })
-        console.log(this.state)
         // after balances are fetched, update the 'positionSize'
         const tradeRisk = 1 - this.state.stop / this.state.entry
         let newTradeAmount =
@@ -45,6 +44,7 @@ class OrderInput extends Component {
             // if positionSize is negative, make it positive
             newPositionSize < 0 ? newPositionSize * -1 : newPositionSize,
         })
+        console.log(this.state)
       })
       .catch((err) => console.log(err))
     console.log(this.state)
