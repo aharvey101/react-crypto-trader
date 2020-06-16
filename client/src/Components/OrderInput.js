@@ -26,7 +26,10 @@ class OrderInput extends Component {
     this.setState({
       [name]: parseFloat(value),
     })
-    const route = process.env.NODE_ENV ? '/getBalances' : `${local}/getbalances`
+    const route =
+      process.env.NODE_ENV === 'production'
+        ? '/getBalances'
+        : `${local}/getbalances`
     axios
       .get(route)
       .then((res) => {
@@ -66,7 +69,8 @@ class OrderInput extends Component {
       stop: this.state.stop,
     }
     console.log(order)
-    const route = process.env.PRODUCTION ? '/position' : `${local}/position`
+    const route =
+      process.env.NODE_ENV === 'production' ? '/position' : `${local}/position`
     axios
       .post(route, order)
       .then((res) => {
@@ -81,9 +85,10 @@ class OrderInput extends Component {
 
     const order = this.state
 
-    const route = process.env.PRODUCTION
-      ? '/exitPosition'
-      : `${local}/exitPosition`
+    const route =
+      process.env.NODE_ENV === 'production'
+        ? '/exitPosition'
+        : `${local}/exitPosition`
     axios
       .post(route, order)
       .then((res) => {
@@ -148,7 +153,6 @@ class OrderInput extends Component {
           <button className="exit-position" onClick={this.exitPosition}>
             Exit Position
           </button>
-          <h1>{process.env.NODE_ENV}</h1>
         </form>
       </div>
     )
