@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import axios from 'axios'
-const backendURL = process.env.backendURL || 'http://localhost:3001/'
+const local = 'http://localhost:3001/'
 
 class OrderInput extends Component {
   constructor() {
@@ -26,9 +26,11 @@ class OrderInput extends Component {
     this.setState({
       [name]: parseFloat(value),
     })
-    const route = 'getBalances'
+    const route = process.env.PRODUCTION
+      ? '/getBalances'
+      : `${local}/getbalances`
     axios
-      .get(`${backendURL}${route}`)
+      .get(route)
       .then((res) => {
         let balance = res.data.balance
         this.setState({ ...this.state, portfolioSize: balance })
@@ -66,9 +68,9 @@ class OrderInput extends Component {
       stop: this.state.stop,
     }
     console.log(order)
-    const route = 'position'
+    const route = process.env.PRODUCTION ? '/position' : `${local}/position`
     axios
-      .post(`${backendURL}${route}`, order)
+      .post(route, order)
       .then((res) => {
         console.log(res.data)
         this.setState({ response: res.data })
@@ -81,9 +83,11 @@ class OrderInput extends Component {
 
     const order = this.state
 
-    const route = 'exitPosition'
+    const route = process.env.PRODUCTION
+      ? '/exitPosition'
+      : `${local}/exitPosition`
     axios
-      .post(`${backendURL}${route}`, order)
+      .post(route, order)
       .then((res) => {
         console.log(res)
         this.setState({ response: res.data })

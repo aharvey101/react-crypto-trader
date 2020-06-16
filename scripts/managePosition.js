@@ -53,9 +53,9 @@ managePosition.position = async (order) => {
     let pairPrice = await getPairsPrices(order)
 
     console.log(pairPrice)
-    let alreadyEntered = false
+    let positionEntered = false
     // logic for checking to see if stop was breached
-    if (alreadyEntered !== true) {
+    if (positionEntered !== true) {
       if (
         (isShort && pairPrice > order.stop) ||
         (!isShort && pairPrice < order.stop)
@@ -77,7 +77,7 @@ managePosition.position = async (order) => {
     let dbPosition
     let positionStopOrder = null
     // if position has been entered, place stop ,get entry Order information and post to database
-    if (alreadyEntered !== true) {
+    if (positionEntered !== true) {
       if (
         (isShort && pairPrice < order.entry) ||
         (!isShort && pairPrice > order.entry)
@@ -95,7 +95,7 @@ managePosition.position = async (order) => {
               order,
               positionInfo
             )
-            alreadyEntered = true
+            positionEntered = true
           })
           .catch((err) => console.log(err))
         // STOPS HERE
@@ -107,7 +107,7 @@ managePosition.position = async (order) => {
 
     // setTimeout(() => {
     //   if (
-    //     alreadyEntered &&
+    //     positionEntered &&
     //     positionStopOrder.result.averageFillPrice !== null
     //   ) {
     //     databaseManager.updatePosition(dbPosition, stopOrderInfo)

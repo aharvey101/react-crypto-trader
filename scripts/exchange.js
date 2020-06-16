@@ -1,4 +1,5 @@
 const ftxrest = require('ftx-api-rest')
+require('dotenv').config()
 
 const ftx = new ftxrest({
   key: process.env.API_KEY,
@@ -29,6 +30,7 @@ const exchange = {
   },
   stopOrder: async function (order, isShort) {
     const { pair, positionSize, stop: stopPrice } = order
+    console.log(isShort)
 
     const response = await ftx
       .request({
