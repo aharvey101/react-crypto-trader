@@ -2,8 +2,8 @@ const ftxrest = require('ftx-api-rest')
 require('dotenv').config()
 
 const ftx = new ftxrest({
-  key: process.env.API_KEY || 'B1x1zE3uf99bUDMwwyB8ZIXMfy7xVAcHDtzFK6U4',
-  secret: process.env.API_SECRET || 'qhgxf1TvSXjHraw6ufvkeUv3P0ZVOysYkKyCw4Ay',
+  key: process.env.API_KEY,
+  secret: process.env.API_SECRET,
 })
 
 const exchange = {

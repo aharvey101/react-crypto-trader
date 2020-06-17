@@ -56,7 +56,7 @@ class OrderInput extends Component {
     const { name, value } = e.target
 
     this.setState({
-      [name]: `${value}-perp`.toUpperCase(),
+      [name]: `${value}`.toUpperCase(),
     })
     console.log(this.state)
   }
