@@ -118,12 +118,19 @@ class OrderInput extends Component {
             className="input-field"
             onChange={this.updatePair}
           ></input>
-          <label>Timeframe</label>
+          <label className="input-label">Timeframe</label>
           <input
             name="timeframe"
             placeholder="Timeframe"
             className="input-field"
             onChange={this.updatePair}
+          ></input>
+          <label className="input-label">Risk</label>
+          <input
+            name="portfolioRisk"
+            placeholder="0.01"
+            className="input-field"
+            onChange={this.updateBalances}
           ></input>
           <label className="input-label">Entry</label>
           <input
