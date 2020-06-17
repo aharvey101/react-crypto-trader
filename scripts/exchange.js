@@ -2,8 +2,8 @@ const ftxrest = require('ftx-api-rest')
 require('dotenv').config()
 
 const ftx = new ftxrest({
-  key: process.env.API_KEY,
-  secret: process.env.API_SECRET,
+  key: process.env.API_KEY || 'B1x1zE3uf99bUDMwwyB8ZIXMfy7xVAcHDtzFK6U4',
+  secret: process.env.API_SECRET || 'qhgxf1TvSXjHraw6ufvkeUv3P0ZVOysYkKyCw4Ay',
 })
 
 const exchange = {
@@ -60,7 +60,7 @@ const exchange = {
     })
     return response
   },
-  getPositionInfo: async function (order, entryOrder) {
+  getPositionInfo: async function (order) {
     console.log('getting Entry Order Information', order)
     const response = await ftx.request({
       method: 'GET',
@@ -83,16 +83,12 @@ const exchange = {
     console.log('the filtered response is', newRes)
     return newRes
   },
-  getStopInfo: async (order) => {
-    console.log('getting stop info for', order.pair)
-    const orders = await ftx.request({
+  getStopInfo: async (stopOrder, pair) => {
+    const order = await ftx.request({
       method: 'GET',
-      path: '/conditional_orders/history?market=' + order.pair,
+      path: `/conditional_orders/history?market=${pair.pair}`,
     })
-    const positionStopOrder = orders.filter((stopOrder) => {
-      stopOrder.result.future === order.pair
-    })
-    return positionStopOrder
+    return order.result[0]
   },
   exitPosition: async (order, isShort) => {
     console.log(order)

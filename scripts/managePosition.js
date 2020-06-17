@@ -75,7 +75,6 @@ managePosition.position = async (order) => {
     }
 
     let dbPosition
-    let positionStopOrder = null
     // if position has been entered, place stop ,get entry Order information and post to database
     if (positionEntered !== true) {
       if (
@@ -84,12 +83,12 @@ managePosition.position = async (order) => {
       ) {
         console.log('placing stop')
         // place stop
-        positionStopOrder = await stopOrder(order)
-          .then(async (result) => {
-            console.log(result)
+        stopOrder(order)
+          .then(async (res) => {
+            console.log(res)
             //get Entry Order Information
             const positionInfo = await getPositionInfo(order)
-
+            console.log('the position info is', positionInfo)
             //database Entry
             dbPosition = await databaseManager.createPosition(
               order,
@@ -98,22 +97,22 @@ managePosition.position = async (order) => {
             positionEntered = true
           })
           .catch((err) => console.log(err))
+      }
+    }
+
+    //If stop was executed, update position in db
+    // Check to see if stop order was exected
+    // If so, update position
+
+    if (positionEntered != false) {
+      // Get stop order Info
+      stopOrderInfo = await getStopInfo(order)
+      if (stopOrderInfo.averageFillPrice != null) {
+        databaseManager.updatePosition(dbPosition, stopOrderInfo)
         // STOPS HERE
         return
       }
     }
-
-    // if stop was executed?
-
-    // setTimeout(() => {
-    //   if (
-    //     positionEntered &&
-    //     positionStopOrder.result.averageFillPrice !== null
-    //   ) {
-    //     databaseManager.updatePosition(dbPosition, stopOrderInfo)
-    //     return
-    //   }
-    // }, 1000)
   }
 }
 

@@ -118,6 +118,13 @@ class OrderInput extends Component {
             className="input-field"
             onChange={this.updatePair}
           ></input>
+          <label>Timeframe</label>
+          <input
+            name="timeframe"
+            placeholder="Timeframe"
+            className="input-field"
+            onChange={this.updatePair}
+          ></input>
           <label className="input-label">Entry</label>
           <input
             type="number"
@@ -139,6 +146,7 @@ class OrderInput extends Component {
           <button className="submit-button">Submit</button>
           <label>Order:</label>
           <p>Pair: {this.state.pair}</p>
+          <p>Timeframe: {this.state.timeframe}</p>
           <p>Entry: {this.state.entry}</p>
           <p>Stop: {this.state.stop}</p>
           <p>Posision Size: {this.state.positionSize}</p>
