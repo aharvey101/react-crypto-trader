@@ -1,17 +1,31 @@
 const exchange = require('./exchange')
-require('dotenv').config()
+const dbManager = require('./databaseManager')
 
 const order = {
-  pair: 'ETH-PERP',
+  pair: 'BTC-PERP',
+  stop: 10000,
+  positionSize: 0.005,
+  entry: 9000,
+  date: new Date(),
 }
+const isShort = true
 
 const stopOrder = {
   id: 1235188,
 }
 
-async function getStopOrderInfo(stopOrder, pair) {
-  const info = await exchange.getStopInfo(stopOrder, pair)
+async function getPos(order) {
+  const pos = await exchange.getPositionInfo(order)
+  return pos
+}
+
+const posInfo = getPos(order)
+
+console.log('position is ', posInfo)
+
+async function updatePosition(pos, stop) {
+  const info = await dbManager.updatePosition(pos, stop)
   console.log(info)
 }
 
-getStopOrderInfo(stopOrder, order)
+updatePosition(posInfo, stopOrder)

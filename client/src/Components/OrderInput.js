@@ -11,7 +11,8 @@ class OrderInput extends Component {
       stop: 0,
       positionSize: 0,
       portfolioSize: 10000,
-      portolioRisk: 0.001,
+      portfolioRisk: 0.001,
+      orderDate: '',
       response: [],
     }
 
@@ -29,7 +30,7 @@ class OrderInput extends Component {
     const route =
       process.env.NODE_ENV === 'production'
         ? '/getBalances'
-        : `${local}/getbalances`
+        : `${local}getbalances`
     axios
       .get(route)
       .then((res) => {
@@ -38,7 +39,7 @@ class OrderInput extends Component {
         // after balances are fetched, update the 'positionSize'
         const tradeRisk = 1 - this.state.stop / this.state.entry
         let newTradeAmount =
-          (this.state.portfolioSize * this.state.portolioRisk) / tradeRisk
+          (this.state.portfolioSize * this.state.portfolioRisk) / tradeRisk
         let newPositionSize = newTradeAmount / this.state.entry
 
         this.setState({
@@ -70,7 +71,7 @@ class OrderInput extends Component {
     }
     console.log(order)
     const route =
-      process.env.NODE_ENV === 'production' ? '/position' : `${local}/position`
+      process.env.NODE_ENV === 'production' ? '/position' : `${local}position`
     axios
       .post(route, order)
       .then((res) => {
@@ -88,7 +89,7 @@ class OrderInput extends Component {
     const route =
       process.env.NODE_ENV === 'production'
         ? '/exitPosition'
-        : `${local}/exitPosition`
+        : `${local}exitPosition`
     axios
       .post(route, order)
       .then((res) => {
@@ -109,9 +110,7 @@ class OrderInput extends Component {
           }}
           className="orderInputForm"
         >
-          <label className="input-label">
-            Pair - no need to add -perp, it automatically adds it
-          </label>
+          <label className="input-label">Pair</label>
           <input
             name="pair"
             placeholder="Pair"

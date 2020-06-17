@@ -6,6 +6,8 @@ var positionSchema = new mongoose.Schema({
   entry: Number,
   stop: Number,
   timeframe: String,
+  date: String,
+  entryOrderId: Number,
   exchangeOrderID: Number,
   averageFillPrice: Number,
 })

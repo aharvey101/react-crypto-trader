@@ -34,9 +34,9 @@ managePosition.position = async (order) => {
   let isShort = order.entry < order.stop
   console.log(isShort)
   // place entry order
-  console.log(order)
-  entryOrder(order, isShort)
-  while (shouldGo) {
+  returnFromEntry = await entryOrder(order, isShort)
+
+  while ((returnFromEntry.success = true)) {
     // Start tracking pair price
     function getPairsPrices(order) {
       return new Promise((resolve, reject) => {
@@ -75,8 +75,9 @@ managePosition.position = async (order) => {
     }
 
     let dbPosition
+    stopPlaced = false
     // if position has been entered, place stop ,get entry Order information and post to database
-    if (positionEntered !== true) {
+    if (positionEntered !== true && stopPlaced == false) {
       if (
         (isShort && pairPrice < order.entry) ||
         (!isShort && pairPrice > order.entry)
@@ -85,6 +86,12 @@ managePosition.position = async (order) => {
         // place stop
         stopOrder(order)
           .then(async (res) => {
+            //handle error, 404: trigger price too high
+            if ((res.success = false)) {
+              console.log('Stop order was not placed', res)
+              exitPosition(order)
+              return
+            }
             console.log(res)
             //get Entry Order Information
             const positionInfo = await getPositionInfo(order)
@@ -92,11 +99,13 @@ managePosition.position = async (order) => {
             //database Entry
             dbPosition = await databaseManager.createPosition(
               order,
-              positionInfo
+              positionInfo,
+              returnFromEntry
             )
-            positionEntered = true
           })
           .catch((err) => console.log(err))
+        positionEntered = true
+        stopPlaced = true
       }
     }
 

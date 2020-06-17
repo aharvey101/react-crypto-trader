@@ -25,7 +25,6 @@ router.get('/', async (req, res) => {
     return total
   })()
   let data = await b
-  console.log(data)
   res.send({ balance: data })
 })
 

@@ -2,7 +2,7 @@ const Position = require('../Models/position')
 
 const databaseManager = {}
 
-databaseManager.createPosition = async (order, position) => {
+databaseManager.createPosition = async (order, position, entryOrder) => {
   //create position
   const newPosition = {
     pair: order.pair,
@@ -10,6 +10,8 @@ databaseManager.createPosition = async (order, position) => {
     entry: order.entry,
     stop: order.stop,
     timeframe: order.timeframe,
+    date: new Date(),
+    entryOrderId: entryOrder.result.id,
     averageFillPrice: position[0].recentAverageOpenPrice,
   }
   const response = await Position.create(newPosition, function (
@@ -34,17 +36,20 @@ databaseManager.updatePosition = async (
   // process new position info
   const { averageFillPrice } = stopOrderInfo
   const newDBPosition = { ...existingPositionInfo, averageFillPrice }
+  console.log(newDBPosition)
   // use incoming positionInfo to call position
-  Position.findByIdAndUpdate(existingPositionInfo.id, newDBPosition, function (
-    err,
-    newPostionEntry
-  ) {
-    if (err) {
-      console.log(err)
-    } else {
-      console.log(newPositionEntry)
+  const dbPos = await Position.findByIdAndUpdate(
+    existingPositionInfo.id,
+    newDBPosition,
+    function (err, newPostionEntry) {
+      if (err) {
+        console.log(err)
+      } else {
+        console.log(newPositionEntry)
+      }
     }
-  })
+  )
+  return dbPos
 }
 
 module.exports = databaseManager
