@@ -10,33 +10,45 @@ const { pairWatch } = require('./pairManager')
 const databaseManager = require('./databaseManager')
 const managePosition = {}
 
-let pairsWithOrdersArray = []
+managePosition.start = async () => {
+  // looks up position, starts position
+  const positions = await databaseManager.lookup()
+  positions.forEach((position) => {
+    managePosition.position(position, (concurrent = true))
+  })
+}
 managePosition.inputNewPosition = (order) => {
-  //update pairsWithOrdersArray
-  function updateOrdersArray(order) {
-    pairsWithOrdersArray.push(order)
-  }
-  updateOrdersArray(order)
-  console.log(pairsWithOrdersArray)
+  //TODO
+  //- [] Error handle, need to delete 'current pos' if it already exists on pair
+  // delete all 'current pos' on that pair
+  // update database Positions
+  databaseManager.deleteCurrentPos(order)
+  databaseManager.currentPositions(order)
   // start managing new position
-  managePosition.position(order)
+  managePosition.position(order, (concurrent = false))
 }
 
 managePosition.exitPositon = async (order) => {
   const orderExited = await exitPosition(order)
   // update database
+  databaseManager.updatePosition(order, orderExited)
   return orderExited
 }
 
-managePosition.position = async (order) => {
+managePosition.position = async (order, concurrent) => {
   //logic:
-  let shouldGo = true
+
   let isShort = order.entry < order.stop
   console.log(isShort)
-  // place entry order
-  returnFromEntry = await entryOrder(order, isShort)
 
-  while ((returnFromEntry.success = true)) {
+  // place entry order
+  let returnFromEntry
+  if (concurrent !== true) {
+    returnFromEntry = await entryOrder(order, isShort)
+    return concurrent === true
+  }
+
+  while (concurrent === true) {
     // Start tracking pair price
     function getPairsPrices(order) {
       return new Promise((resolve, reject) => {
@@ -70,7 +82,11 @@ managePosition.position = async (order) => {
           .catch((err) => {
             console.log(err)
           })
-        return
+
+        // find db current Position and delete:
+        // lookup all positions, filter by pair, delete
+
+        databaseManager.deleteCurrentPos(order)
       }
     }
 

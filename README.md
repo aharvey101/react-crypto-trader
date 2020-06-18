@@ -38,7 +38,7 @@ The itnention of this app is to place and manage positions, without the main str
 
 - Backend
   - [x] Watching price, ping serever every 10th of a second
-  - [] Setup MongoDB
+  - [x] Setup MongoDB
     - [x] app.js setup
     - [x] Schema
     - [x] Post position to database on entry order creation (temporary way to test, wil)
@@ -58,3 +58,7 @@ The itnention of this app is to place and manage positions, without the main str
 # Frontend order input form make better:
 
 - [] Get PERP pairs to autofill pairs input
+
+# Restart positions if server is restarted - [X]
+
+- [x] Write to database current positions

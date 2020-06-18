@@ -1,6 +1,22 @@
 const Position = require('../Models/position')
+const CurrentPos = require('../Models/currentPositions')
 
 const databaseManager = {}
+
+databaseManager.currentPositions = async (order) => {
+  const newCurrentPostion = order
+  const dbResponse = await CurrentPos.create(newCurrentPostion, function (
+    err,
+    positions
+  ) {
+    if (err) {
+      console.log(err)
+    } else {
+      console.log('submitted current positions to db for watching', positions)
+    }
+  })
+  return dbResponse
+}
 
 databaseManager.createPosition = async (order, position, entryOrder) => {
   //create position
@@ -41,7 +57,7 @@ databaseManager.updatePosition = async (
   const dbPos = await Position.findByIdAndUpdate(
     existingPositionInfo.id,
     newDBPosition,
-    function (err, newPostionEntry) {
+    function (err, newPositionEntry) {
       if (err) {
         console.log(err)
       } else {
@@ -50,6 +66,29 @@ databaseManager.updatePosition = async (
     }
   )
   return dbPos
+}
+
+// When a position has been exited, it needs to ne removed from the current posisitons collection
+databaseManager.deleteCurrentPos = async (order) => {
+  const dbCurrentPositions = await CurrentPos.find({})
+  const filtered = dbCurrentPositions.filter((pos) => pos.pair === order.pair)
+  filtered.forEach((position) => {
+    CurrentPos.findByIdAndDelete(position.id, function (err, res) {
+      console.log(res)
+    })
+  })
+}
+
+databaseManager.lookup = () => {
+  // Lookup all positions and return
+  const positions = CurrentPos.find({}, function (err, positions) {
+    if (err) {
+      console.log(err)
+    } else {
+      console.log(positions)
+    }
+  })
+  return positions
 }
 
 module.exports = databaseManager

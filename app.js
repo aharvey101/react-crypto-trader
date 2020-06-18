@@ -5,10 +5,12 @@ const port = process.env.PORT || 3001
 const mongoose = require('mongoose')
 const path = require('path')
 const cors = require('cors')
+const managePosition = require('./scripts/managePosition')
 //Middleware?
 app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
+app.use(express.static(path.join(__dirname, 'public')))
 
 //Database Connect
 const uri = process.env.DATABASEURI
@@ -41,6 +43,10 @@ if (process.env.NODE_ENV === 'production') {
     res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'))
   })
 }
+
+// start existing positions
+
+managePosition.start()
 
 app.listen(port, () =>
   console.log(`Example app listening at http://localhost:${port}`)
