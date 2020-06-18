@@ -50,6 +50,7 @@ managePosition.position = async (order, concurrent) => {
     console.log(returnFromEntry)
   }
   concurrent === true
+  console.log('concurrent is ', concurrent)
 
   while (concurrent === true) {
     // Start tracking pair price
