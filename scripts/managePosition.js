@@ -21,17 +21,13 @@ managePosition.inputNewPosition = (order) => {
   //TODO
   //- [x] Error handle, need to delete 'current pos' if it already exists on pair
   // delete all 'current pos' on that pair
-  // update database Positions
   databaseManager.deleteCurrentPos(order)
-  setTimeout(
-    () => {
-      databaseManager.currentPositions(order)
-    },
-    100,
-    order
-  )
+  console.log('thing deleted')
+  // update database Positions
+  databaseManager.currentPositions(order)
+
   // start managing new position
-  managePosition.position(order, (concurrent = false))
+  managePosition.position(order, false)
 }
 
 managePosition.exitPositon = async (order) => {
