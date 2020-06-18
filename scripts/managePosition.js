@@ -19,11 +19,17 @@ managePosition.start = async () => {
 }
 managePosition.inputNewPosition = (order) => {
   //TODO
-  //- [] Error handle, need to delete 'current pos' if it already exists on pair
+  //- [x] Error handle, need to delete 'current pos' if it already exists on pair
   // delete all 'current pos' on that pair
   // update database Positions
   databaseManager.deleteCurrentPos(order)
-  databaseManager.currentPositions(order)
+  setTimeout(
+    () => {
+      databaseManager.currentPositions(order)
+    },
+    100,
+    order
+  )
   // start managing new position
   managePosition.position(order, (concurrent = false))
 }
@@ -39,8 +45,8 @@ managePosition.position = async (order, concurrent) => {
   //logic:
 
   let isShort = order.entry < order.stop
-  console.log(isShort)
-
+  console.log(`isShort is`, isShort)
+  console.log('concurrent is: ', concurrent)
   // place entry order
   let returnFromEntry
   if (concurrent !== true) {
