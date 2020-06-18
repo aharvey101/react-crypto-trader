@@ -49,10 +49,11 @@ managePosition.position = async (order, concurrent) => {
   console.log('concurrent is: ', concurrent)
   // place entry order
   let returnFromEntry
-  if (concurrent !== true) {
+  if (concurrent === false) {
     returnFromEntry = await entryOrder(order, isShort)
-    return concurrent === true
+    console.log(returnFromEntry)
   }
+  concurrent === true
 
   while (concurrent === true) {
     // Start tracking pair price
