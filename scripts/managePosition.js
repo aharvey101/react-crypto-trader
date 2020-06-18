@@ -76,7 +76,7 @@ managePosition.position = async (order) => {
 
     let dbPosition
     stopPlaced = false
-    // if position has been entered, place stop ,get entry Order information and post to database
+    // if position has been entered, place stop, get entry Order information and post to database
     if (positionEntered !== true && stopPlaced == false) {
       if (
         (isShort && pairPrice < order.entry) ||
