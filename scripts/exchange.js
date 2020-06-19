@@ -114,16 +114,16 @@ const exchange = {
       path: '/markets'
     })
     function filter(response) {
-      let filtered = response.result.forEach(pairObject => {
-        return pairObject.filter(pairName => {
-          return pairName.name
-        })
+      let perps = response.result.filter(pairObject => {
+        if (pairObject.name.includes('-PERP')) {
+          return true
+        }
       })
-      console.log(filtered);
-      return filtered
+
+      return perps
     }
 
-    return filtered(response)
+    return filter(response)
   }
 }
 

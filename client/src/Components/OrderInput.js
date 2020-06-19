@@ -13,11 +13,11 @@ class OrderInput extends Component {
       portfolioSize: 10000,
       portfolioRisk: 0.001,
       orderDate: '',
+      tf1: '',
+      tf2: '',
+      tf3: '',
       response: [],
-      pairs: [
-        { name: 'ETH-PERP', id: 1 },
-        { name: 'ADA-PERP', id: 2 },
-        { name: 'BTC-PERP', id: 3 },
+      pairs: [{ name: 'BTC-PERP', id: 1 }
       ],
     }
 
@@ -25,6 +25,7 @@ class OrderInput extends Component {
     this.submitForm = this.submitForm.bind(this)
     this.updateBalances = this.updateBalances.bind(this)
     this.exitPosition = this.exitPosition.bind(this)
+
   }
 
   componentDidMount() {
@@ -38,11 +39,15 @@ class OrderInput extends Component {
     // get pairs
     axios.get(route)
       .then(response => {
+        //filter out non essential data
+        let pairs = response.data.map((pair, index) => {
+          return { name: pair.name, id: index }
+        })
         //update state with response
+        this.setState({ ...this.state, pairs: pairs })
+        console.log(this.state);
       })
       .catch(error => console.log(error))
-
-
   }
 
   updateBalances(e) {
@@ -78,9 +83,10 @@ class OrderInput extends Component {
     console.log(this.state)
   }
   updatePair(e) {
+    e.preventDefault()
     const { name, value } = e.target
     this.setState({
-      [name]: `${value}`.toUpperCase(),
+      [name]: value,
     })
     console.log(this.state)
   }
@@ -91,6 +97,10 @@ class OrderInput extends Component {
       positionSize: this.state.positionSize,
       entry: this.state.entry,
       stop: this.state.stop,
+      orderDate: this.state.orderDate,
+      tf1: this.state.tf1,
+      tf2: this.state.tf2,
+      tf3: this.state.tf3,
     }
     console.log(order)
     const route =
@@ -99,7 +109,7 @@ class OrderInput extends Component {
       .post(route, order)
       .then((res) => {
         console.log(res.data)
-        this.setState({ response: res.data })
+        this.setState({ ...this.state, response: res.data })
       })
       .catch((err) => console.log(err))
   }
@@ -147,12 +157,26 @@ class OrderInput extends Component {
             {pairs}
           </select>
           <label className="input-label">Timeframe</label>
-          <input
+          <select
             name="timeframe"
             placeholder="Timeframe"
             className="input-field"
             onChange={this.updatePair}
-          ></input>
+          >
+            <option value="60">1m</option>
+            <option value="300">5m</option>
+            <option value="600">10m</option>
+            <option value="900">15m</option>
+            <option value="1800">30m</option>
+            <option value="3600">1h</option>
+            <option value="7200">2h</option>
+            <option value="14400">4h</option>
+            <option value="28800">8h</option>
+            <option value="43200">12h</option>
+            <option value="57600">16h</option>
+            <option value="86400">1d</option>
+            <option value="172800">2d</option>
+          </select>
           <label className="input-label">Risk</label>
           <select
             name="portfolioRisk"
@@ -184,6 +208,30 @@ class OrderInput extends Component {
             className="input-field"
             onChange={this.updateBalances}
           ></input>
+          <label className="input-label">Entry Timeframe</label>
+          <input
+            type="text"
+            name="tf1"
+            placeholder="Entry Timeframe"
+            className="input-field"
+            onChange={this.updatePair}>
+          </input>
+          <label className="input-label">Second Timeframe</label>
+          <input
+            type="text"
+            name="tf2"
+            placeholder="Second Timeframe"
+            className="input-field"
+            onChange={this.updatePair}>
+          </input>
+          <label className="input-field">Third Timeframe</label>
+          <input
+            type="text"
+            name="tf3"
+            placeholder="Third Timeframe"
+            className="input-field"
+            onChange={this.updatePair}>
+          </input>
           <button className="submit-button">Submit</button>
           <label>Order:</label>
           <p>Pair: {this.state.pair}</p>

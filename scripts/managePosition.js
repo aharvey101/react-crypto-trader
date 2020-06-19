@@ -18,8 +18,7 @@ managePosition.start = async () => {
   })
 }
 managePosition.inputNewPosition = (order) => {
-  //TODO
-  //- [x] Error handle, need to delete 'current pos' if it already exists on pair
+
   // delete all 'current pos' on that pair
   databaseManager.deleteCurrentPos(order)
   console.log('thing deleted')

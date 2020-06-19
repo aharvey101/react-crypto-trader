@@ -4,6 +4,7 @@ const CurrentPos = require('../Models/currentPositions')
 const databaseManager = {}
 
 databaseManager.currentPositions = async (order) => {
+  console.log(order);
   const newCurrentPostion = order
   const dbResponse = await CurrentPos.create(newCurrentPostion, function (
     err,
@@ -26,6 +27,9 @@ databaseManager.createPosition = async (order, position, entryOrder) => {
     entry: order.entry,
     stop: order.stop,
     timeframe: order.timeframe,
+    tf1: order.tf1,
+    tf2: order.tf2,
+    tf3: order.tf3,
     date: new Date(),
     entryOrderId: entryOrder.result.id,
     averageFillPrice: position[0].recentAverageOpenPrice,
