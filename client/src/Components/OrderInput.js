@@ -14,6 +14,11 @@ class OrderInput extends Component {
       portfolioRisk: 0.001,
       orderDate: '',
       response: [],
+      pairs: [
+        { name: 'ETH-PERP', id: 1 },
+        { name: 'ADA-PERP', id: 2 },
+        { name: 'BTC-PERP', id: 3 },
+      ],
     }
 
     this.updatePair = this.updatePair.bind(this)
@@ -22,11 +27,26 @@ class OrderInput extends Component {
     this.exitPosition = this.exitPosition.bind(this)
   }
 
+  componentDidMount() {
+    // Update pairs in state
+    // set Route
+    const route =
+      process.env.NODE_ENV === 'production'
+        ? '/getPairs'
+        : `${local}getPairs`
+
+    // get pairs
+    axios.get(route)
+      .then(response => {
+        //update state with response
+      })
+      .catch(error => console.log(error))
+
+
+  }
+
   updateBalances(e) {
-    const { name, value } = e.target
-    this.setState({
-      [name]: parseFloat(value),
-    })
+
     const route =
       process.env.NODE_ENV === 'production'
         ? '/getBalances'
@@ -51,11 +71,14 @@ class OrderInput extends Component {
         console.log(this.state)
       })
       .catch((err) => console.log(err))
+    const { name, value } = e.target
+    this.setState({
+      [name]: parseFloat(value),
+    })
     console.log(this.state)
   }
   updatePair(e) {
     const { name, value } = e.target
-
     this.setState({
       [name]: `${value}`.toUpperCase(),
     })
@@ -100,6 +123,10 @@ class OrderInput extends Component {
   }
 
   render() {
+    const pairs = this.state.pairs.map((item) => {
+      return <option key={item.id} value={item.name}>
+        {item.name}</option>
+    })
     return (
       <div className="order-component">
         <h1>Order Input</h1>
@@ -111,12 +138,14 @@ class OrderInput extends Component {
           className="orderInputForm"
         >
           <label className="input-label">Pair</label>
-          <input
+          <select
             name="pair"
             placeholder="Pair"
             className="input-field"
             onChange={this.updatePair}
-          ></input>
+          >
+            {pairs}
+          </select>
           <label className="input-label">Timeframe</label>
           <input
             name="timeframe"
@@ -125,12 +154,18 @@ class OrderInput extends Component {
             onChange={this.updatePair}
           ></input>
           <label className="input-label">Risk</label>
-          <input
+          <select
             name="portfolioRisk"
             placeholder="0.01"
             className="input-field"
             onChange={this.updateBalances}
-          ></input>
+            type="select"
+          >
+            <option value="0.01">1%</option>
+            <option value="0.015">1.5%</option>
+            <option value="0.02">2%</option>
+            <option value="0.001">0.1%</option>
+          </select>
           <label className="input-label">Entry</label>
           <input
             type="number"

@@ -28,12 +28,14 @@ mongoose
 const getBalances = require('./routes/getBalances')
 const position = require('./routes/enterPosition')
 const exitPosition = require('./routes/exitPosition')
+const getPairs = require('./routes/getPairs')
 
 //Use Routes
 
 app.use('/position', position)
 app.use('/getBalances', getBalances)
 app.use('/exitPosition', exitPosition)
+app.use('/getPairs', getPairs)
 
 // if in production
 if (process.env.NODE_ENV === 'production') {

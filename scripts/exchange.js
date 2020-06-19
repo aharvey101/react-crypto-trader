@@ -107,6 +107,24 @@ const exchange = {
     })
     return response
   },
+  getPairs: async () => {
+    console.log('getting Pairs');
+    const response = await ftx.request({
+      method: 'GET',
+      path: '/markets'
+    })
+    function filter(response) {
+      let filtered = response.result.forEach(pairObject => {
+        return pairObject.filter(pairName => {
+          return pairName.name
+        })
+      })
+      console.log(filtered);
+      return filtered
+    }
+
+    return filtered(response)
+  }
 }
 
 module.exports = exchange
