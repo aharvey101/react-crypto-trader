@@ -83,7 +83,7 @@ const exchange = {
     console.log('the position is', newRes)
     return newRes
   },
-  getStopInfo: async (stopOrder, pair) => {
+  getStopInfo: async (pair) => {
     const order = await ftx.request({
       method: 'GET',
       path: `/conditional_orders/history?market=${pair.pair}`,

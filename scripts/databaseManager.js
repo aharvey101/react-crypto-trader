@@ -4,7 +4,7 @@ const CurrentPos = require('../Models/currentPositions')
 const databaseManager = {}
 
 databaseManager.currentPositions = async (order) => {
-  console.log(order);
+  console.log(`the order before submitting to current positions is `, order);
   const newCurrentPostion = order
   const dbResponse = await CurrentPos.create(newCurrentPostion, function (
     err,
