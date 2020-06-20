@@ -21,11 +21,17 @@ managePosition.inputNewPosition = (order) => {
 
   // delete all 'current pos' on that pair
   databaseManager.deleteCurrentPos(order)
-  console.log('thing deleted')
-  // update database Positions
-  setTimeout(() => {
-    databaseManager.currentPositions(order)
-  }, 2000, order)
+    .then((res) => {
+      console.log(res);
+      console.log('previous pair deleted from database')
+    })
+    .then(() => {
+      // update database Positions
+      databaseManager.currentPositions(order)
+    })
+    .catch(err => {
+      console.log(err);
+    })
 
   // start managing new position
   managePosition.position(order, false)
@@ -48,7 +54,7 @@ managePosition.position = async (order, concurrent) => {
   let returnFromEntry
   if (concurrent === false) {
     returnFromEntry = await entryOrder(order, isShort)
-    console.log(returnFromEntry)
+    console.log(returnFromEntry.success)
   }
   let go = true
 
