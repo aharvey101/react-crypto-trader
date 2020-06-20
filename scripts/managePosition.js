@@ -95,8 +95,8 @@ managePosition.position = async (order, concurrent) => {
 
         // find db current Position and delete:
         // lookup all positions, filter by pair, delete
-
         databaseManager.deleteCurrentPos(order)
+        return
       }
     }
 
