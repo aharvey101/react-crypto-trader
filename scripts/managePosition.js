@@ -20,7 +20,7 @@ managePosition.start = async () => {
 managePosition.inputNewPosition = (order) => {
 
   // delete all 'current pos' on that pair
-  databaseManager.deleteCurrentPos(order)
+  // databaseManager.deleteCurrentPos(order)
   console.log('thing deleted')
   // update database Positions
   databaseManager.currentPositions(order)
