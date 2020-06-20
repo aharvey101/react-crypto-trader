@@ -107,6 +107,7 @@ managePosition.position = async (order, concurrent) => {
           // find db current Position and delete:
           // lookup all positions, filter by pair, delete
           databaseManager.deleteCurrentPos(order)
+          go = false
           return
         }
       }
@@ -156,6 +157,7 @@ managePosition.position = async (order, concurrent) => {
         if (stopOrderInfo.averageFillPrice != null) {
           databaseManager.updatePosition(dbPosition, stopOrderInfo)
           // STOPS HERE
+          go = false
           return
         }
       }
