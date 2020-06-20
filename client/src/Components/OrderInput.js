@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import axios from 'axios'
-const local = 'http://localhost:5000/'
+const local = 'http://localhost:3001/'
 
 class OrderInput extends Component {
   constructor() {
@@ -198,6 +198,7 @@ class OrderInput extends Component {
             placeholder="Entry"
             className="input-field"
             onChange={this.updateBalances}
+            required
           ></input>
           <label className="input-label">Stop</label>
           <input
@@ -207,6 +208,7 @@ class OrderInput extends Component {
             placeholder="Stop"
             className="input-field"
             onChange={this.updateBalances}
+            required
           ></input>
           <label className="input-label">Entry Timeframe</label>
           <input

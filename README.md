@@ -1,5 +1,9 @@
 ### Trading App React Testing
 
+# Known Errors:
+
+- [] 
+
 # SCOPE OF APP:
 
 The itnention of this app is to place and manage positions, without the main strategy but with the order management rules
