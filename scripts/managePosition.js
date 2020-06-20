@@ -27,7 +27,7 @@ managePosition.inputNewPosition = (order) => {
     })
     .then(() => {
       // update database Positions
-      databaseManager.currentPositions(order)
+      // databaseManager.currentPositions(order)
     })
     .catch(err => {
       console.log(err);

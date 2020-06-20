@@ -18,12 +18,12 @@ databaseManager.currentPositions = async (order) => {
   })
   return dbResponse
 }
-
-databaseManager.updateCurrentPos = async function (currentPositions, entryOrder) {
-  console.log(currentPositions);
-  // process entry Order information
-  const { }
-}
+// Updates current positions with entry order information
+// databaseManager.updateCurrentPos = async function (currentPositions, entryOrder) {
+//   console.log(currentPositions);
+//   // process entry Order information
+//   const { }
+// }
 
 databaseManager.createPosition = async (order, position, entryOrder) => {
   //create position
