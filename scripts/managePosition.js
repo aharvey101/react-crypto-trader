@@ -27,7 +27,7 @@ managePosition.inputNewPosition = (order) => {
     })
     .then(() => {
       // update database Positions
-      // databaseManager.currentPositions(order)
+      databaseManager.currentPositions(order)
     })
     .catch(err => {
       console.log(err);
@@ -72,7 +72,7 @@ managePosition.position = async (order, concurrent) => {
     while (go) {
       // Start tracking pair price
       function getPairsPrices(order) {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
           setTimeout(
             async () => {
               return resolve(await pairWatch(order))
@@ -84,9 +84,9 @@ managePosition.position = async (order, concurrent) => {
       }
       //Get price
       let pairPrice = await getPairsPrices(order)
-
       console.log(pairPrice)
-      let positionEntered = false
+
+      let positionEntered
       // logic for checking to see if stop was breached
       if (positionEntered !== true) {
         if (
@@ -107,15 +107,16 @@ managePosition.position = async (order, concurrent) => {
           // find db current Position and delete:
           // lookup all positions, filter by pair, delete
           databaseManager.deleteCurrentPos(order)
+          // STOPS HERE
           go = false
           return
         }
       }
 
-      let dbPosition
-      stopPlaced = false
+      let dbPosition,
+        stopPlaced
       // if position has been entered, place stop, get entry Order information and post to database
-      if (positionEntered !== true && stopPlaced == false) {
+      if (positionEntered !== true && stopPlaced !== true) {
         if (
           (isShort && pairPrice < order.entry) ||
           (!isShort && pairPrice > order.entry)
@@ -138,7 +139,7 @@ managePosition.position = async (order, concurrent) => {
               dbPosition = await databaseManager.createPosition(
                 order,
                 positionInfo,
-                returnFromEntry
+                entryOrder
               )
             })
             .catch((err) => console.log(err))
@@ -151,9 +152,9 @@ managePosition.position = async (order, concurrent) => {
       // Check to see if stop order was exected
       // If so, update position
 
-      if (positionEntered != false) {
+      if (positionEntered === true) {
         // Get stop order Info
-        stopOrderInfo = await getStopInfo(order)
+        const stopOrderInfo = await getStopInfo(order)
         if (stopOrderInfo.averageFillPrice != null) {
           databaseManager.updatePosition(dbPosition, stopOrderInfo)
           // STOPS HERE
@@ -163,6 +164,10 @@ managePosition.position = async (order, concurrent) => {
       }
     }
   })
+  if (!go) {
+    console.log('Position function ended');
+    return
+  }
 }
 
 module.exports = managePosition
