@@ -17,86 +17,87 @@ managePosition.start = async () => {
     managePosition.position(position, true)
   })
 }
-managePosition.inputNewPosition = (order) => {
+managePosition.inputNewPosition = (draftPosition) => {
 
   // delete all 'current pos' on that pair
-  databaseManager.deleteCurrentPos(order)
+  databaseManager.deleteCurrentPos(draftPosition)
     .then((res) => {
       console.log(res);
       console.log('previous pair deleted from database')
     })
     .then(() => {
       // update database Positions
-      databaseManager.currentPositions(order)
+      databaseManager.currentPositions(draftPosition)
+    })
+    .then(() => {
+      // start managing new position
+      managePosition.position(draftPosition, false)
     })
     .catch(err => {
       console.log(err);
     })
 
-  // start managing new position
-  managePosition.position(order, false)
 }
 //- [] Currently wont work as there is no id in the input of this function. need to fix on the front end
 managePosition.exitPositon = async (position) => {
   const stopOrderInfo = await exitPosition(position)
   // update database
-  databaseManager.updatePosition(position, stopOrderInfo)
+  // databaseManager.updatePosition(position, stopOrderInfo)
   return stopOrderInfo
 }
 
-managePosition.position = async (order, concurrent) => {
+managePosition.position = async (draftPosition, concurrent) => {
   //logic:
 
-  let isShort = order.entry < order.stop
+  let isShort = draftPosition.entry < draftPosition.stop
   console.log(`isShort is`, isShort)
   console.log('concurrent is: ', concurrent)
   // place entry order
-  async function checkEntryDone(order) {
+  async function checkEntryDone(draftPosition) {
     if (concurrent === false) {
-      const returnFromEntry = await entryOrder(order, isShort)
-        .then((res) => {
-          // update current Postitions collection with entryOrder
-          console.log('res is:', res);
-        })
+
+      const returnFromEntry = await entryOrder(draftPosition, isShort)
         .catch(err => {
           console.log(err)
           return
         });
-      return returnFromEntry
-    }
+      const currentPos = await databaseManager.updateCurrentPos(draftPosition, true)
+      console.log('currentPos is ', currentPos);
+      return (returnFromEntry, currentPos)
+    } else { return }
   }
 
 
-  checkEntryDone(order).then(async (entryOrder) => {
+  checkEntryDone(draftPosition).then(async (entryOrder, currentPos) => {
     let go = true
     while (go) {
       // Start tracking pair price
-      function getPairsPrices(order) {
+      function getPairsPrices(draftPosition) {
         return new Promise((resolve) => {
           setTimeout(
             async () => {
-              return resolve(await pairWatch(order))
+              return resolve(await pairWatch(draftPosition))
             },
             100,
-            order
+            draftPosition
           )
         })
       }
       //Get price
-      let pairPrice = await getPairsPrices(order)
+      let pairPrice = await getPairsPrices(draftPosition)
       console.log(pairPrice)
 
       let positionEntered
       // logic for checking to see if stop was breached
       if (positionEntered !== true) {
         if (
-          (isShort && pairPrice > order.stop) ||
-          (!isShort && pairPrice < order.stop)
+          (isShort && pairPrice > draftPosition.stop) ||
+          (!isShort && pairPrice < draftPosition.stop)
         ) {
           //cancel all orders on pair
           //TODO: Error handle if orders aren't cancelled
           console.log('cancelling orders on pair')
-          cancelOrdersOnpair(order)
+          cancelOrdersOnpair(draftPosition)
             .then((res) => {
               console.log(res)
             })
@@ -106,7 +107,7 @@ managePosition.position = async (order, concurrent) => {
 
           // find db current Position and delete:
           // lookup all positions, filter by pair, delete
-          databaseManager.deleteCurrentPos(order)
+          databaseManager.deleteCurrentPos(draftPosition)
           // STOPS HERE
           go = false
           return
@@ -116,35 +117,42 @@ managePosition.position = async (order, concurrent) => {
       let dbPosition,
         stopPlaced
       // if position has been entered, place stop, get entry Order information and post to database
-      if (positionEntered !== true && stopPlaced !== true) {
+      if (positionEntered !== true && stopPlaced !== true || stopPlaced !== true && currentPos.positionEntered != true) {
         if (
-          (isShort && pairPrice < order.entry) ||
-          (!isShort && pairPrice > order.entry)
+          (isShort && pairPrice < draftPosition.entry) ||
+          (!isShort && pairPrice > draftPosition.entry)
         ) {
           console.log('placing stop')
           // place stop
-          stopOrder(order)
+          stopOrder(draftPosition)
             .then(async (res) => {
               //handle error, 404: trigger price too high
               if ((res.success = false)) {
                 console.log('Stop order was not placed', res)
-                exitPosition(order)
+                exitPosition(draftPosition)
                 return
               }
-              console.log(res)
+              console.log('stopOrder res is ', res)
               //get Entry Order Information
-              const positionInfo = await getPositionInfo(order)
+              const positionInfo = await getPositionInfo(draftPosition)
+                .then(async (position) => {
+                  //database Entry
+                  dbPosition = await databaseManager.createPosition(
+                    draftPosition,
+                    position,
+                    entryOrder
+                  )
+                })
               console.log('the position info is', positionInfo)
-              //database Entry
-              dbPosition = await databaseManager.createPosition(
-                order,
-                positionInfo,
-                entryOrder
-              )
+
             })
-            .catch((err) => console.log(err))
-          positionEntered = true
-          stopPlaced = true
+            .catch((err) => {
+              // console.log(err)
+              return
+            })
+          positionEntered === true
+          stopPlaced === true
+          console.log('stop placed and position entered is ', stopPlaced, positionEntered);
         }
       }
 
@@ -154,7 +162,7 @@ managePosition.position = async (order, concurrent) => {
 
       if (positionEntered === true) {
         // Get stop order Info
-        const stopOrderInfo = await getStopInfo(order)
+        const stopOrderInfo = await getStopInfo(draftPosition)
         if (stopOrderInfo.averageFillPrice != null) {
           databaseManager.updatePosition(dbPosition, stopOrderInfo)
           // STOPS HERE
@@ -163,11 +171,11 @@ managePosition.position = async (order, concurrent) => {
         }
       }
     }
+    if (!go) {
+      console.log('Position function ended');
+      return
+    }
   })
-  if (!go) {
-    console.log('Position function ended');
-    return
-  }
 }
 
 module.exports = managePosition

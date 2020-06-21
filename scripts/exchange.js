@@ -8,9 +8,6 @@ const ftx = new ftxrest({
 const exchange = {
   entryOrder: async function (order, isShort) {
     const { pair, positionSize, entry: entryPrice, stop: stopPrice } = order
-
-    console.log(entryPrice + ' ' + stopPrice)
-
     const response = await ftx
       .request({
         method: 'POST',
@@ -42,10 +39,13 @@ const exchange = {
           side: isShort ? 'buy' : 'sell',
           price: stopPrice,
           size: positionSize,
-          triggerPrice: stopPrice,
+          triggerPrice: stopPrice + 1,
         },
       })
-      .catch((err) => console.log(err))
+      .catch((err) => {
+        // console.log(err), 
+        console.log('caught error in exchange');
+      })
     return response
   },
 

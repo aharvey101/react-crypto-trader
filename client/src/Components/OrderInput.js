@@ -238,7 +238,7 @@ class OrderInput extends Component {
           <label>Order:</label>
           <p>Pair: {this.state.pair}</p>
           {/* fix to display selected timeframe, not state */}
-          <p>Timeframe: {document.getElementById('timeframe').innerHTML()}</p>
+          <p>Timeframe: {document.getElementsByName('timeframe').values}</p>
           <p>Entry: {this.state.entry}</p>
           <p>Stop: {this.state.stop}</p>
           <p>Posision Size: {this.state.positionSize}</p>

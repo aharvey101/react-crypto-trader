@@ -18,6 +18,7 @@ mongoose
   .connect(process.env.MONGODB_URI || uri, {
     useUnifiedTopology: true,
     useNewUrlParser: true,
+    useFindAndModify: false,
   })
   .then((res) => {
     console.log('connected to remote DB')
