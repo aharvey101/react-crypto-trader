@@ -43,8 +43,8 @@ const exchange = {
         },
       })
       .catch((err) => {
-        // console.log(err), 
-        console.log('caught error in exchange');
+        console.log(err),
+          console.log('caught error in exchange');
       })
     return response
   },

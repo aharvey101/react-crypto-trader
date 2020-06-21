@@ -22,7 +22,6 @@ databaseManager.currentPositions = async (order) => {
 databaseManager.updateCurrentPos = async function (currentPosition, posEntered) {
   // process entry Order information
   const newCurrentPos = { ...currentPosition, positionEntered: posEntered }
-  console.log('newCurentPos is: ', newCurrentPos);
   const response = await CurrentPos.findOneAndUpdate(currentPosition.pair, newCurrentPos, function (err, newCurrentPos) {
     if (err) {
       console.log(err);
