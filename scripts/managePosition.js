@@ -36,12 +36,12 @@ managePosition.inputNewPosition = (order) => {
   // start managing new position
   managePosition.position(order, false)
 }
-
-managePosition.exitPositon = async (order) => {
-  const orderExited = await exitPosition(order)
+//- [] Currently wont work as there is no id in the input of this function. need to fix on the front end
+managePosition.exitPositon = async (position) => {
+  const stopOrderInfo = await exitPosition(position)
   // update database
-  databaseManager.updatePosition(order, orderExited)
-  return orderExited
+  databaseManager.updatePosition(position, stopOrderInfo)
+  return stopOrderInfo
 }
 
 managePosition.position = async (order, concurrent) => {
@@ -112,7 +112,7 @@ managePosition.position = async (order, concurrent) => {
           return
         }
       }
-
+      // -[] TEST THIS FUNCTION
       let dbPosition,
         stopPlaced
       // if position has been entered, place stop, get entry Order information and post to database

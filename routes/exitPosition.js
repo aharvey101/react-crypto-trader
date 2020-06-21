@@ -6,6 +6,7 @@ router.post('/', async (req, res) => {
   const response = await managePosition
     .exitPositon(order)
     .then((res) => {
+      // TEST
       if (res.success) {
         return console.log('Successfully exited position', res)
       }

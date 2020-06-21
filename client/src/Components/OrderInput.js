@@ -11,7 +11,7 @@ class OrderInput extends Component {
       stop: 0,
       positionSize: 0,
       portfolioSize: 10000,
-      portfolioRisk: 0.001,
+      portfolioRisk: 0.01,
       orderDate: '',
       tf1: '',
       tf2: '',
@@ -237,7 +237,8 @@ class OrderInput extends Component {
           <button className="submit-button">Submit</button>
           <label>Order:</label>
           <p>Pair: {this.state.pair}</p>
-          <p>Timeframe: {this.state.timeframe}</p>
+          {/* fix to display selected timeframe, not state */}
+          <p>Timeframe: {document.getElementById('timeframe').innerHTML()}</p>
           <p>Entry: {this.state.entry}</p>
           <p>Stop: {this.state.stop}</p>
           <p>Posision Size: {this.state.positionSize}</p>
