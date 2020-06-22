@@ -40,6 +40,7 @@ const exchange = {
           price: stopPrice,
           size: positionSize,
           triggerPrice: stopPrice + 1,
+          reduceOnly: true,
         },
       })
       .catch((err) => {
