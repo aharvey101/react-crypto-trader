@@ -96,7 +96,7 @@ managePosition.position = async (draftPosition) => {
     let dbPosition,
       stopPlaced
     // if position has been entered, place stop, get entry Order information and post to database
-    if (positionEntered !== true && stopPlaced !== true) {
+    if (stopPlaced !== true && positionEntered !== true) {
       if (
         (isShort && pairPrice < draftPosition.entry) ||
         (!isShort && pairPrice > draftPosition.entry)
@@ -130,7 +130,7 @@ managePosition.position = async (draftPosition) => {
             go = false
             return
           })
-        positionEntered === true
+        positionEntered = true
         stopPlaced = true
         console.log('stop placed and position entered is ', stopPlaced, positionEntered);
       }
@@ -143,7 +143,7 @@ managePosition.position = async (draftPosition) => {
     if (positionEntered === true) {
       // Get stop order Info
       const stopOrderInfo = await getStopInfo(draftPosition)
-      if (stopOrderInfo.averageFillPrice != null) {
+      if (stopOrderInfo.avgFillPrice != null) {
         databaseManager.updatePosition(dbPosition, stopOrderInfo)
         // STOPS HERE
         go = false
