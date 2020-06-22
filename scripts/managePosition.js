@@ -16,6 +16,9 @@ managePosition.inputNewPosition = (draftPosition) => {
   // delete all 'current pos' on that pair
   databaseManager.deleteCurrentPos(draftPosition)
     .then(() => {
+      databaseManager.currentPositions(draftPosition)
+    })
+    .then(() => {
       console.log('previous pair deleted from database')
       // start managing new position
       managePosition.position(draftPosition, false)
@@ -48,6 +51,7 @@ managePosition.position = async (draftPosition) => {
       go = false
       return
     });
+  // Updates current Position with entry being true
   const currentPos = await databaseManager.updateCurrentPos(draftPosition, true)
   while (go) {
     // Start tracking pair price
