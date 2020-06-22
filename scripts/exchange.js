@@ -124,7 +124,8 @@ const exchange = {
     }
 
     return filter(response)
-  }
+  },
+  getEntryInfo: async () => { }
 }
 
 module.exports = exchange

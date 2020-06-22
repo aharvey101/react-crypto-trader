@@ -5,7 +5,7 @@ const port = process.env.PORT || 3001
 const mongoose = require('mongoose')
 const path = require('path')
 const cors = require('cors')
-const managePosition = require('./scripts/managePosition')
+const concurrentPositons = require('./scripts/concurrentPositions')
 //Middleware?
 app.use(cors())
 app.use(express.json())
@@ -48,8 +48,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 // start existing positions
-
-managePosition.start()
+concurrentPositons.start()
 
 app.listen(port, () =>
   console.log(`Example app listening at http://localhost:${port}`)
