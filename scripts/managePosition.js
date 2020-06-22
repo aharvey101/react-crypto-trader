@@ -38,9 +38,7 @@ managePosition.position = async (draftPosition) => {
 
   let isShort = draftPosition.entry < draftPosition.stop
   console.log(`isShort is`, isShort)
-  console.log('concurrent is: ', concurrent)
   // place entry order
-
   const returnFromEntry = await entryOrder(draftPosition, isShort)
     .catch(err => {
       console.log(err)
@@ -102,8 +100,10 @@ managePosition.position = async (draftPosition) => {
         (!isShort && pairPrice > draftPosition.entry)
       ) {
         console.log('placing stop')
-        // place stop
-        stopOrder(draftPosition)
+        // place stop        
+        positionEntered = true
+        stopPlaced = true
+        stopOrder(draftPosition, isShort)
           .then(async (res) => {
             //handle error, 404: trigger price too high
             if ((res.success = false)) {
@@ -130,8 +130,7 @@ managePosition.position = async (draftPosition) => {
             go = false
             return
           })
-        positionEntered = true
-        stopPlaced = true
+
         console.log('stop placed and position entered is ', stopPlaced, positionEntered);
       }
     }

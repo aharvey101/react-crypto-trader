@@ -6,6 +6,7 @@ var positionSchema = new mongoose.Schema({
   stop: Number,
   positionSize: Number,
   positionEntered: Boolean,
+  stopPlaced: Boolean,
 })
 
 module.exports = mongoose.model('CurrentPos', positionSchema)

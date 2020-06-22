@@ -26,7 +26,7 @@ const exchange = {
   },
   stopOrder: async function (order, isShort) {
     const { pair, positionSize, stop: stopPrice } = order
-    console.log(isShort)
+    console.log('isShori in stopOrder function is:', isShort)
     console.log(order)
 
     const response = await ftx
@@ -125,7 +125,9 @@ const exchange = {
 
     return filter(response)
   },
-  getEntryInfo: async () => { }
+  getEntryInfo: async () => {
+
+  }
 }
 
 module.exports = exchange

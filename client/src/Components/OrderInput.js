@@ -185,9 +185,9 @@ class OrderInput extends Component {
             onChange={this.updateBalances}
             type="select"
           >
-            <option value="0.01">1%</option>
-            <option value="0.015">1.5%</option>
-            <option value="0.02">2%</option>
+            {/* <option value="0.01">1%</option> */}
+            {/* <option value="0.015">1.5%</option> */}
+            {/* <option value="0.02">2%</option> */}
             <option value="0.001">0.1%</option>
           </select>
           <label className="input-label">Entry</label>
