@@ -2,7 +2,7 @@
 
 # Known Errors:
 
-- [] 
+- [] Position.create() doesn't return a value. This is needed to update the position when the stop is triggered.
 
 # SCOPE OF APP:
 

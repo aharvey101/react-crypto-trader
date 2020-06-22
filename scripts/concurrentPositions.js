@@ -13,9 +13,13 @@ concurrentPositons.start = async () => {
 }
 
 concurrentPositons.position = async (draftPosition) => {
+  // While loop variables:
+  let dbPosition
+  let stopPlaced = false
+  let positionEntered = false
   // define isShort
   let isShort = draftPosition.entry < draftPosition.stop
-
+  console.log('position is short?', isShort);
   // Get entry order Information
   const entryOrderInfo = await exchange.getEntryInfo()
   // start loop
@@ -37,7 +41,6 @@ concurrentPositons.position = async (draftPosition) => {
     let pairPrice = await getPairsPrices(draftPosition)
     console.log(pairPrice)
 
-    let positionEntered = false
     // logic for checking to see if stop was breached
     if (positionEntered !== true) {
       if (
@@ -64,8 +67,7 @@ concurrentPositons.position = async (draftPosition) => {
       }
     }
     // -[] TEST THIS FUNCTION
-    let dbPosition
-    let stopPlaced = false
+
     // if position has been entered, place stop, get entry Order information and post to database
     if (stopPlaced = false && positionEntered != true) {
       if (
@@ -74,7 +76,6 @@ concurrentPositons.position = async (draftPosition) => {
       ) {
         console.log('placing stop')
         // place stop
-        console.log('inside stop function', stopPlaced, positionEntered);
         positionEntered = true
         stopPlaced = true
         const stopInfo = exchange.stopOrder(draftPosition)

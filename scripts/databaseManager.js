@@ -55,8 +55,11 @@ databaseManager.createPosition = async (order, position, entryOrder) => {
       console.log(
         `the newly created position is: ${JSON.stringify(newlyCreated)}`
       )
+      return newlyCreated
     }
+    return newlyCreated
   })
+  console.log('response before returning in createPosition is', response);
   return response
 }
 
@@ -65,8 +68,8 @@ databaseManager.updatePosition = async (
   stopOrderInfo
 ) => {
   // process new position info
-  const { averageFillPrice } = stopOrderInfo
-  const newDBPosition = { ...existingPositionInfo, averageFillPrice }
+  const { avgFillPrice } = stopOrderInfo
+  const newDBPosition = { ...existingPositionInfo, avgFillPrice }
   console.log(newDBPosition)
   // use incoming positionInfo to call position
   const dbPos = await Position.findByIdAndUpdate(

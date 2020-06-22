@@ -22,7 +22,7 @@ const exchange = {
         },
       })
       .catch((err) => console.log(err))
-    return response
+    return await response
   },
   stopOrder: async function (order, isShort) {
     const { pair, positionSize, stop: stopPrice } = order
@@ -36,7 +36,7 @@ const exchange = {
         data: {
           market: pair,
           type: 'stop',
-          side: isShort ? 'sell' : 'buy',
+          side: isShort ? 'buy' : 'sell',
           price: stopPrice,
           size: positionSize,
           triggerPrice: stopPrice + 1,
@@ -47,7 +47,7 @@ const exchange = {
         console.log(err),
           console.log('caught error in exchange');
       })
-    return response
+    return await response
   },
 
   cancelOrdersOnpair: async function (order, price) {

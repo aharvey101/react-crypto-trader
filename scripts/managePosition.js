@@ -42,12 +42,17 @@ managePosition.position = async (draftPosition) => {
   let dbPosition,
     stopPlaced,
     positionEntered
+  let positionInfo
   let isShort = draftPosition.entry < draftPosition.stop
   console.log(`isShort is`, isShort)
   // place entry order
-  const returnFromEntry = await entryOrder(draftPosition, isShort)
+  let returnFromEntry
+  entryOrder(draftPosition, isShort)
+    .then((res) => {
+      returnFromEntry = res
+    })
     .catch(err => {
-      console.log(err)
+      console.log('tehre was an error', err)
       go = false
       return
     });
@@ -94,7 +99,7 @@ managePosition.position = async (draftPosition) => {
         return
       }
     }
-    // -[] TEST THIS FUNCTION
+    // -[x] TEST THIS FUNCTION
 
     // if position has been entered, place stop, get entry Order information and post to database
     if (stopPlaced !== true && positionEntered !== true) {
@@ -116,17 +121,30 @@ managePosition.position = async (draftPosition) => {
             }
             console.log('stopOrder res is ', res)
             //get Entry Order Information
-            const positionInfo = await getPositionInfo(draftPosition)
-              .then(async (position) => {
+            // - TODO -
+            // -[] Still broken 
+            const posInfo = await getPositionInfo(draftPosition)
+              .then(async (res) => {
+                positionInfo = res
+                console.log('getPositionInfo res is ', res);
+                console.log('position info after getPositonInfo return is', positionInfo);
                 //database Entry
+                // MAJOR PROBLEM HERE - dbPosition is undefined when used
+                // in the next function
                 dbPosition = await databaseManager.createPosition(
                   draftPosition,
-                  position,
+                  res,
                   returnFromEntry
                 )
-                console.log('dbPosition is', dbPosition);
+                  .then((res) => {
+                    // this returns undefined
+                    console.log('createNewPosition res is', res);
+                    dbPosition = res
+                    console.log('dbPosition after createPosition return is', dbPosition);
+                  })
               })
-            console.log('the position info is', positionInfo)
+              .catch((err) => console.log(err))
+            console.log('the position info is', posInfo)
 
           })
           .catch((err) => {
@@ -143,14 +161,21 @@ managePosition.position = async (draftPosition) => {
     // Check to see if stop order was exected
     // If so, update position
 
-    if (positionEntered === true) {
+    if (positionEntered = true && stopPlaced === true) {
       // Get stop order Info
+      console.log('getting Stop Info')
       const stopOrderInfo = await getStopInfo(draftPosition)
       if (stopOrderInfo.avgFillPrice != null) {
-        databaseManager.updatePosition(dbPosition, stopOrderInfo)
+        setTimeout(() => {
+          console.log('updating Position')
+          databaseManager.updatePosition(dbPosition, stopOrderInfo)
+
+        }, 5000)
         // STOPS HERE
         go = false
         return
+      } else {
+        console.log('stop not triggered yet')
       }
     }
   }
