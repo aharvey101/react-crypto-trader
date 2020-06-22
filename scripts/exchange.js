@@ -36,7 +36,7 @@ const exchange = {
         data: {
           market: pair,
           type: 'stop',
-          side: isShort ? 'buy' : 'sell',
+          side: isShort ? 'sell' : 'buy',
           price: stopPrice,
           size: positionSize,
           triggerPrice: stopPrice + 1,
