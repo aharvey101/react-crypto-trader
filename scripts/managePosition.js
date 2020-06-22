@@ -34,19 +34,21 @@ managePosition.exitPositon = async (position) => {
 }
 
 managePosition.position = async (draftPosition) => {
-  //logic:
-
+  //While loop variables:
+  let go = true
+  let dbPosition,
+    stopPlaced,
+    positionEntered
   let isShort = draftPosition.entry < draftPosition.stop
   console.log(`isShort is`, isShort)
   // place entry order
   const returnFromEntry = await entryOrder(draftPosition, isShort)
     .catch(err => {
       console.log(err)
+      go = false
       return
     });
   const currentPos = await databaseManager.updateCurrentPos(draftPosition, true)
-
-  let go = true
   while (go) {
     // Start tracking pair price
     function getPairsPrices(draftPosition) {
@@ -63,8 +65,6 @@ managePosition.position = async (draftPosition) => {
     //Get price
     let pairPrice = await getPairsPrices(draftPosition)
     console.log(pairPrice)
-
-    let positionEntered
     // logic for checking to see if stop was breached
     if (positionEntered !== true) {
       if (
@@ -91,8 +91,7 @@ managePosition.position = async (draftPosition) => {
       }
     }
     // -[] TEST THIS FUNCTION
-    let dbPosition,
-      stopPlaced
+
     // if position has been entered, place stop, get entry Order information and post to database
     if (stopPlaced !== true && positionEntered !== true) {
       if (
@@ -100,7 +99,7 @@ managePosition.position = async (draftPosition) => {
         (!isShort && pairPrice > draftPosition.entry)
       ) {
         console.log('placing stop')
-        // place stop        
+        // place stop
         positionEntered = true
         stopPlaced = true
         stopOrder(draftPosition, isShort)
@@ -121,6 +120,7 @@ managePosition.position = async (draftPosition) => {
                   position,
                   returnFromEntry
                 )
+                console.log('dbPosition is', dbPosition);
               })
             console.log('the position info is', positionInfo)
 

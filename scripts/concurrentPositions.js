@@ -6,6 +6,7 @@ const concurrentPositons = {}
 concurrentPositons.start = async () => {
   // looks up draftPositions, starts position
   const positions = await databaseManager.lookup()
+  console.log(positions);
   positions.forEach((position) => {
     concurrentPositons.position(position)
   })
@@ -36,7 +37,7 @@ concurrentPositons.position = async (draftPosition) => {
     let pairPrice = await getPairsPrices(draftPosition)
     console.log(pairPrice)
 
-    let positionEntered
+    let positionEntered = false
     // logic for checking to see if stop was breached
     if (positionEntered !== true) {
       if (
@@ -63,16 +64,17 @@ concurrentPositons.position = async (draftPosition) => {
       }
     }
     // -[] TEST THIS FUNCTION
-    let dbPosition,
-      stopPlaced
+    let dbPosition
+    let stopPlaced = false
     // if position has been entered, place stop, get entry Order information and post to database
-    if (stopPlaced !== true && positionEntered !== true) {
+    if (stopPlaced = false && positionEntered != true) {
       if (
         (isShort && pairPrice < draftPosition.entry) ||
         (!isShort && pairPrice > draftPosition.entry)
       ) {
         console.log('placing stop')
-        // place stop        
+        // place stop
+        console.log('inside stop function', stopPlaced, positionEntered);
         positionEntered = true
         stopPlaced = true
         const stopInfo = exchange.stopOrder(draftPosition)

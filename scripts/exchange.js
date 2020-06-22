@@ -74,7 +74,7 @@ const exchange = {
 
     //TODO:
     //- [] Error handle so that if the position does not exist, it doesn't go on but breaks
-    const newRes = response.result.filter((position) => {
+    const newRes = await response.result.filter((position) => {
       if (position.size !== 0 && position.future === order.pair) {
         return true
       } else {
