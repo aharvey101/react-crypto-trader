@@ -115,63 +115,47 @@ managePosition.position = async (draftPosition) => {
     }
     // -[x] TEST THIS FUNCTION
 
-    // if position has been entered, place stop, get entry Order information and post to database
+    // Ask server for position info. if position info array is not empty,
+    // place stop and update database position
     if (stopPlaced !== true && positionEntered !== true) {
       if (
         (isShort && pairPrice < draftPosition.entry) ||
         (!isShort && pairPrice > draftPosition.entry)
       ) {
-        console.log('placing stop')
-        // place stop
-        positionEntered = true
-        stopPlaced = true
-        stopOrder(draftPosition, isShort)
-          .then(async (res) => {
-            //handle error, 404: trigger price too high
-            if ((res.success = false)) {
-              console.log('Stop order was not placed', res)
-              exitPosition(draftPosition)
-              return
-            } else {
+        const posInfo = await getPositionInfo(draftPosition)
+        if (posInfo != []) {
+          // place stop
+          positionEntered = true
+          stopPlaced = true
+          stopOrder(draftPosition, isShort)
+            .then(async (res) => {
+              //handle error, 404: trigger price too high
+              if ((res.success = false)) {
+                console.log('Stop order was not placed', res)
+                exitPosition(draftPosition)
+                return
+              }
+              dbPosition = await databaseManager.createPosition(
+                draftPosition,
+                posInfo,
+                returnFromEntry
+              )
+              // =================================
+              // STOPS HERE
               go = false
               return
-            }
-          })
-          .catch((err) => {
-            console.log(err)
-            go = false
-            return
-          })
+              // =================================
+            })
+            .catch((err) => {
+              console.log(err)
+              go = false
+              return
+            })
+          console.log('stop placed and position entered is ', stopPlaced, positionEntered);
 
-        console.log('stop placed and position entered is ', stopPlaced, positionEntered);
+        }
       }
     }
-    // ===================================================
-    // if stop was placed, update database
-    // if (stopPlaced && positionEntered) {
-    // //get Entry Order Information
-    // // - TODO -
-    // // -[] Still broken 
-    // // getPositionInfo gets positions, however the position that we just entered, 
-    // // isn't updated yet on the exchage so it returns an empty array
-    // const posInfo = await getPositionInfo(draftPosition)
-    //   .then(async (res) => {
-    //     positionInfo = res
-    //     //database Entry
-    //     console.log('res from getPositionInfo is,', res);
-    //     console.log('the return from entry variable in the getPositionInfo is:', returnFromEntry);
-    //     dbPosition = await databaseManager.createPosition(
-    //       draftPosition,
-    //       res,
-    //       returnFromEntry
-    //     )
-    //   })
-    //   .catch((err) => console.log(err))
-    // console.log('the position info is', posInfo)
-    // console.log('positoinInfo variable is:', positionInfo);
-    // }
-    // ===================================================
-
     //If stop was executed, update position in db
     // Check to see if stop order was exected
     // If so, update position

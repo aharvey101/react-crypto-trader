@@ -64,8 +64,8 @@ databaseManager.createPosition = async (order, position, entryOrder) => {
     tf2: order.tf2,
     tf3: order.tf3,
     date: new Date(),
-    entryOrderId: entryOrder.result.id,
-    averageFillPrice: position[0].recentAverageOpenPrice,
+    entryOrderId: entryOrder,
+    averageFillPrice: position[0]
   }
 
   Position.create(newPosition, function (
