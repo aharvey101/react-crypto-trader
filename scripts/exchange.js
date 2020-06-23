@@ -152,6 +152,17 @@ const exchange = {
   },
   getEntryInfo: async () => {
 
+  },
+  getPositions: async () => {
+    const response = await ftx.request({
+      method: 'GET',
+      path: '/positions'
+    })
+    const filtered = response.result.filter(position => {
+      if (position.size > 0) return true
+    })
+
+    return filtered
   }
 }
 

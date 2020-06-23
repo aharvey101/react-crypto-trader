@@ -136,28 +136,6 @@ managePosition.position = async (draftPosition) => {
               go = false
               return
             }
-            // console.log('stopOrder success is ', res.success)
-            // //get Entry Order Information
-            // // - TODO -
-            // // -[] Still broken 
-            // // getPositionInfo gets positions, however the position that we just entered, 
-            // // isn't updated yet on the exchage so it returns an empty array
-            // const posInfo = await getPositionInfo(draftPosition)
-            //   .then(async (res) => {
-            //     positionInfo = res
-            //     //database Entry
-            //     console.log('res from getPositionInfo is,', res);
-            //     console.log('the return from entry variable in the getPositionInfo is:', returnFromEntry);
-            //     dbPosition = await databaseManager.createPosition(
-            //       draftPosition,
-            //       res,
-            //       returnFromEntry
-            //     )
-            //   })
-            //   .catch((err) => console.log(err))
-            // console.log('the position info is', posInfo)
-            // console.log('positoinInfo variable is:', positionInfo);
-
           })
           .catch((err) => {
             console.log(err)
@@ -168,6 +146,31 @@ managePosition.position = async (draftPosition) => {
         console.log('stop placed and position entered is ', stopPlaced, positionEntered);
       }
     }
+    // ===================================================
+    // if stop was placed, update database
+    // if (stopPlaced && positionEntered) {
+    // //get Entry Order Information
+    // // - TODO -
+    // // -[] Still broken 
+    // // getPositionInfo gets positions, however the position that we just entered, 
+    // // isn't updated yet on the exchage so it returns an empty array
+    // const posInfo = await getPositionInfo(draftPosition)
+    //   .then(async (res) => {
+    //     positionInfo = res
+    //     //database Entry
+    //     console.log('res from getPositionInfo is,', res);
+    //     console.log('the return from entry variable in the getPositionInfo is:', returnFromEntry);
+    //     dbPosition = await databaseManager.createPosition(
+    //       draftPosition,
+    //       res,
+    //       returnFromEntry
+    //     )
+    //   })
+    //   .catch((err) => console.log(err))
+    // console.log('the position info is', posInfo)
+    // console.log('positoinInfo variable is:', positionInfo);
+    // }
+    // ===================================================
 
     //If stop was executed, update position in db
     // Check to see if stop order was exected

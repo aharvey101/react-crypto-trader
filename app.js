@@ -30,6 +30,7 @@ const getBalances = require('./routes/getBalances')
 const position = require('./routes/enterPosition')
 const exitPosition = require('./routes/exitPosition')
 const getPairs = require('./routes/getPairs')
+const getPositions = require('./routes/getPositions')
 
 //Use Routes
 
@@ -37,6 +38,7 @@ app.use('/position', position)
 app.use('/getBalances', getBalances)
 app.use('/exitPosition', exitPosition)
 app.use('/getPairs', getPairs)
+app.use('/getPositions', getPositions)
 
 // if in production
 if (process.env.NODE_ENV === 'production') {
@@ -48,7 +50,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 // start existing positions
-// concurrentPositons.start()
+concurrentPositons.start()
 
 app.listen(port, () =>
   console.log(`Example app listening at http://localhost:${port}`)
