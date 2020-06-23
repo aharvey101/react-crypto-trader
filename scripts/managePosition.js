@@ -57,9 +57,10 @@ managePosition.position = async (draftPosition) => {
   await entryOrder(draftPosition, isShort)
     .then((res) => {
       returnFromEntry = res
-    })
-    .then((res) => {
-      if (res = false) {
+      console.log(res);
+      if (res.success === false) {
+        databaseManager.deleteCurrentPos(draftPosition)
+        console.log('entry order failed');
         go = false
         return
       }

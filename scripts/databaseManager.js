@@ -138,10 +138,8 @@ databaseManager.updatePosition = async (
 databaseManager.deleteCurrentPos = async (order) => {
   const dbCurrentPositions = await CurrentPos.find({})
   const filtered = dbCurrentPositions.filter((pos) => pos.pair === order.pair)
-  console.log('fitlered pairs is', filtered);
   filtered.forEach((position) => {
     CurrentPos.findByIdAndDelete(position.id, function (err, res) {
-      console.log(res)
     })
   })
 }
@@ -152,7 +150,6 @@ databaseManager.lookup = () => {
     if (err) {
       console.log(err)
     } else {
-      console.log(positions)
     }
   })
   return positions
