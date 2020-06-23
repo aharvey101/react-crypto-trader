@@ -15,8 +15,14 @@ managePosition.inputNewPosition = (draftPosition) => {
 
   // delete all 'current pos' on that pair
   databaseManager.deleteCurrentPos(draftPosition)
+    .then((res) => {
+      console.log('deleted', res);
+    })
     .then(() => {
       databaseManager.currentPositions(draftPosition)
+        .then((res) => {
+          console.log('draft position in db is ', res);
+        })
     })
     .then(() => {
       console.log('previous pair deleted from database')
@@ -46,16 +52,24 @@ managePosition.position = async (draftPosition) => {
   let isShort = draftPosition.entry < draftPosition.stop
   console.log(`isShort is`, isShort)
   // place entry order
+  // fix this if order doesn't go through: ie: trigger price to low
   let returnFromEntry
-  entryOrder(draftPosition, isShort)
+  await entryOrder(draftPosition, isShort)
     .then((res) => {
       returnFromEntry = res
+    })
+    .then((res) => {
+      if (res = false) {
+        go = false
+        return
+      }
     })
     .catch(err => {
       console.log('tehre was an error', err)
       go = false
       return
     });
+  console.log('return from entry is', returnFromEntry);
   // Updates current Position with entry being true
   const currentPos = await databaseManager.updateCurrentPos(draftPosition, true)
   while (go) {
@@ -118,33 +132,31 @@ managePosition.position = async (draftPosition) => {
               console.log('Stop order was not placed', res)
               exitPosition(draftPosition)
               return
+            } else {
+              go = false
+              return
             }
-            console.log('stopOrder res is ', res)
-            //get Entry Order Information
-            // - TODO -
-            // -[] Still broken 
-            const posInfo = await getPositionInfo(draftPosition)
-              .then(async (res) => {
-                positionInfo = res
-                console.log('getPositionInfo res is ', res);
-                console.log('position info after getPositonInfo return is', positionInfo);
-                //database Entry
-                // MAJOR PROBLEM HERE - dbPosition is undefined when used
-                // in the next function
-                dbPosition = await databaseManager.createPosition(
-                  draftPosition,
-                  res,
-                  returnFromEntry
-                )
-                  .then((res) => {
-                    // this returns undefined
-                    console.log('createNewPosition res is', res);
-                    dbPosition = res
-                    console.log('dbPosition after createPosition return is', dbPosition);
-                  })
-              })
-              .catch((err) => console.log(err))
-            console.log('the position info is', posInfo)
+            // console.log('stopOrder success is ', res.success)
+            // //get Entry Order Information
+            // // - TODO -
+            // // -[] Still broken 
+            // // getPositionInfo gets positions, however the position that we just entered, 
+            // // isn't updated yet on the exchage so it returns an empty array
+            // const posInfo = await getPositionInfo(draftPosition)
+            //   .then(async (res) => {
+            //     positionInfo = res
+            //     //database Entry
+            //     console.log('res from getPositionInfo is,', res);
+            //     console.log('the return from entry variable in the getPositionInfo is:', returnFromEntry);
+            //     dbPosition = await databaseManager.createPosition(
+            //       draftPosition,
+            //       res,
+            //       returnFromEntry
+            //     )
+            //   })
+            //   .catch((err) => console.log(err))
+            // console.log('the position info is', posInfo)
+            // console.log('positoinInfo variable is:', positionInfo);
 
           })
           .catch((err) => {
@@ -161,23 +173,23 @@ managePosition.position = async (draftPosition) => {
     // Check to see if stop order was exected
     // If so, update position
 
-    if (positionEntered = true && stopPlaced === true) {
-      // Get stop order Info
-      console.log('getting Stop Info')
-      const stopOrderInfo = await getStopInfo(draftPosition)
-      if (stopOrderInfo.avgFillPrice != null) {
-        setTimeout(() => {
-          console.log('updating Position')
-          databaseManager.updatePosition(dbPosition, stopOrderInfo)
+    // if (positionEntered = true && stopPlaced === true) {
+    //   // Get stop order Info
+    //   console.log('getting Stop Info')
+    //   const stopOrderInfo = await getStopInfo(draftPosition)
+    //   if (stopOrderInfo.avgFillPrice != null) {
+    //     setTimeout(() => {
+    //       console.log('updating Position')
+    //       databaseManager.updatePosition(dbPosition, stopOrderInfo)
 
-        }, 5000)
-        // STOPS HERE
-        go = false
-        return
-      } else {
-        console.log('stop not triggered yet')
-      }
-    }
+    //     }, 5000)
+    //     // STOPS HERE
+    //     go = false
+    //     return
+    //   } else {
+    //     console.log('stop not triggered yet')
+    //   }
+    // }
   }
   if (!go) {
     console.log('Position function ended');

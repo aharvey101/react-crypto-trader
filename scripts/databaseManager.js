@@ -6,7 +6,7 @@ const databaseManager = {}
 databaseManager.currentPositions = async (order) => {
   console.log(`the order before submitting to current positions is `, order);
   const newCurrentPostion = order
-  const dbResponse = await CurrentPos.create(newCurrentPostion, function (
+  CurrentPos.create(newCurrentPostion, function (
     err,
     positions
   ) {
@@ -14,9 +14,31 @@ databaseManager.currentPositions = async (order) => {
       console.log(err)
     } else {
       console.log('submitted current positions to db for watching', positions)
+      return positions
     }
   })
-  return dbResponse
+
+  const findInDB = async () => {
+    const dbResponse = await CurrentPos.find({}, (err, res) => {
+      if (err) {
+        console.log(err);
+      } else {
+        return res
+      }
+    })
+    return dbResponse
+  }
+
+  function find() {
+    return new Promise((resolve, reject) => {
+      setTimeout(async () => {
+        return resolve(findInDB())
+      }, 500);
+    })
+  }
+
+
+  return find()
 }
 //Updates current positions with entry order information
 databaseManager.updateCurrentPos = async function (currentPosition, posEntered) {
@@ -45,7 +67,8 @@ databaseManager.createPosition = async (order, position, entryOrder) => {
     entryOrderId: entryOrder.result.id,
     averageFillPrice: position[0].recentAverageOpenPrice,
   }
-  const response = await Position.create(newPosition, function (
+
+  Position.create(newPosition, function (
     err,
     newlyCreated
   ) {
@@ -55,12 +78,37 @@ databaseManager.createPosition = async (order, position, entryOrder) => {
       console.log(
         `the newly created position is: ${JSON.stringify(newlyCreated)}`
       )
-      return newlyCreated
     }
-    return newlyCreated
+
   })
-  console.log('response before returning in createPosition is', response);
-  return response
+
+  function returnPromise() {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        return resolve(findInDB())
+      }, 2500)
+    })
+  }
+  // find all positions in db
+  const findInDB = async () => {
+    const dbResponse = await Position.findOne(newPosition, (err, res) => {
+      if (err) {
+        console.log(err);
+      } else {
+        return res
+      }
+    })
+    return dbResponse
+  }
+
+  const found = await returnPromise()
+  // Currently doesn't work
+  console.log('response before returning in createPosition is', found);
+
+  // filter by date
+  // return
+
+  return found
 }
 
 databaseManager.updatePosition = async (
@@ -90,6 +138,7 @@ databaseManager.updatePosition = async (
 databaseManager.deleteCurrentPos = async (order) => {
   const dbCurrentPositions = await CurrentPos.find({})
   const filtered = dbCurrentPositions.filter((pos) => pos.pair === order.pair)
+  console.log('fitlered pairs is', filtered);
   filtered.forEach((position) => {
     CurrentPos.findByIdAndDelete(position.id, function (err, res) {
       console.log(res)

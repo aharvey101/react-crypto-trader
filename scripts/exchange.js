@@ -21,7 +21,14 @@ const exchange = {
           triggerPrice: entryPrice,
         },
       })
-      .catch((err) => console.log(err))
+      .catch((err) => {
+        console.log(err)
+        return { err: true }
+      })
+
+    if (response.success != true) {
+      return false
+    }
     return await response
   },
   stopOrder: async function (order, isShort) {
@@ -39,7 +46,7 @@ const exchange = {
           side: isShort ? 'buy' : 'sell',
           price: stopPrice,
           size: positionSize,
-          triggerPrice: stopPrice + 1,
+          triggerPrice: stopPrice,
           reduceOnly: true,
         },
       })
@@ -63,26 +70,43 @@ const exchange = {
   },
   getPositionInfo: async function (order) {
     console.log('getting Entry Order Information', order)
-    const response = await ftx.request({
-      method: 'GET',
-      path: '/positions',
-      data: {
-        showAvgPrice: true,
-      },
-    })
+    function promiseResolve() {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          return resolve(async () => {
+            const res = await ftx.request({
+              method: 'GET',
+              path: '/positions',
+              data: {
+                showAvgPrice: true,
+              },
+            })
+            return res
+          })
+        }, 1000)
+      })
+    }
+    const response = promiseResolve()
     //fitler response
 
     //TODO:
     //- [] Error handle so that if the position does not exist, it doesn't go on but breaks
+
     const newRes = await response.result.filter((position) => {
       if (position.size !== 0 && position.future === order.pair) {
+        console.log(position);
         return true
       } else {
         return false
       }
     })
-    console.log('the position is', newRes)
-    return newRes
+    if (newRes = []) {
+      process.exit()
+    } else {
+      console.log('the position is', newRes)
+      return newRes
+    }
+
   },
   getStopInfo: async (pair) => {
     const order = await ftx.request({
