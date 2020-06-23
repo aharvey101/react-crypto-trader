@@ -78,7 +78,7 @@ concurrentPositons.position = async (draftPosition) => {
         // place stop
         positionEntered = true
         stopPlaced = true
-        const stopInfo = exchange.stopOrder(draftPosition)
+        const stopInfo = await exchange.stopOrder(draftPosition)
           .then(async (res) => {
             //handle error, 404: trigger price too high
             if ((res.success = false)) {
@@ -86,18 +86,18 @@ concurrentPositons.position = async (draftPosition) => {
               exitPosition(draftPosition)
               return
             }
-            console.log('stopOrder res is ', res)
-            //get Entry Order Information
-            const positionInfo = await exchange.getPositionInfo(draftPosition)
-              .then(async (position) => {
-                //database Entry
-                dbPosition = await databaseManager.createPosition(
-                  draftPosition,
-                  position,
-                  returnFromEntry
-                )
-              })
-            console.log('the position info is', positionInfo)
+            // console.log('stopOrder res is ', res)
+            // //get Entry Order Information
+            // const positionInfo = await exchange.getPositionInfo(draftPosition)
+            //   .then(async (position) => {
+            //     //database Entry
+            //     dbPosition = await databaseManager.createPosition(
+            //       draftPosition,
+            //       position,
+            //       returnFromEntry
+            //     )
+            //   })
+            // console.log('the position info is', positionInfo)
           })
           .then(async () => {
             // update concurrent positions with fact that stop has been placed
@@ -117,17 +117,17 @@ concurrentPositons.position = async (draftPosition) => {
     // Check to see if stop order was exected
     // If so, update position
 
-    if (positionEntered === true) {
-      // Get stop order Info
-      const stopOrderInfo = await exchange.getStopInfo(draftPosition)
-      console.log('the stopOrderInfo is ', stopOrderInfo);
-      if (stopOrderInfo.avgFillPrice != null) {
-        databaseManager.updatePosition(dbPosition, stopOrderInfo)
-        // STOPS HERE
-        go = false
-        return
-      }
-    }
+    // if (positionEntered === true) {
+    //   // Get stop order Info
+    //   const stopOrderInfo = await exchange.getStopInfo(draftPosition)
+    //   console.log('the stopOrderInfo is ', stopOrderInfo);
+    //   if (stopOrderInfo.avgFillPrice != null) {
+    //     databaseManager.updatePosition(dbPosition, stopOrderInfo)
+    //     // STOPS HERE
+    //     go = false
+    //     return
+    //   }
+    // }
   }
   if (!go) {
     console.log('Position function ended');
