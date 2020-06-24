@@ -76,7 +76,7 @@ databaseManager.createPosition = async (order, position, entryOrder) => {
       console.log(err)
     } else {
       console.log(
-        `the newly created position is: ${JSON.stringify(newlyCreated)}`
+        `the newly created position is:`, newlyCreated
       )
     }
 
@@ -86,7 +86,7 @@ databaseManager.createPosition = async (order, position, entryOrder) => {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         return resolve(findInDB())
-      }, 2500)
+      }, 500)
     })
   }
   // find all positions in db
@@ -95,13 +95,14 @@ databaseManager.createPosition = async (order, position, entryOrder) => {
       if (err) {
         console.log(err);
       } else {
+        console.log('response from findInDB is:', dbResponse);
         return res
       }
     })
     return dbResponse
   }
 
-  const found = await findInDB()
+  const found = await returnPromise()
   // Currently doesn't work
   console.log('response before returning in createPosition is', found);
 

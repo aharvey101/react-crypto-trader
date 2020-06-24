@@ -154,7 +154,6 @@ managePosition.position = async (draftPosition) => {
                     dbPosition = res
                     console.log('db Position is', dbPosition);
                     positionPostedToDatabase = true
-                    go = false
                     return
                   })
               }
