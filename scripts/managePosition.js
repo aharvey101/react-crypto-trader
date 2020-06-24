@@ -10,7 +10,17 @@ const { pairWatch } = require('./pairManager')
 const databaseManager = require('./databaseManager')
 const managePosition = {}
 
-
+//- [] Currently wont work as there is no id in the input of this function. need to fix on the front end
+managePosition.exitPositon = async (position) => {
+  const stopOrderInfo = await exitPosition(position)
+  databaseManager.deleteCurrentPos(position)
+    .then((res) => {
+      console.log('deleted', res);
+    })
+  // update database
+  // databaseManager.updatePosition(position, stopOrderInfo)
+  return stopOrderInfo
+}
 managePosition.inputNewPosition = (draftPosition) => {
 
   // delete all 'current pos' on that pair
@@ -34,20 +44,15 @@ managePosition.inputNewPosition = (draftPosition) => {
     })
 
 }
-//- [] Currently wont work as there is no id in the input of this function. need to fix on the front end
-managePosition.exitPositon = async (position) => {
-  const stopOrderInfo = await exitPosition(position)
-  // update database
-  // databaseManager.updatePosition(position, stopOrderInfo)
-  return stopOrderInfo
-}
+
 
 managePosition.position = async (draftPosition) => {
   //While loop variables:
   let go = true
   let dbPosition,
     stopPlaced,
-    positionEntered
+    positionEntered,
+    positionPostedToDatabase
   let positionInfo
   let isShort = draftPosition.entry < draftPosition.stop
   console.log(`isShort is`, isShort)
@@ -57,8 +62,8 @@ managePosition.position = async (draftPosition) => {
   await entryOrder(draftPosition, isShort)
     .then((res) => {
       returnFromEntry = res
-      console.log(res);
-      if (res.success === false) {
+      console.log(res.success);
+      if (res === false) {
         databaseManager.deleteCurrentPos(draftPosition)
         console.log('entry order failed');
         go = false
@@ -70,7 +75,7 @@ managePosition.position = async (draftPosition) => {
       go = false
       return
     });
-  console.log('return from entry is', returnFromEntry);
+
   // Updates current Position with entry being true
   const currentPos = await databaseManager.updateCurrentPos(draftPosition, true)
   while (go) {
@@ -119,10 +124,12 @@ managePosition.position = async (draftPosition) => {
     // Ask server for position info. if position info array is not empty,
     // place stop and update database position
     if (stopPlaced !== true && positionEntered !== true) {
+      console.log('checking to place stop');
       if (
         (isShort && pairPrice < draftPosition.entry) ||
         (!isShort && pairPrice > draftPosition.entry)
       ) {
+        console.log('placing stop');
         const posInfo = await getPositionInfo(draftPosition)
         if (posInfo != []) {
           // place stop
@@ -136,16 +143,22 @@ managePosition.position = async (draftPosition) => {
                 exitPosition(draftPosition)
                 return
               }
-              dbPosition = await databaseManager.createPosition(
-                draftPosition,
-                posInfo,
-                returnFromEntry
-              )
-              // =================================
-              // STOPS HERE
-              go = false
-              return
-              // =================================
+              if (!positionPostedToDatabase) {
+                dbPosition = await databaseManager.createPosition(
+                  draftPosition,
+                  posInfo,
+                  returnFromEntry
+                )
+                  .then((res) => {
+                    console.log('return from createPositon is', res);
+                    dbPosition = res
+                    console.log('db Position is', dbPosition);
+                    positionPostedToDatabase = true
+                    go = false
+                    return
+                  })
+              }
+
             })
             .catch((err) => {
               console.log(err)
@@ -155,29 +168,31 @@ managePosition.position = async (draftPosition) => {
           console.log('stop placed and position entered is ', stopPlaced, positionEntered);
 
         }
+      } else {
+        console.log('price not quite through entry');
       }
     }
     //If stop was executed, update position in db
     // Check to see if stop order was exected
     // If so, update position
 
-    // if (positionEntered = true && stopPlaced === true) {
-    //   // Get stop order Info
-    //   console.log('getting Stop Info')
-    //   const stopOrderInfo = await getStopInfo(draftPosition)
-    //   if (stopOrderInfo.avgFillPrice != null) {
-    //     setTimeout(() => {
-    //       console.log('updating Position')
-    //       databaseManager.updatePosition(dbPosition, stopOrderInfo)
+    if (positionEntered = true && stopPlaced === true) {
+      // Get stop order Info
+      console.log('getting Stop Info')
+      const stopOrderInfo = await getStopInfo(draftPosition)
+      if (stopOrderInfo.avgFillPrice != null) {
+        setTimeout(() => {
+          console.log('updating Position')
+          databaseManager.updatePosition(dbPosition, stopOrderInfo)
 
-    //     }, 5000)
-    //     // STOPS HERE
-    //     go = false
-    //     return
-    //   } else {
-    //     console.log('stop not triggered yet')
-    //   }
-    // }
+        }, 1000)
+        // STOPS HERE
+        go = false
+        return
+      } else {
+        console.log('stop not triggered yet')
+      }
+    }
   }
   if (!go) {
     console.log('Position function ended');

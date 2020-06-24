@@ -1,5 +1,6 @@
 const ftxrest = require('ftx-api-rest')
 
+
 const ftx = new ftxrest({
   key: process.env.API_KEY,
   secret: process.env.API_SECRET,
@@ -70,25 +71,29 @@ const exchange = {
   },
   getPositionInfo: async function (order) {
     console.log('getting Entry Order Information', order)
-    function promiseResolve() {
+
+    async function wait() {
       return new Promise((resolve, reject) => {
         setTimeout(() => {
-          return resolve(async () => {
-            const res = await ftx.request({
-              method: 'GET',
-              path: '/positions',
-              data: {
-                showAvgPrice: true,
-              },
-            })
-            return res
-          })
-        }, 1000)
+          return resolve(getPositions())
+        }, 1)
       })
     }
-    const response = promiseResolve()
-    //fitler response
 
+    const getPositions = async () => {
+      const response = await ftx.request({
+        method: 'GET',
+        path: '/positions',
+        data: {
+          showAvgPrice: true,
+        },
+      })
+      return response
+    }
+
+    const response = await wait()
+    //fitler response
+    console.log(response.result[0]);
     //TODO:
     //- [] Error handle so that if the position does not exist, it doesn't go on but breaks
 
@@ -100,12 +105,10 @@ const exchange = {
         return false
       }
     })
-    if (newRes = []) {
-      process.exit()
-    } else {
-      console.log('the position is', newRes)
-      return newRes
-    }
+
+    console.log('the position is', newRes)
+    return newRes
+
 
   },
   getStopInfo: async (pair) => {

@@ -64,8 +64,8 @@ databaseManager.createPosition = async (order, position, entryOrder) => {
     tf2: order.tf2,
     tf3: order.tf3,
     date: new Date(),
-    entryOrderId: entryOrder,
-    averageFillPrice: position[0]
+    entryOrder: entryOrder,
+    position: position
   }
 
   Position.create(newPosition, function (
@@ -101,7 +101,7 @@ databaseManager.createPosition = async (order, position, entryOrder) => {
     return dbResponse
   }
 
-  const found = await returnPromise()
+  const found = await findInDB()
   // Currently doesn't work
   console.log('response before returning in createPosition is', found);
 
