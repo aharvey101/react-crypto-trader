@@ -8,6 +8,7 @@ const {
 } = require('./exchange')
 const { pairWatch } = require('./pairManager')
 const databaseManager = require('./databaseManager')
+const exchange = require('./exchange')
 const managePosition = {}
 
 //- [] Currently wont work as there is no id in the input of this function. need to fix on the front end
@@ -29,9 +30,11 @@ managePosition.inputNewPosition = (draftPosition) => {
       console.log('deleted', res);
     })
     .then(() => {
+      //delete all orders on position
+      // cancelOrdersOnpair(draftPosition)
+      // start new position
       databaseManager.currentPositions(draftPosition)
         .then((res) => {
-          console.log('draft position in db is ', res);
         })
     })
     .then(() => {
@@ -50,7 +53,7 @@ managePosition.position = async (draftPosition) => {
   //While loop variables:
   let go = true
   let dbPosition,
-    stopPlaced,
+    stopPlaced = false,
     positionEntered,
     positionPostedToDatabase
   let positionInfo
@@ -125,6 +128,7 @@ managePosition.position = async (draftPosition) => {
     // place stop and update database position
     if (stopPlaced !== true && positionEntered !== true) {
       console.log('checking to place stop');
+      console.log(positionEntered, stopPlaced);
       if (
         (isShort && pairPrice < draftPosition.entry) ||
         (!isShort && pairPrice > draftPosition.entry)
@@ -180,11 +184,12 @@ managePosition.position = async (draftPosition) => {
       console.log('getting Stop Info')
       const stopOrderInfo = await getStopInfo(draftPosition)
       if (stopOrderInfo.avgFillPrice != null) {
-        setTimeout(() => {
+        setTimeout((dbPosition) => {
           console.log('updating Position')
+          console.log('dbPosition before updating position is', dbPosition);
           databaseManager.updatePosition(dbPosition, stopOrderInfo)
 
-        }, 1000)
+        }, 1000, dbPosition)
         // STOPS HERE
         go = false
         return

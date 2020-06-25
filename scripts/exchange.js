@@ -76,7 +76,7 @@ const exchange = {
       return new Promise((resolve, reject) => {
         setTimeout(() => {
           return resolve(getPositions())
-        }, 1)
+        }, 100)
       })
     }
 
@@ -93,7 +93,7 @@ const exchange = {
 
     const response = await wait()
     //fitler response
-    console.log(response.result[0]);
+    console.log('testing response', response.result[0]);
     //TODO:
     //- [] Error handle so that if the position does not exist, it doesn't go on but breaks
 

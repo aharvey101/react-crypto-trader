@@ -9,6 +9,7 @@ var positionSchema = new mongoose.Schema({
   date: String,
   entryOrder: Object,
   position: Object,
+  stopOrderInfo: Object,
   tf1: String,
   tf2: String,
   tf3: String,

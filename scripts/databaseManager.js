@@ -86,7 +86,7 @@ databaseManager.createPosition = async (order, position, entryOrder) => {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         return resolve(findInDB())
-      }, 500)
+      }, 2500)
     })
   }
   // find all positions in db
@@ -95,7 +95,7 @@ databaseManager.createPosition = async (order, position, entryOrder) => {
       if (err) {
         console.log(err);
       } else {
-        console.log('response from findInDB is:', dbResponse);
+        console.log('found position in DB');
         return res
       }
     })
@@ -104,8 +104,12 @@ databaseManager.createPosition = async (order, position, entryOrder) => {
 
   const found = await returnPromise()
   // Currently doesn't work
-  console.log('response before returning in createPosition is', found);
-
+  if (found != []) {
+    console.log('found position:', found);
+  } else {
+    console.log('found is empty');
+    return
+  }
   // filter by date
   // return
 
@@ -117,18 +121,20 @@ databaseManager.updatePosition = async (
   stopOrderInfo
 ) => {
   // process new position info
-  const { avgFillPrice } = stopOrderInfo
-  const newDBPosition = { ...existingPositionInfo, avgFillPrice }
-  console.log(newDBPosition)
+  const test = { ...existingPositionInfo }
+  console.log('test is,', test);
+  const existing = existingPositionInfo
+  const newDBPosition = { ...existing, stopOrderInfo: stopOrderInfo }
+  console.log('newDBPosition is ', newDBPosition)
   // use incoming positionInfo to call position
-  const dbPos = await Position.findByIdAndUpdate(
-    existingPositionInfo.id,
+  const dbPos = await Position.findOneAndUpdate(
+    existingPositionInfo,
     newDBPosition,
     function (err, newPositionEntry) {
       if (err) {
         console.log(err)
       } else {
-        console.log(newPositionEntry)
+        console.log('new Database Position is', newPositionEntry)
       }
     }
   )
