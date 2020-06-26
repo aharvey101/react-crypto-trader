@@ -26,8 +26,8 @@ const exchange = {
         console.log(err)
         return { err: true }
       })
-
-    if (response.success != true) {
+    console.log('entry order was sucessful?:', response);
+    if (response === { err: true }) {
       return false
     }
     return await response

@@ -6,7 +6,7 @@ const databaseManager = {}
 databaseManager.draftPositions = async (draftPosition) => {
   console.log(`the draftPosition before submitting to current positions is `, draftPosition);
   const newCurrentPostion = draftPosition
-  CurrentPos.create(newCurrentPostion, function (
+  DraftPosition.create(newCurrentPostion, function (
     err,
     position
   ) {
@@ -19,7 +19,7 @@ databaseManager.draftPositions = async (draftPosition) => {
   })
 
   const findInDB = async () => {
-    const dbResponse = await CurrentPos.find({}, (err, res) => {
+    const dbResponse = await DraftPosition.find({}, (err, res) => {
       if (err) {
         console.log(err);
       } else {
@@ -156,7 +156,7 @@ databaseManager.deleteDraftPosition = async (draftPosition) => {
   const dbCurrentPositions = await DraftPosition.find({})
   const filtered = dbCurrentPositions.filter((pos) => pos.pair === draftPosition.pair)
   filtered.forEach((position) => {
-    CurrentPos.findByIdAndDelete(position.id, function (err, res) {
+    DraftPosition.findByIdAndDelete(position.id, function (err, res) {
       console.log('deleted: ', res);
     })
   })

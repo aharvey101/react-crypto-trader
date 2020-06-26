@@ -11,11 +11,33 @@ const ftx = new ftxrest({
   secret: 'NnYmeMzW2VO3ttsFwmFH0DA38XkV8luRN6LPPUm_',
 })
 
+// testing placing order??!
+
+async function placeOrder() {
+  const response = await ftx.request({
+    method: 'POST',
+    path: '/conditional_orders',
+    data: {
+      market: 'BTC-PERP',
+      type: 'stop',
+      side: 'buy',
+      price: 9245,
+      size: 0.001,
+      triggerPrice: 9245,
+    },
+  })
+    .catch((err) => {
+      console.log(err)
+      return { err: true }
+    })
+  console.log(response);
+}
+placeOrder()
 
 const order = {
   pair: 'THETA-PERP'
 }
-
+// testing getting position from DB
 async function getPositionInfo() {
 
   ftx.request({
@@ -64,7 +86,6 @@ async function getPositionInfo() {
   console.log(newRes);
 }
 
-getPositionInfo()
 // const dooo = async () => {
 
 

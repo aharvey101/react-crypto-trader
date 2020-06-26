@@ -40,7 +40,9 @@ managePosition.inputNewPosition = (draftPosition) => {
     .then(() => {
       console.log('previous pair deleted from database')
       // start managing new position
-      managePosition.position(draftPosition, false)
+      setTimeout(() => {
+        managePosition.position(draftPosition, false)
+      }, 1000)
     })
     .catch(err => {
       console.log(err);
@@ -54,7 +56,7 @@ managePosition.position = async (draftPosition) => {
   let go = true
   let dbPosition,
     stopPlaced = false,
-    positionEntered,
+    positionEntered = false,
     positionPostedToDatabase
   let positionInfo
   let isShort = draftPosition.entry < draftPosition.stop
@@ -80,7 +82,7 @@ managePosition.position = async (draftPosition) => {
     });
 
   // Updates current Position with entry being true
-  const currentPos = await databaseManager.updateDraftPosition(draftPosition, true)
+  databaseManager.updateDraftPosition(draftPosition, true)
   while (go) {
     // Start tracking pair price
     function getPairsPrices(draftPosition) {
