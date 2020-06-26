@@ -50,7 +50,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 // start existing positions
-// concurrentPositons.start()
+concurrentPositons.start()
 
 app.listen(port, () =>
   console.log(`Example app listening at http://localhost:${port}`)

@@ -119,4 +119,4 @@ dist
 .drawio
 
 #JS tests
-test.js
+scripts/test.js
