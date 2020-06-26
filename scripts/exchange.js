@@ -7,8 +7,8 @@ const ftx = new ftxrest({
 })
 
 const exchange = {
-  entryOrder: async function (order, isShort) {
-    const { pair, positionSize, entry: entryPrice, stop: stopPrice } = order
+  entryOrder: async function (draftPosition, isShort) {
+    const { pair, positionSize, entry: entryPrice, stop: stopPrice } = draftPosition
     const response = await ftx
       .request({
         method: 'POST',
@@ -32,10 +32,10 @@ const exchange = {
     }
     return await response
   },
-  stopOrder: async function (order, isShort) {
-    const { pair, positionSize, stop: stopPrice } = order
+  stopOrder: async function (draftPosition, isShort) {
+    const { pair, positionSize, stop: stopPrice } = draftPosition
     console.log('isShori in stopOrder function is:', isShort)
-    console.log(order)
+    console.log(draftPosition)
 
     const response = await ftx
       .request({
@@ -58,19 +58,19 @@ const exchange = {
     return await response
   },
 
-  cancelOrdersOnpair: async function (order, price) {
+  cancelOrdersOnpair: async function (draftPosition) {
     console.log('cancelOrdersOnpair')
     const response = await ftx.request({
       method: 'DELETE',
       path: '/orders',
       data: {
-        pair: order.pair,
+        pair: draftPosition.pair,
       },
     })
     return response
   },
-  getPositionInfo: async function (order) {
-    console.log('getting Entry Order Information', order)
+  getPositionInfo: async function (draftPosition) {
+    console.log('getting Entry Order Information', draftPosition)
 
     async function wait() {
       return new Promise((resolve, reject) => {
@@ -98,7 +98,7 @@ const exchange = {
     //- [] Error handle so that if the position does not exist, it doesn't go on but breaks
 
     const newRes = await response.result.filter((position) => {
-      if (position.size !== 0 && position.future === order.pair) {
+      if (position.size !== 0 && position.future === draftPosition.pair) {
         console.log(position);
         return true
       } else {
@@ -111,26 +111,26 @@ const exchange = {
 
 
   },
-  getStopInfo: async (pair) => {
+  getStopInfo: async (draftPosition) => {
     const order = await ftx.request({
       method: 'GET',
-      path: `/conditional_orders/history?market=${pair.pair}`,
+      path: `/conditional_orders/history?market=${draftPosition.pair}`,
     })
     return order.result[0]
   },
-  exitPosition: async (order, isShort) => {
-    console.log(order)
+  exitPosition: async (draftPosition, isShort) => {
+    console.log(draftPosition)
     console.log('exiting position')
     const response = await ftx.request({
       method: 'POST',
       path: '/orders',
       data: {
-        market: order.pair,
+        market: draftPosition.pair,
         side: isShort ? 'buy' : 'sell',
         type: 'market',
-        size: order.positionSize,
+        size: draftPosition.positionSize,
         reduceOnly: true,
-        price: order.stop,
+        price: draftPosition.stop,
       },
     })
     return response
@@ -153,8 +153,12 @@ const exchange = {
 
     return filter(response)
   },
-  getEntryInfo: async () => {
-
+  getEntryInfo: async (draftPosition) => {
+    const order = await ftx.request({
+      method: 'GET',
+      path: `/conditional_orders/history?market=${draftPosition.pair}`,
+    })
+    return order.result[0]
   },
   getPositions: async () => {
     const response = await ftx.request({

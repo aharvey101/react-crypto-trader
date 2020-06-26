@@ -5,8 +5,8 @@ const ftx = new ftxrest({
 })
 
 module.exports = {
-  pairWatch: async function (order) {
-    let pair = order.pair
+  pairWatch: async function (draftPosition) {
+    let pair = draftPosition.pair
     // function that gets price
     async function getPrices() {
       const response = await new Promise((resolve, reject) => {

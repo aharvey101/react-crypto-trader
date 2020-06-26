@@ -14,7 +14,7 @@ const managePosition = {}
 //- [] Currently wont work as there is no id in the input of this function. need to fix on the front end
 managePosition.exitPositon = async (position) => {
   const stopOrderInfo = await exitPosition(position)
-  databaseManager.deleteCurrentPos(position)
+  databaseManager.deleteDraftPosition(position)
     .then((res) => {
       console.log('deleted', res);
     })
@@ -25,15 +25,15 @@ managePosition.exitPositon = async (position) => {
 managePosition.inputNewPosition = (draftPosition) => {
 
   // delete all 'current pos' on that pair
-  databaseManager.deleteCurrentPos(draftPosition)
+  databaseManager.deleteDraftPosition(draftPosition)
     .then((res) => {
       console.log('deleted', res);
     })
     .then(() => {
       //delete all orders on position
-      // cancelOrdersOnpair(draftPosition)
+      cancelOrdersOnpair(draftPosition)
       // start new position
-      databaseManager.currentPositions(draftPosition)
+      databaseManager.draftPositions(draftPosition)
         .then((res) => {
         })
     })
@@ -60,14 +60,14 @@ managePosition.position = async (draftPosition) => {
   let isShort = draftPosition.entry < draftPosition.stop
   console.log(`isShort is`, isShort)
   // place entry order
-  // fix this if order doesn't go through: ie: trigger price to low
   let returnFromEntry
   await entryOrder(draftPosition, isShort)
     .then((res) => {
       returnFromEntry = res
       console.log(res.success);
       if (res === false) {
-        databaseManager.deleteCurrentPos(draftPosition)
+        // if order doesn't go through: ie: trigger price to low
+        databaseManager.deleteDraftPosition(draftPosition)
         console.log('entry order failed');
         go = false
         return
@@ -80,7 +80,7 @@ managePosition.position = async (draftPosition) => {
     });
 
   // Updates current Position with entry being true
-  const currentPos = await databaseManager.updateCurrentPos(draftPosition, true)
+  const currentPos = await databaseManager.updateDraftPosition(draftPosition, true)
   while (go) {
     // Start tracking pair price
     function getPairsPrices(draftPosition) {
@@ -116,14 +116,12 @@ managePosition.position = async (draftPosition) => {
 
         // find db current Position and delete:
         // lookup all positions, filter by pair, delete
-        databaseManager.deleteCurrentPos(draftPosition)
+        databaseManager.deleteDraftPosition(draftPosition)
         // STOPS HERE
         go = false
         return
       }
     }
-    // -[x] TEST THIS FUNCTION
-
     // Ask server for position info. if position info array is not empty,
     // place stop and update database position
     if (stopPlaced !== true && positionEntered !== true) {
@@ -134,7 +132,7 @@ managePosition.position = async (draftPosition) => {
         (!isShort && pairPrice > draftPosition.entry)
       ) {
         console.log('placing stop');
-        const posInfo = await getPositionInfo(draftPosition)
+        const exchangePosInfo = await getPositionInfo(draftPosition)
         if (posInfo != []) {
           // place stop
           positionEntered = true
@@ -150,7 +148,7 @@ managePosition.position = async (draftPosition) => {
               if (!positionPostedToDatabase) {
                 dbPosition = await databaseManager.createPosition(
                   draftPosition,
-                  posInfo,
+                  exchangePosInfo,
                   returnFromEntry
                 )
                   .then((res) => {
@@ -161,7 +159,8 @@ managePosition.position = async (draftPosition) => {
                     return
                   })
               }
-
+              // update draft position with stopPlaced = true
+              databaseManager.updateDraftPositionStop(draftPosition, true)
             })
             .catch((err) => {
               console.log(err)

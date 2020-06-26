@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-var positionSchema = new mongoose.Schema({
+const positionSchema = new mongoose.Schema({
   pair: String,
   entry: Number,
   stop: Number,
@@ -9,4 +9,4 @@ var positionSchema = new mongoose.Schema({
   stopPlaced: Boolean,
 })
 
-module.exports = mongoose.model('CurrentPos', positionSchema)
+module.exports = mongoose.model('DraftPosition', positionSchema)
