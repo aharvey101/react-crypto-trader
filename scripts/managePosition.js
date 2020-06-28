@@ -135,7 +135,7 @@ managePosition.position = async (draftPosition) => {
       ) {
         console.log('placing stop');
         const exchangePosInfo = await getPositionInfo(draftPosition)
-        if (posInfo != []) {
+        if (exchangePosInfo != []) {
           // place stop
           positionEntered = true
           stopPlaced = true
