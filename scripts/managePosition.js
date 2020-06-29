@@ -127,7 +127,7 @@ managePosition.position = async (draftPosition) => {
     // place stop and update database position
     if (stopPlaced !== true && positionEntered !== true) {
       // console.log('checking to place stop');
-      console.log(positionEntered, stopPlaced);
+      // console.log(positionEntered, stopPlaced);
       if (
         (isShort && pairPrice < draftPosition.entry) ||
         (!isShort && pairPrice > draftPosition.entry)

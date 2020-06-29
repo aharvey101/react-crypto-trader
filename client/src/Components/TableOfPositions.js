@@ -14,7 +14,7 @@ const Row = props => (
     <TableCell>{props.position.entryPrice}</TableCell>
     <TableCell>{props.position.side}</TableCell>
     <TableCell>{props.position.size}</TableCell>
-    <TableCell>{props.position.realizedPnl}</TableCell>
+    <TableCell>{props.position.unrealizedPnl}</TableCell>
   </TableRow>
 )
 
