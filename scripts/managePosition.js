@@ -97,7 +97,7 @@ managePosition.position = async (draftPosition) => {
     }
     //Get price
     let pairPrice = await getPairsPrices(draftPosition)
-    console.log(pairPrice)
+    // console.log(pairPrice)
     // logic for checking to see if stop was breached
     if (positionEntered !== true) {
       if (
@@ -106,7 +106,7 @@ managePosition.position = async (draftPosition) => {
       ) {
         //cancel all orders on pair
         //TODO: Error handle if orders aren't cancelled
-        console.log('cancelling orders on pair')
+        // console.log('cancelling orders on pair')
         cancelOrdersOnpair(draftPosition)
           .then((res) => {
             console.log(res)
@@ -126,7 +126,7 @@ managePosition.position = async (draftPosition) => {
     // Ask server for position info. if position info array is not empty,
     // place stop and update database position
     if (stopPlaced !== true && positionEntered !== true) {
-      console.log('checking to place stop');
+      // console.log('checking to place stop');
       console.log(positionEntered, stopPlaced);
       if (
         (isShort && pairPrice < draftPosition.entry) ||
@@ -172,7 +172,7 @@ managePosition.position = async (draftPosition) => {
 
         }
       } else {
-        console.log('price not quite through entry');
+        // console.log('price not quite through entry');
       }
     }
     //If stop was executed, update position in db
