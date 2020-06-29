@@ -23,8 +23,7 @@ concurrentPositons.position = async (draftPosition) => {
   console.log(`isShort is`, isShort)
   // place entry order
   const returnFromEntry = await exchange.getEntryInfo(draftPosition)
-  // Updates current Position with entry being true
-  databaseManager.updateDraftPosition(draftPosition, true)
+
   while (go) {
     // Start tracking pair price
     function getPairsPrices(draftPosition) {
@@ -102,8 +101,7 @@ concurrentPositons.position = async (draftPosition) => {
                       return
                     })
                 }
-                // update draft position with stopPlaced = true
-                databaseManager.updateDraftPositionStop(draftPosition, true)
+
               })
               .catch((err) => {
                 console.log(err)
