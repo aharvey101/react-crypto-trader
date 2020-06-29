@@ -19,7 +19,6 @@ concurrentPositons.position = async (draftPosition) => {
     stopPlaced = false,
     positionEntered = false,
     positionPostedToDatabase
-  let positionInfo
   let isShort = draftPosition.entry < draftPosition.stop
   console.log(`isShort is`, isShort)
   // place entry order
@@ -42,7 +41,7 @@ concurrentPositons.position = async (draftPosition) => {
     }
     //Get price
     let pairPrice = await getPairsPrices(draftPosition)
-    console.log(pairPrice)
+    // console.log(pairPrice)
     // logic for checking to see if stop was breached
     if (positionEntered !== true) {
       if (
@@ -71,7 +70,6 @@ concurrentPositons.position = async (draftPosition) => {
 
     if (!positionEntered && !stopPlaced) {
       if (!draftPosition.stopEntered && !draftPosition.positionEntered) {
-        console.log('checking to place stop');
         console.log(positionEntered, stopPlaced);
         if (
           (isShort && pairPrice < draftPosition.entry) ||
@@ -116,7 +114,6 @@ concurrentPositons.position = async (draftPosition) => {
             console.log('stop placed and position entered is ', stopPlaced, positionEntered);
           }
         } else {
-          console.log('price not quite through entry');
         }
       }
     }
