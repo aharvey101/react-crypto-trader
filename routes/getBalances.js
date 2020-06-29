@@ -5,6 +5,7 @@ const axios = require('axios')
 const ftxr = new ftxrest({
   key: process.env.API_KEY,
   secret: process.env.API_SECRET,
+  subaccount: 'initial'
 })
 
 router.get('/', async (req, res) => {
