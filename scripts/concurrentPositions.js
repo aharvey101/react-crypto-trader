@@ -70,7 +70,7 @@ concurrentPositons.position = async (draftPosition) => {
 
     if (!positionEntered && !stopPlaced) {
       if (!draftPosition.stopEntered && !draftPosition.positionEntered) {
-        console.log(positionEntered, stopPlaced);
+        // console.log(positionEntered, stopPlaced);
         if (
           (isShort && pairPrice < draftPosition.entry) ||
           (!isShort && pairPrice > draftPosition.entry)
