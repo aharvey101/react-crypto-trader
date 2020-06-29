@@ -4,6 +4,7 @@ const ftxrest = require('ftx-api-rest')
 const ftx = new ftxrest({
   key: process.env.API_KEY,
   secret: process.env.API_SECRET,
+  subaccount: 'initial',
 })
 
 const exchange = {

@@ -13,7 +13,8 @@ const Row = props => (
     <TableCell>{props.position.future}</TableCell>
     <TableCell>{props.position.entryPrice}</TableCell>
     <TableCell>{props.position.side}</TableCell>
-    <TableCell>{props.position.uncrealizedPnl}</TableCell>
+    <TableCell>{props.position.size}</TableCell>
+    <TableCell>{props.position.realizedPnl}</TableCell>
   </TableRow>
 )
 
@@ -30,6 +31,7 @@ export default class TableOfPositions extends Component {
   }
 
   componentDidMount() {
+    this.getPositions()
     this.makeRows()
   }
 
@@ -51,15 +53,16 @@ export default class TableOfPositions extends Component {
   }
 
   render() {
-    // make table entry for each position with exit position button
+
     return (
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell>Entry Price</TableCell>
+            <TableCell>Pair</TableCell>
             <TableCell>
               EntryPrice</TableCell>
             <TableCell>Side</TableCell>
+            <TableCell> Size</TableCell>
             <TableCell> Pnl</TableCell>
           </TableRow>
         </TableHead>
