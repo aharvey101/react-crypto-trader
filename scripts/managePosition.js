@@ -58,7 +58,6 @@ managePosition.position = async (draftPosition) => {
     stopPlaced = false,
     positionEntered = false,
     positionPostedToDatabase
-  let positionInfo
   let isShort = draftPosition.entry < draftPosition.stop
   console.log(`isShort is`, isShort)
   // place entry order

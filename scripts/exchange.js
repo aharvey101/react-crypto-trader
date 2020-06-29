@@ -64,7 +64,7 @@ const exchange = {
       method: 'DELETE',
       path: '/orders',
       data: {
-        pair: draftPosition.pair,
+        market: draftPosition.pair,
       },
     })
     return response
