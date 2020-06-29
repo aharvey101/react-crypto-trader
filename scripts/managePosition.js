@@ -171,8 +171,6 @@ managePosition.position = async (draftPosition) => {
           console.log('stop placed and position entered is ', stopPlaced, positionEntered);
 
         }
-      } else {
-        // console.log('price not quite through entry');
       }
     }
     //If stop was executed, update position in db

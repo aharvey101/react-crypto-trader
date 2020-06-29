@@ -67,7 +67,7 @@ concurrentPositons.position = async (draftPosition) => {
     }
 
     if (!positionEntered && !stopPlaced) {
-      if (!draftPosition.stopEntered && !draftPosition.positionEntered) {
+      if (!draftPosition.stopEntered) {
         // console.log(positionEntered, stopPlaced);
         if (
           (isShort && pairPrice < draftPosition.entry) ||
@@ -103,6 +103,10 @@ concurrentPositons.position = async (draftPosition) => {
                 }
 
               })
+              .then(() => {
+                // update draft position with stopPlaced = true
+                databaseManager.updateDraftPositionStop(draftPosition, true)
+              })
               .catch((err) => {
                 console.log(err)
                 go = false
@@ -110,7 +114,6 @@ concurrentPositons.position = async (draftPosition) => {
               })
             console.log('stop placed and position entered is ', stopPlaced, positionEntered);
           }
-        } else {
         }
       }
     }
