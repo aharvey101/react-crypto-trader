@@ -78,12 +78,12 @@ concurrentPositons.position = async (draftPosition) => {
           (!isShort && pairPrice > draftPosition.entry)
         ) {
           console.log('placing stop');
-          const exchangePosInfo = await getPositionInfo(draftPosition)
-          if (posInfo != []) {
+          const exchangePosInfo = await exchange.getPositionInfo(draftPosition)
+          if (exchangePosInfo != []) {
             // place stop
             positionEntered = true
             stopPlaced = true
-            stopOrder(draftPosition, isShort)
+            exchange.stopOrder(draftPosition, isShort)
               .then(async (res) => {
                 //handle error, 404: trigger price too high
                 if ((res.success = false)) {
@@ -127,7 +127,7 @@ concurrentPositons.position = async (draftPosition) => {
     if (positionEntered = true && stopPlaced === true) {
       // Get stop order Info
       console.log('getting Stop Info')
-      const stopOrderInfo = await getStopInfo(draftPosition)
+      const stopOrderInfo = await exchange.getStopInfo(draftPosition)
       if (stopOrderInfo.avgFillPrice != null) {
         setTimeout((dbPosition) => {
           console.log('updating Position')
