@@ -6,18 +6,21 @@
   margin: 0 auto;
 }
 
-.orderInputForm {
+.order-input-form {
   align-items: center;
   justify-content: center;
   width: 300px;
   display:grid;
   grid-template-columns: 1fr;
+  gap: 5px;
+}
+
+.order-input-form p {
+  margin: 5px;;
 }
 
 .input-field {
   display: block;
-  width: 100%;
-  margin: 10px 0;
 }
 
 .input-label {
@@ -27,8 +30,9 @@
 
 .text-field {
   display: block;
-  width: 100%;
-  margin: 10px 0;
+  resize: none;
+  background: blue;
+  border: none
 }
 
 .submit-button {

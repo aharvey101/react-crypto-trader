@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import axios from 'axios'
+import './componentsCSS/orderInput.css'
 const local = 'http://localhost:3001/'
 
 class OrderInput extends Component {
@@ -145,7 +146,7 @@ class OrderInput extends Component {
             event.preventDefault()
             this.submitForm()
           }}
-          className="orderInputForm"
+          className="order-input-form"
         >
           <label className="input-label">Pair</label>
           <select
@@ -226,7 +227,7 @@ class OrderInput extends Component {
             className="input-field"
             onChange={this.updatePair}>
           </input>
-          <label className="input-field">Third Timeframe</label>
+          <label className="input-label">Third Timeframe</label>
           <input
             type="text"
             name="tf3"
@@ -235,7 +236,7 @@ class OrderInput extends Component {
             onChange={this.updatePair}>
           </input>
           <button className="submit-button">Submit</button>
-          <label>Order:</label>
+          <label className="input-label">Order:</label>
           <p>Pair: {this.state.pair}</p>
           {/* fix to display selected timeframe, not state */}
           <p>Timeframe: {document.getElementsByName('timeframe').values}</p>
@@ -243,7 +244,7 @@ class OrderInput extends Component {
           <p>Stop: {this.state.stop}</p>
           <p>Posision Size: {this.state.positionSize}</p>
           <p>Portfolio Size: {this.state.portfolioSize}</p>
-          <label>Response From Server</label>
+          <label className="input-label" >Response From Server</label>
           <textarea
             className="text-field"
             readOnly

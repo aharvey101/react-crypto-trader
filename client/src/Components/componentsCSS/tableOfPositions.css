@@ -1,0 +1,27 @@
+
+
+.table{
+  table-layout: fixed;
+  width: 100%;
+  border-collapse: collapse;
+padding: 5px;
+}
+
+.table-caption {
+  font-weight: 300;
+  font-size: 30px;
+  text-transform: uppercase;
+  padding: 10px;
+}
+.table-head{
+  border-bottom: 1px solid white;
+  width: 50%
+}
+
+.table-head-item{
+  padding: 10px;
+}
+
+.table-body-item {
+  padding: 10px
+}
