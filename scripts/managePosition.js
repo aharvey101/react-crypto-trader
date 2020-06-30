@@ -32,10 +32,6 @@ managePosition.inputNewPosition = (draftPosition) => {
     .then(() => {
       //delete all orders on position
       cancelOrdersOnpair(draftPosition)
-      // start new position
-      databaseManager.draftPositions(draftPosition)
-        .then((res) => {
-        })
     })
     .then(() => {
       console.log('previous pair deleted from database')

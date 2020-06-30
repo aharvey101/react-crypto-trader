@@ -1,0 +1,43 @@
+
+.order-component {
+  align-items: center;
+  text-align: left;
+  width: 300px;
+  margin: 0 auto;
+}
+
+.orderInputForm {
+  align-items: center;
+  justify-content: center;
+  width: 300px;
+  display:grid;
+  grid-template-columns: 1fr;
+}
+
+.input-field {
+  display: block;
+  width: 100%;
+  margin: 10px 0;
+}
+
+.input-label {
+  display: block;
+  margin: 5px;
+}
+
+.text-field {
+  display: block;
+  width: 100%;
+  margin: 10px 0;
+}
+
+.submit-button {
+  align-items: center;
+  display: block;
+  margin: 10px 0;
+}
+
+.exit-position {
+  display: block;
+  margin: 10px 0;
+}
