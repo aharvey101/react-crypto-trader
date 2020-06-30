@@ -1,11 +1,17 @@
 
+
 .order-component {
   align-items: center;
   text-align: left;
   width: 300px;
-  margin: 0 auto;
+  margin: 15px auto;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+  background-color: burlywood;
 }
 
+.order-component-form-title {
+  padding: 10px
+}
 .order-input-form {
   align-items: center;
   justify-content: center;
@@ -15,8 +21,12 @@
   gap: 5px;
 }
 
+.order-input-form >*{
+margin: 0 10px;
+}
+
 .order-input-form p {
-  margin: 5px;;
+  margin: 5px 10px;
 }
 
 .input-field {
@@ -25,23 +35,24 @@
 
 .input-label {
   display: block;
-  margin: 5px;
+  margin: 5px 10px;
 }
 
 .text-field {
   display: block;
   resize: none;
-  background: blue;
-  border: none
+  background: white;
+  border: none;
+  font-family: sans-serif;
 }
 
 .submit-button {
   align-items: center;
   display: block;
-  margin: 10px 0;
+  margin: 10px 10px;
 }
 
 .exit-position {
   display: block;
-  margin: 10px 0;
+  margin: 10px 10px;
 }

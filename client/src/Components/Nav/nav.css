@@ -1,9 +1,9 @@
 .nav{
   height: 50px;
   width: 100%;
-  
+  background-color: black;
   position: relative;
-  
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
   margin: 0 auto;
 }
 

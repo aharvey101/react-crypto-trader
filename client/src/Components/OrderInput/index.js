@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import axios from 'axios'
-import './componentsCSS/orderInput.css'
+import './orderInput.css'
 const local = 'http://localhost:3001/'
 
 class OrderInput extends Component {
@@ -140,7 +140,7 @@ class OrderInput extends Component {
     })
     return (
       <div className="order-component">
-        <h1>Order Input</h1>
+        <h1 className="order-component-form-title">Order Input</h1>
         <form
           onSubmit={(event) => {
             event.preventDefault()

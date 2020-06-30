@@ -1,7 +1,7 @@
 import React from 'react'
-import OrderInput from './Components/OrderInput'
-import TableOfPositions from './Components/TableOfPositions'
-import Nav from './Components/Nav'
+import OrderInput from './Components/OrderInput/'
+import TableOfPositions from './Components/TableOfPositions/'
+import Nav from './Components/Nav/'
 import {
   BrowserRouter as Router,
   Switch,
