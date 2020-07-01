@@ -30,6 +30,8 @@ managePosition.inputNewPosition = (draftPosition) => {
       console.log('deleted', res);
     })
     .then(() => {
+      // create new draft position
+      databaseManager.createDraftPosition(draftPosition)
       //delete all orders on position
       cancelOrdersOnpair(draftPosition)
     })
