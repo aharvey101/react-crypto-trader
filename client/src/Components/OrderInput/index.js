@@ -12,7 +12,7 @@ class OrderInput extends Component {
       stop: 0,
       positionSize: 0,
       portfolioSize: 10000,
-      portfolioRisk: 0.001,
+      portfolioRisk: 0.01,
       orderDate: '',
       tf1: '',
       tf2: '',
