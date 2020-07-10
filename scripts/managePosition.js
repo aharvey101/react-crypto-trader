@@ -140,11 +140,11 @@ managePosition.position = async (draftPosition) => {
             .then(async (res) => {
               console.log(res);
               //handle errors, ie; 404: trigger price too high
-              // if (res === false) {
-              //   console.log('Stop order was not placed', res)
-              //   exitPosition(draftPosition)
-              //   return
-              // }
+              if (res === false) {
+                console.log('Stop order was not placed', res)
+                exitPosition(draftPosition)
+                return
+              }
               if (!positionPostedToDatabase) {
                 dbPosition = await databaseManager.createPosition(
                   draftPosition,
