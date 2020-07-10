@@ -72,7 +72,7 @@ managePosition.position = async (draftPosition) => {
       }
     })
     .catch(err => {
-      console.log('tehre was an error', err)
+      console.log('there was an error', err)
       go = false
       return
     });
@@ -197,6 +197,7 @@ managePosition.position = async (draftPosition) => {
     // }
   }
   if (!go) {
+    databaseManager.deleteDraftPosition(draftPosition)
     console.log('Position function ended on', draftPosition.pair);
     return
   }

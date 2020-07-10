@@ -47,7 +47,7 @@ databaseManager.updateDraftPosition = async function (draftPosition, entryPlaced
     if (err) {
       console.log(err);
     }
-    else console.log(newCurrentPos);
+    else console.log(`updated draft position with entryPlaced:`, newCurrentPos);
   })
   return response
 }
@@ -59,7 +59,7 @@ databaseManager.updateDraftPositionStop = async function (currentPosition, stopE
     if (err) {
       console.log(err);
     }
-    console.log(newCurrentPos);
+    console.log('updated draft position:', newCurrentPos);
   })
   return response
 }
@@ -115,15 +115,7 @@ databaseManager.createPosition = async (draftPosition, exchangePostionInfo, entr
   }
 
   const found = await returnPromise()
-  // Currently doesn't work
-  if (found != []) {
-    console.log('found position:', found);
-  } else {
-    console.log('found is empty');
-    return
-  }
-  // filter by date
-  // return
+
 
   return found
 }

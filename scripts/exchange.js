@@ -81,7 +81,6 @@ const exchange = {
     return response
   },
   getPositionInfo: async function (draftPosition) {
-    console.log('getting Entry Order Information', draftPosition)
 
     async function wait() {
       return new Promise((resolve, reject) => {
