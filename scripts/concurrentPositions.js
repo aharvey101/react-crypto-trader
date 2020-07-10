@@ -67,7 +67,7 @@ concurrentPositons.position = async (draftPosition) => {
     }
 
     if (!positionEntered && !stopPlaced) {
-      if (!draftPosition.stopEntered) {
+      if (!draftPosition.stopPlaced) {
         // console.log(positionEntered, stopPlaced);
         if (
           (isShort && pairPrice < draftPosition.entry) ||
@@ -98,6 +98,7 @@ concurrentPositons.position = async (draftPosition) => {
                       dbPosition = res
                       console.log('db Position is', dbPosition);
                       positionPostedToDatabase = true
+                      go = false
                       return
                     })
                 }
@@ -121,24 +122,24 @@ concurrentPositons.position = async (draftPosition) => {
     // Check to see if stop order was exected
     // If so, update position
 
-    if (positionEntered = true && stopPlaced === true) {
-      // Get stop order Info
-      console.log('getting Stop Info')
-      const stopOrderInfo = await exchange.getStopInfo(draftPosition)
-      if (stopOrderInfo.avgFillPrice != null) {
-        setTimeout((dbPosition) => {
-          console.log('updating Position')
-          console.log('dbPosition before updating position is', dbPosition);
-          databaseManager.updatePosition(dbPosition, stopOrderInfo)
+    // if (positionEntered = true && stopPlaced === true) {
+    //   // Get stop order Info
+    //   console.log('getting Stop Info')
+    //   const stopOrderInfo = await exchange.getStopInfo(draftPosition)
+    //   if (stopOrderInfo.avgFillPrice != null) {
+    //     setTimeout((dbPosition) => {
+    //       console.log('updating Position')
+    //       console.log('dbPosition before updating position is', dbPosition);
+    //       databaseManager.updatePosition(dbPosition, stopOrderInfo)
 
-        }, 1000, dbPosition)
-        // STOPS HERE
-        go = false
-        return
-      } else {
-        console.log('stop not triggered yet')
-      }
-    }
+    //     }, 1000, dbPosition)
+    //     // STOPS HERE
+    //     go = false
+    //     return
+    //   } else {
+    //     console.log('stop not triggered yet')
+    //   }
+    // }
   }
   if (!go) {
     console.log('Position function ended');

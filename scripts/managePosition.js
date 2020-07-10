@@ -59,15 +59,15 @@ managePosition.position = async (draftPosition) => {
   let isShort = draftPosition.entry < draftPosition.stop
   console.log(`isShort is`, isShort)
   // place entry order
-  let returnFromEntry
+  let entryOrder
   await entryOrder(draftPosition, isShort)
     .then((res) => {
-      returnFromEntry = res
-      console.log(res.success);
-      if (res === false) {
+      entryOrder = res
+      if (res = false) {
         // if order doesn't go through: ie: trigger price to low
         databaseManager.deleteDraftPosition(draftPosition)
         console.log('entry order failed');
+
         go = false
         return
       }
@@ -79,6 +79,7 @@ managePosition.position = async (draftPosition) => {
     });
 
   // Updates current Position with entry being true
+  console.log('updating draft position with entered = true');
   databaseManager.updateDraftPosition(draftPosition, true)
   while (go) {
     // Start tracking pair price
@@ -136,9 +137,9 @@ managePosition.position = async (draftPosition) => {
           // place stop
           positionEntered = true
           stopPlaced = true
-          stopOrder(draftPosition, isShort)
+          const stopOrder = await stopOrder(draftPosition, isShort)
             .then(async (res) => {
-              //handle error, 404: trigger price too high
+              //handle errors, ie; 404: trigger price too high
               if ((res.success = false)) {
                 console.log('Stop order was not placed', res)
                 exitPosition(draftPosition)
@@ -148,13 +149,15 @@ managePosition.position = async (draftPosition) => {
                 dbPosition = await databaseManager.createPosition(
                   draftPosition,
                   exchangePosInfo,
-                  returnFromEntry
+                  entryOrder,
+                  stopOrder
                 )
                   .then((res) => {
                     console.log('return from createPositon is', res);
                     dbPosition = res
                     console.log('db Position is', dbPosition);
                     positionPostedToDatabase = true
+                    go = false
                     return
                   })
               }
@@ -175,27 +178,27 @@ managePosition.position = async (draftPosition) => {
     // Check to see if stop order was exected
     // If so, update position
 
-    if (positionEntered = true && stopPlaced === true) {
-      // Get stop order Info
-      console.log('getting Stop Info')
-      const stopOrderInfo = await getStopInfo(draftPosition)
-      if (stopOrderInfo.avgFillPrice != null) {
-        setTimeout((dbPosition) => {
-          console.log('updating Position')
-          console.log('dbPosition before updating position is', dbPosition);
-          databaseManager.updatePosition(dbPosition, stopOrderInfo)
+    // if (positionEntered = true && stopPlaced === true) {
+    //   // Get stop order Info
+    //   console.log('getting Stop Info')
+    //   const stopOrderInfo = await getStopInfo(draftPosition)
+    //   if (stopOrderInfo.avgFillPrice != null) {
+    //     setTimeout((dbPosition) => {
+    //       console.log('updating Position')
+    //       console.log('dbPosition before updating position is', dbPosition);
+    //       databaseManager.updatePosition(dbPosition, stopOrderInfo)
 
-        }, 1000, dbPosition)
-        // STOPS HERE
-        go = false
-        return
-      } else {
-        console.log('stop not triggered yet')
-      }
-    }
+    //     }, 1000, dbPosition)
+    //     // STOPS HERE
+    //     go = false
+    //     return
+    //   } else {
+    //     console.log('stop not triggered yet')
+    //   }
+    // }
   }
   if (!go) {
-    console.log('Position function ended');
+    console.log('Position function ended on', draftPosition.pair);
     return
   }
 }

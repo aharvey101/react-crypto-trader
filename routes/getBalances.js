@@ -5,10 +5,11 @@ const axios = require('axios')
 const ftxr = new ftxrest({
   key: process.env.API_KEY,
   secret: process.env.API_SECRET,
-  subaccount: 'initial'
+  subaccount: process.env.PRODUCTION ? 'initial' : ''
 })
 
 router.get('/', async (req, res) => {
+  const account = 'Main Account'
   const b = (async () => {
     const ftxBalance = await ftxr.request({
       method: 'GET',

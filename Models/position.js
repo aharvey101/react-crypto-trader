@@ -7,12 +7,13 @@ var positionSchema = new mongoose.Schema({
   stop: Number,
   timeframe: String,
   date: String,
-  entryOrder: Object,
-  position: Object,
-  stopOrderInfo: Object,
   tf1: String,
   tf2: String,
   tf3: String,
+  entryOrder: Object,
+  position: Object,
+  stopOrder: Object,
+
 })
 
 module.exports = mongoose.model('Position', positionSchema)

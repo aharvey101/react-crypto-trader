@@ -4,7 +4,6 @@ const DraftPosition = require('../Models/draftPosition')
 const databaseManager = {}
 
 databaseManager.draftPositions = async (draftPosition) => {
-  console.log(`the draftPosition before submitting to current positions is `, draftPosition);
   const newCurrentPostion = draftPosition
   DraftPosition.create(newCurrentPostion, function (
     err,
@@ -41,28 +40,30 @@ databaseManager.draftPositions = async (draftPosition) => {
   return find()
 }
 //Updates current positions with entry order information
-databaseManager.updateDraftPosition = async function (currentPosition, posEntered) {
+databaseManager.updateDraftPosition = async function (draftPosition, entryPlaced) {
   // process entry Order information
-  const newCurrentPos = { ...currentPosition, positionEntered: posEntered }
-  const response = await DraftPosition.findOneAndUpdate(currentPosition.pair, newCurrentPos, function (err, newCurrentPos) {
+  const newCurrentPos = { ...draftPosition, entryPlaced: entryPlaced }
+  const response = await DraftPosition.findOneAndUpdate(draftPosition.pair, newCurrentPos, function (err, newCurrentPos) {
     if (err) {
       console.log(err);
     }
+    else console.log(newCurrentPos);
   })
   return response
 }
 
 databaseManager.updateDraftPositionStop = async function (currentPosition, stopEntered) {
   // process entry Order information
-  const newCurrentPos = { ...currentPosition, stopEntered: stopEntered }
+  const newCurrentPos = { ...currentPosition, stopPlaced: stopEntered }
   const response = await DraftPosition.findOneAndUpdate(currentPosition.pair, newCurrentPos, function (err, newCurrentPos) {
     if (err) {
       console.log(err);
     }
+    console.log(newCurrentPos);
   })
   return response
 }
-databaseManager.createPosition = async (draftPosition, exchangePostionInfo, entryOrder) => {
+databaseManager.createPosition = async (draftPosition, exchangePostionInfo, entryOrder, stopOrder) => {
   //create position
   const newPosition = {
     pair: draftPosition.pair,
@@ -75,7 +76,8 @@ databaseManager.createPosition = async (draftPosition, exchangePostionInfo, entr
     tf3: draftPosition.tf3,
     date: new Date(),
     entryOrder: entryOrder,
-    position: exchangePostionInfo
+    position: exchangePostionInfo,
+    stopOrder: stopOrder
   }
 
   Position.create(newPosition, function (
@@ -128,13 +130,13 @@ databaseManager.createPosition = async (draftPosition, exchangePostionInfo, entr
 
 databaseManager.updatePosition = async (
   existingPositionInfo,
-  stopOrderInfo
+  stopOrder
 ) => {
   // process new position info
   const test = { ...existingPositionInfo }
   console.log('test is,', test);
   const existing = existingPositionInfo
-  const newDBPosition = { ...existing, stopOrderInfo: stopOrderInfo }
+  const newDBPosition = { ...existing, stopOrder: stopOrder }
   console.log('newDBPosition is ', newDBPosition)
   // use incoming positionInfo to call position
   const dbPos = await Position.findOneAndUpdate(
@@ -157,6 +159,7 @@ databaseManager.deleteDraftPosition = async (draftPosition) => {
   const filtered = dbCurrentPositions.filter((pos) => pos.pair === draftPosition.pair)
   filtered.forEach((position) => {
     DraftPosition.findByIdAndDelete(position.id, function (err, res) {
+      if (err) console.log(err);
       console.log('deleted: ', res);
     })
   })

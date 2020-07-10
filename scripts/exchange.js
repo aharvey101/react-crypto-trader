@@ -1,10 +1,10 @@
+require('dotenv').config()
 const ftxrest = require('ftx-api-rest')
-
 
 const ftx = new ftxrest({
   key: process.env.API_KEY,
   secret: process.env.API_SECRET,
-  subaccount: 'initial',
+  subaccount: process.env.PRODUCTION ? 'initial' : '',
 })
 
 const exchange = {
@@ -27,11 +27,11 @@ const exchange = {
         console.log(err)
         return { err: true }
       })
-    console.log('entry order was sucessful?:', response);
+    console.log('entry order was sucessful?:', response.success);
     if (response === { err: true }) {
       return false
     }
-    return await response
+    return await response.result
   },
   stopOrder: async function (draftPosition, isShort) {
     const { pair, positionSize, stop: stopPrice } = draftPosition
@@ -77,7 +77,7 @@ const exchange = {
       return new Promise((resolve, reject) => {
         setTimeout(() => {
           return resolve(getPositions())
-        }, 100)
+        }, 1000)
       })
     }
 
@@ -94,7 +94,6 @@ const exchange = {
 
     const response = await wait()
     //fitler response
-    console.log('testing response', response.result[0]);
     //TODO:
     //- [] Error handle so that if the position does not exist, it doesn't go on but breaks
 

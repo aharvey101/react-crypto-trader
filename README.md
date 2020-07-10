@@ -10,7 +10,6 @@ The itnention of this app is to place and manage positions, without the main str
 
 # TODO
 
- - [] Rename currentPos to draftPosition
-  - [] 
-
-
+- [] Stop loop after position entry, stop placed and database updated with stopOrder
+- [] add functionality to update positions as needed
+- [] Figure out how to get fills in
