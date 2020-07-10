@@ -25,10 +25,10 @@ const exchange = {
       })
       .catch((err) => {
         console.log(err)
-        return { err: true }
+        return false
       })
     console.log('entry order was sucessful?:', response.success);
-    if (response === { err: true }) {
+    if (response.success = false) {
       return false
     }
     return await response.result
@@ -56,7 +56,10 @@ const exchange = {
         console.log(err),
           console.log('caught error in exchange');
       })
-    return await response
+    if (response.success = false) {
+      return false
+    }
+    return await response.result
   },
 
   cancelOrdersOnpair: async function (draftPosition) {

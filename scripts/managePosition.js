@@ -56,7 +56,7 @@ managePosition.position = async (draftPosition) => {
     stopPlaced = false,
     positionEntered = false,
     positionPostedToDatabase
-  let isShort = draftPosition.entry < draftPosition.stop
+  const isShort = draftPosition.entry < draftPosition.stop
   console.log(`isShort is`, isShort)
   // place entry order
   let entryOrder
@@ -67,7 +67,6 @@ managePosition.position = async (draftPosition) => {
         // if order doesn't go through: ie: trigger price to low
         databaseManager.deleteDraftPosition(draftPosition)
         console.log('entry order failed');
-
         go = false
         return
       }
@@ -153,7 +152,6 @@ managePosition.position = async (draftPosition) => {
                   stopOrder
                 )
                   .then((res) => {
-                    console.log('return from createPositon is', res);
                     dbPosition = res
                     console.log('db Position is', dbPosition);
                     positionPostedToDatabase = true
