@@ -22,6 +22,8 @@ const exchange = {
           size: positionSize,
           triggerPrice: entryPrice,
         },
+      }).then(res => {
+        return res
       })
       .catch((err) => {
         console.log(err)
@@ -29,7 +31,9 @@ const exchange = {
       })
     console.log('entry order was sucessful?:', response.success);
     if (response.success = false) {
+      console.log('returning false');
       return false
+
     }
     return await response.result
   },
@@ -37,7 +41,6 @@ const exchange = {
     const { pair, positionSize, stop: stopPrice } = draftPosition
     console.log('isShori in stopOrder function is:', isShort)
     console.log(draftPosition)
-
     const response = await ftx
       .request({
         method: 'POST',
@@ -52,14 +55,18 @@ const exchange = {
           reduceOnly: true,
         },
       })
+      .then((res) => {
+        return res
+      })
       .catch((err) => {
         console.log(err),
           console.log('caught error in exchange');
       })
     if (response.success = false) {
-      return false
+      return false;
     }
-    return await response.result
+    console.log('stop order in stop order function is', response.result);
+    return response.result
   },
 
   cancelOrdersOnpair: async function (draftPosition) {

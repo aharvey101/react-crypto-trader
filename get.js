@@ -10,7 +10,23 @@ const ftx = new ftxrest({
   subaccount: process.env.PRODUCTION ? 'initial' : '',
 })
 
-const pair = 'BTC-PERP'
+const uri = process.env.DATABASEURI
+mongoose
+  .connect(process.env.MONGODB_URI || uri, {
+    useUnifiedTopology: true,
+    useNewUrlParser: true,
+    useFindAndModify: false,
+  })
+  .then((res) => {
+    console.log('connected to remote DB')
+    positions.forEach(position => {
+      cp(position)
+    })
+  })
+  .catch((err) => console.log(err))
+
+
+const pair = 'ETC-PERP'
 async function getFills() {
 
   const response = await ftx.request({

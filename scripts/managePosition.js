@@ -59,10 +59,10 @@ managePosition.position = async (draftPosition) => {
   const isShort = draftPosition.entry < draftPosition.stop
   console.log(`isShort is`, isShort)
   // place entry order
-  let entryOrder
+  let entryOrderInfo
   await entryOrder(draftPosition, isShort)
     .then((res) => {
-      entryOrder = res
+      entryOrderInfo = res
       if (res = false) {
         // if order doesn't go through: ie: trigger price to low
         databaseManager.deleteDraftPosition(draftPosition)
@@ -136,24 +136,25 @@ managePosition.position = async (draftPosition) => {
           // place stop
           positionEntered = true
           stopPlaced = true
-          const stopOrder = await stopOrder(draftPosition, isShort)
+          stopOrder(draftPosition, isShort)
             .then(async (res) => {
+              console.log(res);
               //handle errors, ie; 404: trigger price too high
-              if ((res.success = false)) {
-                console.log('Stop order was not placed', res)
-                exitPosition(draftPosition)
-                return
-              }
+              // if (res === false) {
+              //   console.log('Stop order was not placed', res)
+              //   exitPosition(draftPosition)
+              //   return
+              // }
               if (!positionPostedToDatabase) {
                 dbPosition = await databaseManager.createPosition(
                   draftPosition,
                   exchangePosInfo,
-                  entryOrder,
-                  stopOrder
+                  entryOrderInfo,
+                  res
                 )
                   .then((res) => {
                     dbPosition = res
-                    console.log('db Position is', dbPosition);
+                    // console.log('db Position is', dbPosition);
                     positionPostedToDatabase = true
                     go = false
                     return
