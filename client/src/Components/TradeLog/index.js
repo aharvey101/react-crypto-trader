@@ -127,6 +127,7 @@ export default class TradeLog extends Component {
 
   makeRows() {
     return this.state.positions.map(position => {
+      console.log(position);
       return <Row position={position} key={position._id} />
     })
   }
