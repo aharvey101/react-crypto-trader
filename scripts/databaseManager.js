@@ -167,5 +167,10 @@ databaseManager.lookup = () => {
   })
   return positions
 }
+databaseManager.getPositions = async () => {
+  const response = await Position.find({}).catch(err => console.log(err))
+
+  return response
+}
 
 module.exports = databaseManager

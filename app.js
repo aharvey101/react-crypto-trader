@@ -31,6 +31,7 @@ const position = require('./routes/enterPosition')
 const exitPosition = require('./routes/exitPosition')
 const getPairs = require('./routes/getPairs')
 const getPositions = require('./routes/getPositions')
+const getCurrerntPositions = require('./routes/getCurrentPositions')
 
 //Use Routes
 
@@ -39,6 +40,7 @@ app.use('/getBalances', getBalances)
 app.use('/exitPosition', exitPosition)
 app.use('/getPairs', getPairs)
 app.use('/getPositions', getPositions)
+app.use('/getCurrentPositions', getCurrerntPositions)
 
 // if in production
 if (process.env.NODE_ENV === 'production') {

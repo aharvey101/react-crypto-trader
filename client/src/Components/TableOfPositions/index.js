@@ -44,7 +44,7 @@ export default class TableOfPositions extends Component {
 
   getPositions() {
     // ask backend to get positions and asign to state
-    const route = process.env.NODE_ENV === 'production' ? '/getPositions' : `${local}/getPositions`
+    const route = process.env.NODE_ENV === 'production' ? '/getCurrentPositions' : `${local}/getCurrentPositions`
     axios.get(route)
       .then(response => {
         console.log(response);

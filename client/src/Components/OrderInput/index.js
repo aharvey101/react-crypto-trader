@@ -98,6 +98,7 @@ class OrderInput extends Component {
       positionSize: this.state.positionSize,
       entry: this.state.entry,
       stop: this.state.stop,
+      timeframe: this.state.timeframe,
       orderDate: this.state.orderDate,
       tf1: this.state.tf1,
       tf2: this.state.tf2,

@@ -1,8 +1,8 @@
 const router = require('express').Router()
-const databaseManager = require('../scripts/databaseManager')
+const exchange = require('../scripts/exchange')
 
 router.get('/', async (req, res) => {
-  const positions = await databaseManager.getPositions()
+  const positions = await exchange.getPositions()
   // console.log('getting positions');
   console.log('getting positions');
   res.send(positions)
