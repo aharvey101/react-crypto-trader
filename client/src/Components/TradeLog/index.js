@@ -73,7 +73,7 @@ function calculatePnl(position) {
 function slippage(position) {
   const isShort = position.entry > position.stop ? false : true
   function orderPriceAverage(object) {
-    // console.log(objecst);
+
     const data = object.fill.map(fill => fill.price)
     const average = data.reduce((p, c) => p + c, 0) / data.length;
     return average
@@ -81,14 +81,15 @@ function slippage(position) {
   const desiredEntry = position.entry
   const actualEntry = orderPriceAverage(position.entryOrder)
 
-  const slippage = (actualEntry - desiredEntry) / desiredEntry * 100;
+  const slippage = isShort ? ((actualEntry - desiredEntry) / desiredEntry * 100) * -1 : (actualEntry - desiredEntry) / desiredEntry * 1000;
 
   return slippage.toFixed(2)
 
 }
 
 function risked(position) {
-  const tradeRisk = 1 - position.stop / position.entry
+  const isShort = position.entry > position.stop ? false : true
+  const tradeRisk = isShort ? ((position.entry * position.positionSize) - (position.stop * position.positionSize)) * -1 : (position.entry * position.positionSize) - (position.stop * position.positionSize)
   return tradeRisk.toFixed(2)
 }
 
@@ -114,7 +115,7 @@ export default class TradeLog extends Component {
   componentDidMount() {
     // set Router
     //process.env.NODE_ENV === 'production' ? '/getPositions' : 
-    const route = process.env.NODE_ENV === 'production' ? '/getPositions' : local + '/getPositions'
+    const route = process.env.NODE_ENV === 'production' ? '/getPositions' : local + 'getPositions'
     axios.get(route)
       .then(response => {
         this.setState({ positions: response.data })
@@ -125,7 +126,7 @@ export default class TradeLog extends Component {
 
   makeRows() {
     return this.state.positions.map(position => {
-      console.log(position);
+
       return <Row position={position} key={position._id} />
     })
   }

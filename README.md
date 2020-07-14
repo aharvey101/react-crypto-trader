@@ -11,8 +11,11 @@ The itnention of this app is to place and manage positions, without the main str
 # TODO - Backend
 
 - [x] Stop loop after position entry, stop placed and database updated with stopOrder
+
 - [] add functionality to update positions as needed on the frontend (Basically a way to add the fills in for the orders after the position is closed)
+
 - [] Figure out how to get fills in: AN IDEA: Use a websocket to get fills, when a fill comes in, search database for the pair the fill is on. find the matching entries with fills that don't complete that order (buy or sell, entry or stop). Alternatively, add a boolean to the Position model to signify that the order is filled
+
 - [] Remove unnessary functions
 
 # TODO Frontend
