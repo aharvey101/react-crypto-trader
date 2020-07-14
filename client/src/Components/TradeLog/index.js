@@ -21,8 +21,6 @@ const Row = props => (
   </tr>
 )
 
-
-
 function date(position) {
   const date = new Date(position.date)
   return date.getDate() + '-' + date.getMonth() + '-' + date.getFullYear()
@@ -83,7 +81,7 @@ function slippage(position) {
   const desiredEntry = position.entry
   const actualEntry = orderPriceAverage(position.entryOrder)
 
-  const slippage = !isShort ? (actualEntry - desiredEntry) / desiredEntry * 100 : ((actualEntry - desiredEntry) / desiredEntry * 100) * -1;
+  const slippage = (actualEntry - desiredEntry) / desiredEntry * 100;
 
   return slippage.toFixed(2)
 
@@ -116,8 +114,8 @@ export default class TradeLog extends Component {
   componentDidMount() {
     // set Router
     //process.env.NODE_ENV === 'production' ? '/getPositions' : 
-    const route = 'http://localhost:3001/getpositions'
-    axios.get('http://localhost:3001/getPositions')
+    const route = process.env.NODE_ENV === 'production' ? '/getPositions' : local + '/getPositions'
+    axios.get(route)
       .then(response => {
         this.setState({ positions: response.data })
         this.makeRows()
