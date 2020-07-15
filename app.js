@@ -6,6 +6,7 @@ const mongoose = require('mongoose')
 const path = require('path')
 const cors = require('cors')
 const concurrentPositons = require('./scripts/concurrentPositions')
+const websocket = require('./scripts/webSocket')
 //Middleware?
 app.use(cors())
 app.use(express.json())
@@ -53,6 +54,10 @@ if (process.env.NODE_ENV === 'production') {
 
 // start existing positions
 // concurrentPositons.start()
+
+// Start websocket
+websocket()
+
 
 app.listen(port, () =>
   console.log(`Example app listening at http://localhost:${port}`)
