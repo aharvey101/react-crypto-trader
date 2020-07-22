@@ -5,7 +5,7 @@ const ccxtExchange = require('../scripts/ccxtExchange')
 router.post('/', async (req, res) => {
 
   //Get order info
-  const order = req
+  const order = req.body
   console.log(order);
   // ccxtExchange.entry(order)
 
