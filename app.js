@@ -1,6 +1,7 @@
 require('dotenv').config()
 const express = require('express')
 const app = express()
+const sslRedirect = require('heroku-ssl-redirect')
 const port = process.env.PORT || 3001
 const mongoose = require('mongoose')
 const path = require('path')
@@ -8,6 +9,7 @@ const cors = require('cors')
 const concurrentPositons = require('./scripts/concurrentPositions')
 const websocket = require('./scripts/webSocket')
 //Middleware?
+app.use(sslRedirect())
 app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
@@ -33,6 +35,7 @@ const exitPosition = require('./routes/exitPosition')
 const getPairs = require('./routes/getPairs')
 const getPositions = require('./routes/getPositions')
 const getCurrerntPositions = require('./routes/getCurrentPositions')
+const webhook = require('./routes/webhook')
 
 //Use Routes
 
@@ -42,6 +45,7 @@ app.use('/exitPosition', exitPosition)
 app.use('/getPairs', getPairs)
 app.use('/getPositions', getPositions)
 app.use('/getCurrentPositions', getCurrerntPositions)
+app.use('/webhook', webhook)
 
 // if in production
 if (process.env.NODE_ENV === 'production') {

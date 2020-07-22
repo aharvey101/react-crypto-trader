@@ -18,6 +18,10 @@ The itnention of this app is to place and manage positions, without the main str
 
 - [] Remove unnessary functions
 
+- [] Webhook
+  - [] Calculate position size
+    - []
+
 # TODO Frontend
 
 - [] Add Trade Log functions

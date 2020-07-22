@@ -33,7 +33,6 @@ const exchange = {
     if (response.success = false) {
       console.log('returning false');
       return false
-
     }
     return await response.result
   },
