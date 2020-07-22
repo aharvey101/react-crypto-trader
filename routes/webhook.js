@@ -7,7 +7,6 @@ router.post('/', async (req, res) => {
   //Get order info
   const order = req.body
   console.log(order);
-  const positionSize
   // ccxtExchange.entry(order)
 
   res.send('recieved order' + JSON.stringify(order))
