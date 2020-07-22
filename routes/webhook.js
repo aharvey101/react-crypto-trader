@@ -21,7 +21,8 @@ router.post('/', async (req, res) => {
   const order = {
     entry: alertData.entry,
     exit: alertData.exit,
-    positionSize: newPositionSize,
+    positionSize: // if positionSize is negative, make it positive
+      newPositionSize < 0 ? newPositionSize * -1 : newPositionSize,
     pair: alertData.pair
   }
   hook.start(order)

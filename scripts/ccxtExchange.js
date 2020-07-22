@@ -18,25 +18,27 @@ const ccxtExchange = {}
 
 ccxtExchange.entry = async (order, isShort) => {
   console.log(order);
-  const side = 'buy' ? isShort : 'sell'
+  const side = isShort ? 'sell' : 'buy'
+  console.log('side is', side);
+  const { pair, entry, positionSize } = order
   const ccxtOverride = {
     'orderPrice': entry
   }
   // destructure elements from order
-  const { pair, entry, positionSize } = order
 
   const response = await ftxccxt.createOrder(pair, 'stop', side, positionSize, entry, ccxtOverride)
+    .catch(err => console.log(err))
   return response
 }
 
 ccxtExchange.stop = async (order, isShort) => {
   console.log(order);
-  const side = 'sell' ? isShort : 'buy'
-  const ccxtOverride = {
-    'orderPrice': entry
-  }
+  const side = isShort ? 'buy' : 'sell'
   const { pair, exit, positionSize } = order
-  const response = await ftxccxt.createOrder(pair, 'stop', side, positionSize, exit, ccxtOverride)
+  const ccxtOverride = {
+    'orderPrice': exit
+  }
+  const response = await ftxccxt.createOrder(pair, 'stop', side, positionSize, exit)
 
   return response
 }
@@ -48,7 +50,8 @@ ccxtExchange.getBalance = async () => {
 }
 
 ccxtExchange.cancelAllOrders = async (order) => {
-  ftxccxt.cancelAllOrders(order.pair)
+  const res = await ftxccxt.cancelAllOrders(order.pair)
+  return res
 }
 
 module.exports = ccxtExchange

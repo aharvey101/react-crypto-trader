@@ -60,7 +60,8 @@ if (process.env.NODE_ENV === 'production') {
 // concurrentPositons.start()
 
 // Start websocket
-websocket()
+// websocket()
+//   .then(console.log('websocket connected'))
 
 
 app.listen(port, () =>
