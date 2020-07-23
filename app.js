@@ -35,7 +35,6 @@ const exitPosition = require('./routes/exitPosition')
 const getPairs = require('./routes/getPairs')
 const getPositions = require('./routes/getPositions')
 const getCurrerntPositions = require('./routes/getCurrentPositions')
-const webhook = require('./routes/webhook')
 
 //Use Routes
 
@@ -60,8 +59,8 @@ if (process.env.NODE_ENV === 'production') {
 // concurrentPositons.start()
 
 // Start websocket
-// websocket()
-//   .then(console.log('websocket connected'))
+websocket()
+  .then(console.log('websocket connected'))
 
 
 app.listen(port, () =>
