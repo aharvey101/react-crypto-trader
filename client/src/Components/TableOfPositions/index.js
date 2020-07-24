@@ -11,7 +11,7 @@ const Row = props => (
     <td className="table-body-item" >{props.position.entryPrice}</td>
     <td className="table-body-item" >{props.position.side}</td>
     <td className="table-body-item" >{props.position.size}</td>
-    <td className="table-body-item" >{props.position.unrealizedPnl}</td>
+    <td className="table-body-item" >{props.position.realizedPnl}</td>
     <td className="table-body-item" ><button >View</button></td>
 
   </tr>
