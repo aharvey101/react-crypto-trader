@@ -44,7 +44,6 @@ app.use('/exitPosition', exitPosition)
 app.use('/getPairs', getPairs)
 app.use('/getPositions', getPositions)
 app.use('/getCurrentPositions', getCurrerntPositions)
-app.use('/webhook', webhook)
 
 // if in production
 if (process.env.NODE_ENV === 'production') {
