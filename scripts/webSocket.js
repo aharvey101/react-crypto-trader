@@ -3,6 +3,7 @@ const ftxws = require('ftx-api-ws')
 const databaseManager = require('./databaseManager')
 const Position = require('../Models/position')
 
+
 const ws = new ftxws({
   key: process.env.API_KEY,
   secret: process.env.API_SECRET,
