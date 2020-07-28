@@ -180,18 +180,16 @@ class OrderInput extends Component {
             <option value="172800">2d</option>
           </select>
           <label className="input-label">Risk</label>
-          <select
+          <input
             name="portfolioRisk"
             placeholder="0.01"
+            step="0.001"
             className="input-field"
             onChange={this.updateBalances}
-            type="select"
+            type="number"
           >
-            <option value="0.01">1%</option>
-            <option value="0.015">1.5%</option>
-            <option value="0.02">2%</option>
-            <option value="0.001">0.1%</option>
-          </select>
+
+          </input>
           <label className="input-label">Entry</label>
           <input
             type="number"
