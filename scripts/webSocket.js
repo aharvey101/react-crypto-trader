@@ -17,6 +17,7 @@ const go = async () => {
     const response = res
     // Make array of the fills because there may be more than one fill
     const fill = [response]
+    console.log(fill);
 
     // Get fill, get all positions from database, 
     // filter positions to match only the ones that match the pair of the fill and have no stoporder fill
@@ -28,7 +29,8 @@ const go = async () => {
       const positions = await databaseManager.getPositions()
       const filteredPosition = positions.filter((pos) => pos.pair === fill[0].future && pos.stopOrder.fill === undefined)
       if (filteredPosition.length === 0) {
-        throw new Error('no position match')
+        console.log('No position match');
+        return
       }
 
       if (filteredPosition[0].entryOrder.fill === undefined) {
