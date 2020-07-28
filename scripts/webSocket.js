@@ -7,6 +7,7 @@ const Position = require('../Models/position')
 const ws = new ftxws({
   key: process.env.API_KEY,
   secret: process.env.API_SECRET,
+  subbaccount: process.env.PRODUCTION ? 'initial' : ''
 })
 
 const go = async () => {
