@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
 import './position.css'
 
-
-
-
 class Position extends Component {
   constructor(props) {
     super(props)

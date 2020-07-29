@@ -1,5 +1,14 @@
 require('dotenv').config()
 const ftxrest = require('ftx-api-rest')
+const CCXT = require('ccxt')
+
+const ftxccxt = new CCXT.ftx({
+  key: process.env.API_KEY,
+  secret: process.env.API_SECRET,
+  headers: {
+    'FTX-SUBACCOUNT': process.env.PRODUCTION ? 'initial' : ''
+  }
+})
 
 const ftx = new ftxrest({
   key: process.env.API_KEY,

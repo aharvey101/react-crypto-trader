@@ -1,13 +1,13 @@
 const ftxrest = require('ftx-api-rest')
 require('dotenv').config()
-const positions = require('./positions')
+// const positions = require('./positions')
 const mongoose = require('mongoose')
 const Position = require('./Models/position')
-const { createPosition, Positions } = require('./scripts/databaseManager')
+// const { createPosition, Positions } = require('./scripts/databaseManager')
 const ftx = new ftxrest({
   key: process.env.API_KEY,
   secret: process.env.API_SECRET,
-  subaccount: process.env.PRODUCTION ? 'initial' : '',
+  subaccount: 'initial',
 })
 
 const uri = process.env.DATABASEURI
@@ -26,8 +26,8 @@ mongoose
   .catch((err) => console.log(err))
 
 
-const pair = 'ETC-PERP'
-async function getFills() {
+const pair = 'ETH-PERP'
+async function getFills(pair) {
 
   const response = await ftx.request({
     method: 'GET',
@@ -38,6 +38,7 @@ async function getFills() {
 
 }
 
+getFills(pair)
 
 async function getOrders() {
 
