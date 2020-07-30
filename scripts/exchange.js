@@ -5,9 +5,9 @@ const CCXT = require('ccxt')
 const ftxccxt = new CCXT.ftx({
   apiKey: process.env.API_KEY,
   secret: process.env.API_SECRET,
-  // headers: {
-  //   'FTX-SUBACCOUNT': process.env.PRODUCTION ? 'initial' : ''
-  // }
+  headers: {
+    'FTX-SUBACCOUNT': process.env.PRODUCTION ? 'initial' : ''
+  }
 })
 
 const ftx = new ftxrest({
