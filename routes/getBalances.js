@@ -23,7 +23,7 @@ router.get('/', async (req, res) => {
         const hwb = res.data.tokens[3].balance / 1000000000000000000
         return hwb
       })
-    const total = ftxBalance.result.collateral + hardwareWalletBalance
+    const total = ftxBalance.result.collateral
     return total
   })()
   let data = await b
