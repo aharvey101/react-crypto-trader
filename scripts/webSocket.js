@@ -5,7 +5,7 @@ const Position = require('../Models/position')
 
 
 const ws = new ftxws({
-  key: process.env.API_KEY,
+  apiKey: process.env.API_KEY,
   secret: process.env.API_SECRET,
   subaccount: process.env.PRODUCTION ? 'initial' : ''
 })

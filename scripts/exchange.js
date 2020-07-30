@@ -3,11 +3,11 @@ const ftxrest = require('ftx-api-rest')
 const CCXT = require('ccxt')
 
 const ftxccxt = new CCXT.ftx({
-  key: process.env.API_KEY,
+  apiKey: process.env.API_KEY,
   secret: process.env.API_SECRET,
-  headers: {
-    'FTX-SUBACCOUNT': process.env.PRODUCTION ? 'initial' : ''
-  }
+  // headers: {
+  //   'FTX-SUBACCOUNT': process.env.PRODUCTION ? 'initial' : ''
+  // }
 })
 
 const ftx = new ftxrest({
@@ -19,73 +19,49 @@ const ftx = new ftxrest({
 const exchange = {
   entryOrder: async function (draftPosition, isShort) {
     const { pair, positionSize, entry: entryPrice, stop: stopPrice } = draftPosition
-    const response = await ftx
-      .request({
-        method: 'POST',
-        path: '/conditional_orders',
-        data: {
-          market: pair,
-          type: 'stop',
-          side: isShort ? 'sell' : 'buy',
-          price: entryPrice,
-          size: positionSize,
-          triggerPrice: entryPrice,
-        },
-      }).then(res => {
+    const side = isShort ? 'sell' : 'buy'
+    const ccxtOverride = {
+      'orderPrice': entryPrice * 1.0002
+    }
+    const response = await ftxccxt.createOrder(pair, 'stop', side, positionSize, entryPrice, ccxtOverride)
+      .then(res => {
         return res
       })
       .catch((err) => {
         console.log(err)
         return false
       })
-    console.log('entry order was sucessful?:', response.success);
-    if (response.success = false) {
-      console.log('returning false');
-      return false
-    }
-    return await response.result
+    console.log(response);
+    return response
   },
   stopOrder: async function (draftPosition, isShort) {
     const { pair, positionSize, stop: stopPrice } = draftPosition
-    console.log('isShori in stopOrder function is:', isShort)
+    console.log('isShort in stopOrder function is:', isShort)
     console.log(draftPosition)
-    const response = await ftx
-      .request({
-        method: 'POST',
-        path: '/conditional_orders',
-        data: {
-          market: pair,
-          type: 'stop',
-          side: isShort ? 'buy' : 'sell',
-          price: stopPrice,
-          size: positionSize,
-          triggerPrice: stopPrice,
-          reduceOnly: true,
-        },
-      })
-      .then((res) => {
+    const side = isShort ? 'buy' : 'sell'
+    const response = await ftxccxt.createOrder(pair, 'stop', side, positionSize, stopPrice, params = { 'reduceOnly': true })
+      .then(res => {
         return res
       })
       .catch((err) => {
-        console.log(err),
-          console.log('caught error in exchange');
+        console.log(err)
+        return false
       })
-    if (response.success = false) {
-      return false;
-    }
-    console.log('stop order in stop order function is', response.result);
-    return response.result
+    console.log('stop order in stop order function is', response);
+    return response
   },
 
   cancelOrdersOnpair: async function (draftPosition) {
     console.log('cancelOrdersOnpair')
-    const response = await ftx.request({
-      method: 'DELETE',
-      path: '/orders',
-      data: {
-        market: draftPosition.pair,
-      },
-    })
+    const response = await ftxccxt.cancelAllOrders(draftPosition.pair)
+      .catch(err => console.log(err))
+    // const response = await ftx.request({
+    //   method: 'DELETE',
+    //   path: '/orders',
+    //   data: {
+    //     market: draftPosition.pair,
+    //   },
+    // })
     return response
   },
   getPositionInfo: async function (draftPosition) {
