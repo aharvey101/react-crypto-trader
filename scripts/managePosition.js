@@ -10,6 +10,11 @@ const { pairWatch } = require('./pairManager')
 const databaseManager = require('./databaseManager')
 const exchange = require('./exchange')
 const managePosition = {}
+const TelegramBot = require('node-telegram-bot-api')
+const token = process.env.TELEGRAM_TOKEN
+const chatId = process.env.TELEGRAM_CHAT_ID
+const bot = new TelegramBot(token, { polling: true })
+
 
 //- [] Currently wont work as there is no id in the input of this function. need to fix on the front end
 managePosition.exitPositon = async (position) => {
@@ -131,6 +136,7 @@ managePosition.position = async (draftPosition) => {
         (!isShort && pairPrice > draftPosition.entry)
       ) {
         console.log('placing stop');
+
         const exchangePosInfo = await getPositionInfo(draftPosition)
         if (exchangePosInfo != []) {
           // place stop
@@ -139,6 +145,7 @@ managePosition.position = async (draftPosition) => {
           stopOrder(draftPosition, isShort)
             .then(async (res) => {
               console.log(res);
+              bot.sendMessage(chatId, 'P')
               //handle errors, ie; 404: trigger price too high
               if (res === false) {
                 console.log('Stop order was not placed', res)
@@ -169,6 +176,7 @@ managePosition.position = async (draftPosition) => {
               return
             })
           console.log('stop placed and position entered is ', stopPlaced, positionEntered);
+          bot.sendMessage(chatId, 'stop Placed and database position created for:', draftPosition.pair)
 
         }
       }

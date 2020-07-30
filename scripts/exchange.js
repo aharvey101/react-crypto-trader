@@ -1,24 +1,23 @@
 require('dotenv').config()
 const ftxrest = require('ftx-api-rest')
 const CCXT = require('ccxt')
-
 const ftxccxt = new CCXT.ftx({
   apiKey: process.env.API_KEY,
   secret: process.env.API_SECRET,
   headers: {
-    'FTX-SUBACCOUNT': process.env.PRODUCTION ? 'initial' : ''
+    'FTX-SUBACCOUNT': process.env.NODE_ENV === 'production' ? 'initial' : 'testaccount'
   }
 })
 
 const ftx = new ftxrest({
   key: process.env.API_KEY,
   secret: process.env.API_SECRET,
-  subaccount: process.env.PRODUCTION ? 'initial' : '',
+  subaccount: process.env.NODE_ENV === 'production' ? 'initial' : 'testaccount',
 })
 
 const exchange = {
-  entryOrder: async function (draftPosition, isShort) {
-    const { pair, positionSize, entry: entryPrice, stop: stopPrice } = draftPosition
+  entryOrder: async function (order, isShort) {
+    const { pair, positionSize, entry: entryPrice, stop: stopPrice } = order
     const side = isShort ? 'sell' : 'buy'
     const ccxtOverride = {
       'orderPrice': entryPrice * 1.0002
@@ -34,10 +33,10 @@ const exchange = {
     console.log(response);
     return response
   },
-  stopOrder: async function (draftPosition, isShort) {
-    const { pair, positionSize, stop: stopPrice } = draftPosition
+  stopOrder: async function (order, isShort) {
+    const { pair, positionSize, stop: stopPrice } = order
     console.log('isShort in stopOrder function is:', isShort)
-    console.log(draftPosition)
+    console.log(order)
     const side = isShort ? 'buy' : 'sell'
     const response = await ftxccxt.createOrder(pair, 'stop', side, positionSize, stopPrice, params = { 'reduceOnly': true })
       .then(res => {
@@ -51,20 +50,13 @@ const exchange = {
     return response
   },
 
-  cancelOrdersOnpair: async function (draftPosition) {
+  cancelOrdersOnpair: async function (order) {
     console.log('cancelOrdersOnpair')
-    const response = await ftxccxt.cancelAllOrders(draftPosition.pair)
+    const response = await ftxccxt.cancelAllOrders(order.pair)
       .catch(err => console.log(err))
-    // const response = await ftx.request({
-    //   method: 'DELETE',
-    //   path: '/orders',
-    //   data: {
-    //     market: draftPosition.pair,
-    //   },
-    // })
     return response
   },
-  getPositionInfo: async function (draftPosition) {
+  getPositionInfo: async function (order) {
 
     async function wait() {
       return new Promise((resolve, reject) => {
@@ -91,7 +83,7 @@ const exchange = {
     //- [] Error handle so that if the position does not exist, it doesn't go on but breaks
 
     const newRes = await response.result.filter((position) => {
-      if (position.size !== 0 && position.future === draftPosition.pair) {
+      if (position.size !== 0 && position.future === order.pair) {
         console.log(position);
         return true
       } else {
@@ -104,28 +96,13 @@ const exchange = {
 
 
   },
-  getStopInfo: async (draftPosition) => {
-    const order = await ftx.request({
-      method: 'GET',
-      path: `/conditional_orders/history?market=${draftPosition.pair}`,
-    })
-    return order.result[0]
-  },
-  exitPosition: async (draftPosition, isShort) => {
-    console.log(draftPosition)
+  exitPosition: async (order, isShort) => {
+    const { pair, positionSize, stop: stopPrice } = order
+    console.log(order)
     console.log('exiting position')
-    const response = await ftx.request({
-      method: 'POST',
-      path: '/orders',
-      data: {
-        market: draftPosition.pair,
-        side: isShort ? 'buy' : 'sell',
-        type: 'market',
-        size: draftPosition.positionSize,
-        reduceOnly: true,
-        price: draftPosition.stop,
-      },
-    })
+    const side = isShort ? 'buy' : 'sell'
+    const response = await ftxccxt.createOrder(pair, 'market', side, positionSize, stopPrice, params = { 'reduceOnly': true })
+
     return response
   },
   getPairs: async () => {
@@ -146,12 +123,12 @@ const exchange = {
 
     return filter(response)
   },
-  getEntryInfo: async (draftPosition) => {
-    const order = await ftx.request({
+  getEntryInfo: async (order) => {
+    const response = await ftx.request({
       method: 'GET',
-      path: `/conditional_orders/history?market=${draftPosition.pair}`,
+      path: `/conditional_orders/history?market=${order.pair}`,
     })
-    return order.result[0]
+    return response.result[0]
   },
   getPositions: async () => {
     const response = await ftx.request({

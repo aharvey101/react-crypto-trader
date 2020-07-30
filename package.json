@@ -28,6 +28,7 @@
     "json2csv": "^5.0.1",
     "moment": "^2.26.0",
     "mongoose": "^5.9.16",
+    "node-telegram-bot-api": "^0.50.0",
     "nodemon": "^2.0.4",
     "util": "^0.12.3"
   }

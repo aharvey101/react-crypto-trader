@@ -2,7 +2,9 @@ require('dotenv').config()
 const ftxws = require('ftx-api-ws')
 const databaseManager = require('./databaseManager')
 const Position = require('../Models/position')
-
+const token = process.env.TELEGRAM_TOKEN
+const chatId = process.env.TELEGRAM_CHAT_ID
+const bot = new TelegramBot(token, { polling: true })
 
 const ws = new ftxws({
   key: process.env.API_KEY,
@@ -39,12 +41,11 @@ const go = async () => {
       } else {
         filteredPosition[0].stopOrder.fill = fill
       }
-      console.log('after mutation', filteredPosition);
-
       // Post position to 
       Position.findByIdAndUpdate(filteredPosition[0]._id, filteredPosition[0], (err, newPosition) => {
         if (err) console.log(err);
         console.log('updated position is', newPosition);
+        bot.sendMessage(chatId, `Got fill for ${filteredPosition[0].pair}, the updated position is ${newPosition}`)
       })
 
     }, 5000)
