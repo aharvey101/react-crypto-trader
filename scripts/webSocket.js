@@ -1,20 +1,20 @@
 require('dotenv').config()
+process.env.NTBA_FIX_319 = 1;
 const ftxws = require('ftx-api-ws')
 const databaseManager = require('./databaseManager')
 const Position = require('../Models/position')
-const token = process.env.TELEGRAM_TOKEN
-const chatId = process.env.TELEGRAM_CHAT_ID
-const bot = new TelegramBot(token, { polling: true })
+const bot = require('./telegramBot')
 
+const chatId = process.env.TELEGRAM_CHAT_ID
 const ws = new ftxws({
   key: process.env.API_KEY,
   secret: process.env.API_SECRET,
-  subaccount: process.env.PRODUCTION ? 'initial' : ''
+  subaccount: process.env.NODE_ENV === 'production' ? 'initial' : undefined
 })
 
 const go = async () => {
+  bot.sendMessage(chatId, 'Testing websocket message')
   await ws.connect()
-
   ws.subscribe('fills')
   ws.on('fills', async (res) => {
     const response = res

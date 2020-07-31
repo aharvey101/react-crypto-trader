@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom'
 import './position.css'
 
 class Position extends Component {
@@ -96,8 +97,10 @@ class Position extends Component {
           </p>
           <h3 className="position-information__title-Exit">Exit information</h3>
           <p>
-            Profit and loss: {this.calculatePnl(this.state)}
+            {/* Profit and loss: {this.calculatePnl(this.state)} */}
           </p>
+          {/* <td className="table-body-item" >{slippage(props.position)}%</td> */}
+          <Link exact='true' to={{ pathname: `/position/${this.state._id}/edit/`, state: this.state }}><button>View</button></Link>
         </div>
       </div>
     )

@@ -8,4 +8,9 @@ router.get('/', async (req, res) => {
   res.send(positions)
 })
 
+router.post('/:id/edit', async (req, res) => {
+
+})
+
 module.exports = router
+

@@ -36,3 +36,8 @@ The itnention of this app is to place and manage positions, without the main str
 
 - Overview
   - [] Graph of account size: Thought, for every trade, take total profit or loss off previous account balance, much like a spreadsheet.
+
+## Edit Trades Functionality
+
+- [] Frontend - Edit page
+- [] Backend - update route
