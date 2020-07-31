@@ -10,7 +10,13 @@ const { pairWatch } = require('./pairManager')
 const databaseManager = require('./databaseManager')
 const exchange = require('./exchange')
 const managePosition = {}
-const bot = require('./telegramBot')
+
+process.env.NTBA_FIX_319 = 1
+const TelegramBot = require('node-telegram-bot-api')
+const token = process.env.TELEGRAM_TOKEN
+const chatId = process.env.TELEGRAM_CHAT_ID
+const bot = new TelegramBot(token)
+
 
 //- [] Currently wont work as there is no id in the input of this function. need to fix on the front end
 managePosition.exitPositon = async (position) => {

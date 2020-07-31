@@ -5,6 +5,6 @@ const CCXT = require('ccxt')
 const TelegramBot = require('node-telegram-bot-api')
 const token = process.env.TELEGRAM_TOKEN
 const chatId = process.env.TELEGRAM_CHAT_ID
-const bot = new TelegramBot(token, { polling: true })
+const bot = new TelegramBot(token)
 
 bot.sendMessage(1327709085, 'hello tehre')

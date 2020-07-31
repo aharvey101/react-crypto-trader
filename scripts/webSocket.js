@@ -1,11 +1,10 @@
 require('dotenv').config()
-process.env.NTBA_FIX_319 = 1;
+// process.env.NTBA_FIX_319 = 1;
 const ftxws = require('ftx-api-ws')
 const databaseManager = require('./databaseManager')
 const Position = require('../Models/position')
-const bot = require('./telegramBot')
+// const bot = require('./telegramBot')
 
-const chatId = process.env.TELEGRAM_CHAT_ID
 const ws = new ftxws({
   key: process.env.API_KEY,
   secret: process.env.API_SECRET,
@@ -13,7 +12,7 @@ const ws = new ftxws({
 })
 
 const go = async () => {
-  bot.sendMessage(chatId, 'Testing websocket message')
+  // bot.sendMessage(chatId, 'Testing websocket message')
   await ws.connect()
   ws.subscribe('fills')
   ws.on('fills', async (res) => {
@@ -45,7 +44,7 @@ const go = async () => {
       Position.findByIdAndUpdate(filteredPosition[0]._id, filteredPosition[0], (err, newPosition) => {
         if (err) console.log(err);
         console.log('updated position is', newPosition);
-        bot.sendMessage(chatId, `Got fill for ${filteredPosition[0].pair}, the updated position is ${newPosition}`)
+        // bot.sendMessage(chatId, `Got fill for ${filteredPosition[0].pair}, the updated position is ${newPosition}`)
       })
 
     }, 5000)

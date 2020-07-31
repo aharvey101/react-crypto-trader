@@ -6,7 +6,7 @@ const local = 'http://localhost:3001/'
 class EditTrade extends Component {
   constructor(props) {
     super(props)
-    this.state = props
+    this.state = props.location.state
     // this.updatePair = this.updatePair.bind(this)
     // this.submitForm = this.submitForm.bind(this)
     // this.updateBalances = this.updateBalances.bind(this)
@@ -106,7 +106,7 @@ class EditTrade extends Component {
           <label className="input-label">Pair</label>
           <select
             name="pair"
-            placeholder="Pair"
+            value={this.state.pair}
             className="input-field"
             onChange={this.updatePair}
           >
@@ -200,12 +200,12 @@ class EditTrade extends Component {
           <p>Posision Size: {this.state.positionSize}</p>
           <p>Portfolio Size: {this.state.portfolioSize}</p>
           <label className="input-label" >Response From Server</label> */}
-          <textarea
+          {/* <textarea
             className="text-field"
             readOnly
             rows="5"
           // value={this.state.response}
-          ></textarea>
+          ></textarea> */}
 
         </form>
       </div>

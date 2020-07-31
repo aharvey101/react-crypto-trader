@@ -100,7 +100,7 @@ class Position extends Component {
             {/* Profit and loss: {this.calculatePnl(this.state)} */}
           </p>
           {/* <td className="table-body-item" >{slippage(props.position)}%</td> */}
-          <Link exact='true' to={{ pathname: `/position/${this.state._id}/edit/`, state: this.state }}><button>View</button></Link>
+          <Link exact='true' to={{ pathname: `/position/${this.state._id}/edit/`, state: this.state }}><button>Edit</button></Link>
         </div>
       </div>
     )

@@ -18,10 +18,6 @@ The itnention of this app is to place and manage positions, without the main str
 
 - [] Remove unnessary functions
 
-- [] Webhook
-  - [] Calculate position size
-    - []
-
 # TODO Frontend
 
 - [] Add Trade Log functions
@@ -41,3 +37,7 @@ The itnention of this app is to place and manage positions, without the main str
 
 - [] Frontend - Edit page
 - [] Backend - update route
+
+## Telegram Bot
+
+- [] There is a problem with initializing teh bot twice, need to fix
