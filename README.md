@@ -6,13 +6,13 @@
 
 # SCOPE OF APP:
 
-The itnention of this app is to place and manage positions, without the main strategy but with the order management rules
+The itnention of this app is to place positions, without the main strategy but with the order management rules
 
 # TODO - Backend
 
 - [x] Stop loop after position entry, stop placed and database updated with stopOrder
 
-- [] add functionality to update positions as needed on the frontend (Basically a way to add the fills in for the orders after the position is closed)
+- [x] add functionality to update positions as needed on the frontend (Basically a way to add the fills in for the orders after the position is closed)
 
 - [x] Figure out how to get fills in: AN IDEA: Use a websocket to get fills, when a fill comes in, search database for the pair the fill is on. find the matching entries with fills that don't complete that order (buy or sell, entry or stop). Alternatively, add a boolean to the Position model to signify that the order is filled
 
@@ -20,7 +20,7 @@ The itnention of this app is to place and manage positions, without the main str
 
 # TODO Frontend
 
-- [] Add Trade Log functions
+- [x] Add Trade Log functions
 
   - [x] Date time
   - [x] Strategy (if no strategy, assume cradle)
@@ -32,14 +32,34 @@ The itnention of this app is to place and manage positions, without the main str
 
 - [] All trade log functions should be added to backend to update position
 
+- [] Update PnL when position is closed:
+
+  - [] info needed:
+  - [] Entry - from order input
+  - [] position size: from order inputing
+
+- [] Strategy Input on input form
+
+  - [] frontend on form and in state
+  - [] Backend on Model
+
+- [] isShort
+
+  - [] On input form and state
+  - [] On Model on backend
+
+- [] Slippage
+
+  - []
+
 - Overview
   - [] Graph of account size: Thought, for every trade, take total profit or loss off previous account balance, much like a spreadsheet.
 
 ## Edit Trades Functionality
 
-- [] Frontend - Edit page
-- [] Backend - update route
+- [x] Frontend - Edit page
+- [x] Backend - update route
 
 ## Telegram Bot
 
-- [] There is a problem with initializing teh bot twice, need to fix
+- [x] There is a problem with initializing teh bot twice, need to fix
