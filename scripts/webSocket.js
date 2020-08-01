@@ -3,7 +3,7 @@ require('dotenv').config()
 const ftxws = require('ftx-api-ws')
 const databaseManager = require('./databaseManager')
 const Position = require('../Models/position')
-// const bot = require('./telegramBot')
+const bot = require('./telegramBot')
 
 const ws = new ftxws({
   key: process.env.API_KEY,

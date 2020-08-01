@@ -30,6 +30,8 @@ The itnention of this app is to place and manage positions, without the main str
   - [x] \$ Risked
   - [x] Slippage
 
+- [] All trade log functions should be added to backend to update position
+
 - Overview
   - [] Graph of account size: Thought, for every trade, take total profit or loss off previous account balance, much like a spreadsheet.
 

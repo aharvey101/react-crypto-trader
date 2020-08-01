@@ -13,7 +13,8 @@ const Row = props => (
     <td className="table-body-item" >{strategy(props.position)}</td>
     <td className="table-body-item" >{direction(props.position)}</td>
     <td className="table-body-item" >{props.position.timeframe}</td>
-    {/* <td className="table-body-item" >${calculatePnl(props.position)}</td> */}
+    {/* <td className="table-body-item" >{calculatePnl(props.position)}</td> */}
+    <td className="table-body-item" >-</td>
     <td className="table-body-item" >${risked(props.position)}</td>
     <td className="table-body-item" >{slippage(props.position)}%</td>
     <td className="table-body-item" ><Link exact='true' to={{ pathname: `/position/${props.position._id}`, state: props.position }}><button>View</button></Link></td>
