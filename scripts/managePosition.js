@@ -10,8 +10,9 @@ const { pairWatch } = require('./pairManager')
 const databaseManager = require('./databaseManager')
 const exchange = require('./exchange')
 const managePosition = {}
-const bot = require('./telegramBot')
 
+const bot = require('./telegramBot')
+const chatId = process.env.TELEGRAM_CHAT_ID
 
 //- [] Currently wont work as there is no id in the input of this function. need to fix on the front end
 managePosition.exitPositon = async (position) => {
@@ -172,33 +173,12 @@ managePosition.position = async (draftPosition) => {
               return
             })
           console.log('stop placed and position entered is ', stopPlaced, positionEntered);
-          bot.sendMessage(chatId, 'stop Placed and database position created for:', draftPosition.pair)
+          bot.sendMessage(chatId, `stop Placed and database position created for: ${draftPosition.pair}`,)
 
         }
       }
     }
-    //If stop was executed, update position in db
-    // Check to see if stop order was exected
-    // If so, update position
 
-    // if (positionEntered = true && stopPlaced === true) {
-    //   // Get stop order Info
-    //   console.log('getting Stop Info')
-    //   const stopOrderInfo = await getStopInfo(draftPosition)
-    //   if (stopOrderInfo.avgFillPrice != null) {
-    //     setTimeout((dbPosition) => {
-    //       console.log('updating Position')
-    //       console.log('dbPosition before updating position is', dbPosition);
-    //       databaseManager.updatePosition(dbPosition, stopOrderInfo)
-
-    //     }, 1000, dbPosition)
-    //     // STOPS HERE
-    //     go = false
-    //     return
-    //   } else {
-    //     console.log('stop not triggered yet')
-    //   }
-    // }
   }
   if (!go) {
     databaseManager.deleteDraftPosition(draftPosition)

@@ -5,11 +5,10 @@ const axios = require('axios')
 const ftxr = new ftxrest({
   key: process.env.API_KEY,
   secret: process.env.API_SECRET,
-  subaccount: process.env.PRODUCTION ? 'initial' : ''
+  subaccount: process.env.NODE_ENV === 'production' ? 'initial' : 'testaccount'
 })
 
 router.get('/', async (req, res) => {
-  const account = 'Main Account'
   const b = (async () => {
     const ftxBalance = await ftxr.request({
       method: 'GET',
@@ -23,7 +22,7 @@ router.get('/', async (req, res) => {
         const hwb = res.data.tokens[3].balance / 1000000000000000000
         return hwb
       })
-    const total = ftxBalance.result.collateral + hardwareWalletBalance
+    const total = ftxBalance.result.collateral
     return total
   })()
   let data = await b

@@ -9,7 +9,7 @@ const bot = require('./telegramBot')
 const ws = new ftxws({
   key: process.env.API_KEY,
   secret: process.env.API_SECRET,
-  subaccount: process.env.NODE_ENV === 'production' ? 'initial' : undefined
+  subaccount: process.env.NODE_ENV === 'production' ? 'initial' : "testaccount"
 })
 
 const go = async () => {
@@ -47,11 +47,13 @@ const go = async () => {
           const data = object.fill.map(fill => fill.size).reduce(reducer)
           return data
         }
-        const size = accumulateSize(filteredPosition.stopOrder)
+        const size = accumulateSize(filteredPosition[0].stopOrder)
+        console.log(size);
 
-        if (size >= filteredPosition.positionSize) {
-          const pnl = calculatePnl(filteredPosition)
-          filteredPosition.pnl = pnl
+        if (size >= filteredPosition[0].positionSize) {
+          const pnl = calculatePnl(filteredPosition[0])
+          filteredPosition[0].pnl = pnl
+          console.log(pnl);
         }
       }
       function calculatePnl(position) {
