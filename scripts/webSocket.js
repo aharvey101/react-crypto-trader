@@ -3,6 +3,7 @@ require('dotenv').config()
 const ftxws = require('ftx-api-ws')
 const databaseManager = require('./databaseManager')
 const Position = require('../Models/position')
+const chatId = process.env.TELEGRAM_CHAT_ID
 const bot = require('./telegramBot')
 
 const ws = new ftxws({
@@ -41,7 +42,7 @@ const go = async () => {
         // filling stop, maybe trigger the calculation here?
         // if the combination of the fills = the position size (ie: the stop order has been completely filled)
         // calculate the pnl
-        
+
       }
       // Post position to 
       Position.findByIdAndUpdate(filteredPosition[0]._id, filteredPosition[0], (err, newPosition) => {
