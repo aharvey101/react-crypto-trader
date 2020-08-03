@@ -12,7 +12,6 @@ const ws = new ftxws({
 })
 
 const go = async () => {
-  // bot.sendMessage(chatId, 'Testing websocket message')
   await ws.connect()
   ws.subscribe('fills')
   ws.on('fills', async (res) => {
@@ -39,12 +38,16 @@ const go = async () => {
         filteredPosition[0].entryOrder.fill = fill
       } else {
         filteredPosition[0].stopOrder.fill = fill
+        // filling stop, maybe trigger the calculation here?
+        // if the combination of the fills = the position size (ie: the stop order has been completely filled)
+        // calculate the pnl
+        
       }
       // Post position to 
       Position.findByIdAndUpdate(filteredPosition[0]._id, filteredPosition[0], (err, newPosition) => {
         if (err) console.log(err);
         console.log('updated position is', newPosition);
-        // bot.sendMessage(chatId, `Got fill for ${filteredPosition[0].pair}, the updated position is ${newPosition}`)
+        bot.sendMessage(chatId, `Got fill for ${filteredPosition[0].pair}, the updated position is ${newPosition}`)
       })
 
     }, 5000)

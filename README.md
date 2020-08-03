@@ -37,6 +37,7 @@ The itnention of this app is to place positions, without the main strategy but w
   - [] info needed:
   - [] Entry - from order input
   - [] position size: from order inputing
+  - []
 
 - [] Strategy Input on input form
 
@@ -49,8 +50,7 @@ The itnention of this app is to place positions, without the main strategy but w
   - [] On Model on backend
 
 - [] Slippage
-
-  - []
+  []
 
 - Overview
   - [] Graph of account size: Thought, for every trade, take total profit or loss off previous account balance, much like a spreadsheet.

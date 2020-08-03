@@ -13,6 +13,7 @@ var positionSchema = new mongoose.Schema({
   entryOrder: Object,
   position: Object,
   stopOrder: Object,
+  pnl: Number,
 
 })
 
