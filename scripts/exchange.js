@@ -20,7 +20,7 @@ const exchange = {
     const { pair, positionSize, entry: entryPrice, stop: stopPrice } = order
     const side = isShort ? 'sell' : 'buy'
     const ccxtOverride = {
-      'orderPrice': entryPrice * 1.0002
+      'orderPrice': entryPrice * 1.0004
     }
     const response = await ftxccxt.createOrder(pair, 'stop', side, positionSize, entryPrice, ccxtOverride)
       .then(res => {
@@ -52,8 +52,16 @@ const exchange = {
 
   cancelOrdersOnpair: async function (order) {
     console.log('cancelOrdersOnpair')
-    const response = await ftxccxt.cancelAllOrders(order.pair)
+
+    const response = await ftx.request({
+      method: 'DELETE',
+      path: '/orders',
+      data: {
+        market: order.pair
+      }
+    })
       .catch(err => console.log(err))
+    // const response = await ftxccxt.privateDeleteOrders(order.pair)
     return response
   },
   getPositionInfo: async function (order) {

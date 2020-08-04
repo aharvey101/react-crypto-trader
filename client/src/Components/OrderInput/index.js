@@ -67,6 +67,7 @@ class OrderInput extends Component {
         let newTradeAmount =
           (this.state.portfolioSize * this.state.portfolioRisk) / tradeRisk
         let newPositionSize = newTradeAmount / this.state.entry
+        newPositionSize.toFixed(6)
 
         this.setState({
           ...this.state,
@@ -240,10 +241,10 @@ class OrderInput extends Component {
           <label className="input-label">Order:</label>
           <p>Pair: {this.state.pair}</p>
           {/* fix to display selected timeframe, not state */}
-          <p>Timeframe: {document.getElementsByName('timeframe').values}</p>
+          <p>Timeframe: {this.state.timeframe / 60}</p>
           <p>Entry: {this.state.entry}</p>
           <p>Stop: {this.state.stop}</p>
-          <p>Posision Size: {this.state.positionSize}</p>
+          <p>Position Size: {this.state.positionSize}</p>
           <p>Portfolio Size: {this.state.portfolioSize}</p>
           <label className="input-label" >Response From Server</label>
           <textarea

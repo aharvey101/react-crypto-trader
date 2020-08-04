@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest --",
     "start": "node app.js",
     "dev": "nodemon app.js",
     "build": "cd client && npm run build",
@@ -31,5 +31,15 @@
     "node-telegram-bot-api": "^0.50.0",
     "nodemon": "^2.0.4",
     "util": "^0.12.3"
+  },
+  "jest": {
+    "modulePathIgnorePatterns": [
+      "/node_modules/",
+      "client"
+    ]
+  },
+  "devDependencies": {
+    "jest": "^26.2.2",
+    "jest-websocket-mock": "^2.1.0"
   }
 }
