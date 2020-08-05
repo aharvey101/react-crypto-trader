@@ -32,17 +32,16 @@ The itnention of this app is to place positions, without the main strategy but w
 
 - [] All trade log functions should be added to backend to update position
 
-- [] Update PnL when position is closed:
+- [x] Update PnL when position is closed:
 
-  - [] info needed:
-  - [] Entry - from order input
-  - [] position size: from order inputing
-  - []
+  - [x] info needed:
+  - [x] Entry - from order input
+  - [x] position size: from order inputing
 
-- [] Strategy Input on input form
+- [x] Strategy Input on input form
 
-  - [] frontend on form and in state
-  - [] Backend on Model
+  - [x] frontend on form and in state
+  - [x] Backend on Model
 
 - [] isShort
 

@@ -1,5 +1,8 @@
 const databaseManager = require('./databaseManager')
 const calculate = require('./calculate')
+const Position = require('../Models/position')
+const chatId = process.env.TELEGRAM_CHAT_ID
+const bot = require('./telegramBot')
 
 
 const fills = {}
@@ -48,11 +51,9 @@ fills.fills = (pos) => {
     }
 
     // Post position to 
-    Position.findByIdAndUpdate(pos._id, pos, (err, newPosition) => {
-      if (err) console.log(err);
-      console.log('updated position is', newPosition);
-      bot.sendMessage(chatId, `Got fill for ${filteredPosition[0].pair}, the updated position is ${newPosition}`)
-    })
+    databaseManager.findByIdAndUpdate(pos)
 
   }, 5000, pos)
 }
+
+module.exports = fills

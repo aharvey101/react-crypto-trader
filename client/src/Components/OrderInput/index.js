@@ -8,6 +8,8 @@ class OrderInput extends Component {
     super()
     this.state = {
       pair: '',
+      strategy: '',
+      timefame: 60,
       entry: 0,
       stop: 0,
       positionSize: 0,
@@ -90,7 +92,6 @@ class OrderInput extends Component {
     this.setState({
       [name]: value,
     })
-    console.log(this.state)
   }
 
   submitForm() {
@@ -104,8 +105,8 @@ class OrderInput extends Component {
       tf1: this.state.tf1,
       tf2: this.state.tf2,
       tf3: this.state.tf3,
+      isShort: this.state.entry > this.state.stop ? false : true
     }
-    console.log(order)
     const route =
       process.env.NODE_ENV === 'production' ? '/position' : `${local}position`
     axios
@@ -165,8 +166,9 @@ class OrderInput extends Component {
             placeholder="Timeframe"
             className="input-field"
             onChange={this.updatePair}
+
           >
-            <option value="60">1m</option>
+            <option value="60"  >1m</option>
             <option value="300">5m</option>
             <option value="600">10m</option>
             <option value="900">15m</option>
@@ -181,6 +183,12 @@ class OrderInput extends Component {
             <option value="57600">16h</option>
             <option value="86400">1d</option>
             <option value="172800">2d</option>
+          </select>
+          <label className="input-label">Strategy</label>
+          <select name="strategy" placeholder="cradle" onChange={this.updatePair}>
+            <option value="cradle" >Cradle</option>
+            <option value="fib-booster" >Fib Booster</option>
+            <option value="breakout" >Breakout</option>
           </select>
           <label className="input-label">Risk</label>
           <input
@@ -241,7 +249,7 @@ class OrderInput extends Component {
           <label className="input-label">Order:</label>
           <p>Pair: {this.state.pair}</p>
           {/* fix to display selected timeframe, not state */}
-          <p>Timeframe: {this.state.timeframe / 60}</p>
+          <p>Timeframe: {(this.state.timeframe / 60) >= 60 ? this.state.timeframe / 60 / 60 + `hr` : this.state.timeframe / 60 + `m`}</p>
           <p>Entry: {this.state.entry}</p>
           <p>Stop: {this.state.stop}</p>
           <p>Position Size: {this.state.positionSize}</p>
@@ -253,11 +261,8 @@ class OrderInput extends Component {
             rows="5"
             value={this.state.response}
           ></textarea>
-          <button className="exit-position" onClick={this.exitPosition}>
-            Exit Position
-          </button>
         </form>
-      </div>
+      </div >
     )
   }
 }
