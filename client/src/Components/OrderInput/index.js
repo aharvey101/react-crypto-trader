@@ -86,7 +86,6 @@ class OrderInput extends Component {
             newPositionSize < 0 ? newPositionSize * -1 : newPositionSize,
           risked: this.risked(this.state)
         })
-        console.log(this.state);
       })
       .catch((err) => console.log(err))
     const { name, value } = e.target
