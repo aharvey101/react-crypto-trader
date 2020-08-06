@@ -33,7 +33,6 @@
     "util": "^0.12.3"
   },
   "devDependencies": {
-    "jest": "^26.2.2",
     "jest-websocket-mock": "^2.1.0"
   }
 }
