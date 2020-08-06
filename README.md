@@ -43,10 +43,10 @@ The itnention of this app is to place positions, without the main strategy but w
   - [x] frontend on form and in state
   - [x] Backend on Model
 
-- [] isShort
+- [x] isShort
 
-  - [] On input form and state
-  - [] On Model on backend
+  - [x] On input form and state
+  - [x] On Model on backend
 
 - [] Slippage
   []

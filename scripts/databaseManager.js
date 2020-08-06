@@ -70,6 +70,8 @@ databaseManager.createPosition = async (draftPosition, exchangePostionInfo, entr
     positionSize: draftPosition.positionSize,
     entry: draftPosition.entry,
     stop: draftPosition.stop,
+    strategy: draftPosition.strategy,
+    isShort: draftPosition.isShort,
     timeframe: draftPosition.timeframe,
     tf1: draftPosition.tf1,
     tf2: draftPosition.tf2,
@@ -143,14 +145,14 @@ databaseManager.updatePosition = async (
     }
   )
   return dbPos
-},
-  databaseManager.findByIdAndUpdate = async (pos) => {
-    Position.findByIdAndUpdate(pos._id, pos, (err, newPosition) => {
-      if (err) console.log(err);
-      console.log('updated position is', newPosition);
-      bot.sendMessage(chatId, `Got fill for ${filteredPosition[0].pair}, the updated position is ${newPosition}`)
-    })
-  }
+}
+databaseManager.findByIdAndUpdate = async (pos) => {
+  Position.findByIdAndUpdate(pos._id, pos, (err, newPosition) => {
+    if (err) console.log(err);
+    console.log('updated position is', newPosition);
+    bot.sendMessage(chatId, `Got fill for ${filteredPosition[0].pair}, the updated position is ${newPosition}`)
+  })
+}
 
 // When a position has been exited, it needs to ne removed from the current posisitons collection
 databaseManager.deleteDraftPosition = async (draftPosition) => {

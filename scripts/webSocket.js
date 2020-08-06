@@ -1,8 +1,8 @@
 require('dotenv').config()
-// process.env.NTBA_FIX_319 = 1;
+process.env.NTBA_FIX_319 = 1;
 const ftxws = require('ftx-api-ws')
 const fills = require('./fills')
-const Position = require('../Models/position')
+const databaseManager = require('./databaseManager')
 
 const ws = new ftxws({
   key: process.env.API_KEY,
@@ -14,11 +14,13 @@ const go = async () => {
   await ws.connect()
   ws.subscribe('fills')
   ws.on('fills', async (res) => {
-    const response = res
-    // Make array of the fills because there may be more than one fill
-    const fill = [response]
-    fills.fills(fill)
 
+    // Make array of the fills because there may be more than one fill
+    const fill = res
+    console.log(fill);
+    const positions = await databaseManager.getPositions()
+    const filledPos = await fills.fills(fill, positions)
+    databaseManager.findByIdAndUpdate(filledPos)
   })
 }
 

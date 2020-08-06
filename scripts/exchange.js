@@ -46,7 +46,6 @@ const exchange = {
         console.log(err)
         return false
       })
-    console.log('stop order in stop order function is', response);
     return response
   },
 

@@ -142,7 +142,7 @@ managePosition.position = async (draftPosition) => {
           stopPlaced = true
           stopOrder(draftPosition, isShort)
             .then(async (res) => {
-              console.log(res);
+
               //handle errors, ie; 404: trigger price too high
               if (res === false) {
                 console.log('Stop order was not placed', res)

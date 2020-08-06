@@ -8,15 +8,15 @@ const local = 'http://localhost:3001/'
 const Row = props => (
   <tr>
     <td className="table-body-item" >{props.position.pair}</td>
-    {/* TODO: Fix the date; its gross */}
+
     <td className="table-body-item" >{date(props.position)}</td>
-    <td className="table-body-item" >{strategy(props.position)}</td>
+    <td className="table-body-item" >{props.position.strategy ? props.position.strategy : ''}</td>
     <td className="table-body-item" >{direction(props.position)}</td>
     <td className="table-body-item" >{props.position.timeframe}</td>
-    {/* <td className="table-body-item" >{calculatePnl(props.position)}</td> */}
+    <td className="table-body-item" >{props.position.pnl ? props.position.pnl : ''}</td>
     <td className="table-body-item" >-</td>
     <td className="table-body-item" >${risked(props.position)}</td>
-    <td className="table-body-item" >{slippage(props.position)}%</td>
+    <td className="table-body-item" >{}%</td>
     <td className="table-body-item" ><Link exact='true' to={{ pathname: `/position/${props.position._id}`, state: props.position }}><button>View</button></Link></td>
 
   </tr>
@@ -27,49 +27,11 @@ function date(position) {
   return date.getDate() + '-' + date.getMonth() + '-' + date.getFullYear()
 }
 
-function strategy(position) {
-  return position.strategy ? position.strategy : 'cradle'
-}
 
 function direction(position) {
   return position.entry > position.stop ? 'long' : 'short'
 }
 
-function calculatePnl(position) {
-
-  function accumulateSize(object) {
-    const reducer = (accumulator, currentValue) => accumulator + currentValue
-    const data = object.fill.map(fill => fill.size).reduce(reducer)
-    return data
-  }
-  function accumulateFee(object) {
-    const reducer = (accumulator, currentValue) => accumulator + currentValue
-    const data = object.fill.map(fill => fill.fee).reduce(reducer)
-    return data
-  }
-
-  function orderPriceAverage(object) {
-    const data = object.fill.map(fill => fill.price)
-    const average = data.reduce((p, c) => p + c, 0) / data.length;
-    return average
-  }
-
-  const entryAmount = accumulateSize(position.entryOrder)
-  const entryPrice = orderPriceAverage(position.entryOrder)
-  const entryResult = entryAmount * entryPrice
-  const entryOrderFee = accumulateFee(position.entryOrder)
-
-  const stopAmount = entryAmount;
-  const stopPrice = orderPriceAverage(position.stopOrder)
-  const stopResult = stopAmount * stopPrice;
-  const stopOrderFee = accumulateFee(position.stopOrder)
-
-
-
-  const result = entryPrice > stopPrice ? ((entryResult - stopResult) * -1) - entryOrderFee - stopOrderFee : entryResult - stopResult - entryOrderFee - stopOrderFee
-  return result.toFixed(2)
-
-}
 
 function slippage(position) {
   const isShort = position.entry > position.stop ? false : true

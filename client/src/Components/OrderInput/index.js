@@ -8,7 +8,7 @@ class OrderInput extends Component {
     super()
     this.state = {
       pair: '',
-      strategy: '',
+      strategy: 'cradle',
       timefame: 60,
       entry: 0,
       stop: 0,
@@ -48,7 +48,6 @@ class OrderInput extends Component {
         })
         //update state with response
         this.setState({ ...this.state, pairs: pairs })
-        console.log(this.state);
       })
       .catch(error => console.log(error))
   }
@@ -77,14 +76,12 @@ class OrderInput extends Component {
             // if positionSize is negative, make it positive
             newPositionSize < 0 ? newPositionSize * -1 : newPositionSize,
         })
-        console.log(this.state)
       })
       .catch((err) => console.log(err))
     const { name, value } = e.target
     this.setState({
       [name]: parseFloat(value),
     })
-    console.log(this.state)
   }
   updatePair(e) {
     e.preventDefault()
@@ -100,6 +97,7 @@ class OrderInput extends Component {
       positionSize: this.state.positionSize,
       entry: this.state.entry,
       stop: this.state.stop,
+      strategy: this.state.strategy,
       timeframe: this.state.timeframe,
       orderDate: this.state.orderDate,
       tf1: this.state.tf1,
@@ -107,6 +105,7 @@ class OrderInput extends Component {
       tf3: this.state.tf3,
       isShort: this.state.entry > this.state.stop ? false : true
     }
+    console.log(this.state);
     const route =
       process.env.NODE_ENV === 'production' ? '/position' : `${local}position`
     axios

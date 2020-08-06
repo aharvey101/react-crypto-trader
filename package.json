@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "jest --",
+    "test": "jest --watch",
     "start": "node app.js",
     "dev": "nodemon app.js",
     "build": "cd client && npm run build",
@@ -31,12 +31,6 @@
     "node-telegram-bot-api": "^0.50.0",
     "nodemon": "^2.0.4",
     "util": "^0.12.3"
-  },
-  "jest": {
-    "modulePathIgnorePatterns": [
-      "/node_modules/",
-      "client"
-    ]
   },
   "devDependencies": {
     "jest": "^26.2.2",

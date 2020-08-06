@@ -2,7 +2,7 @@
 
 const calculate = {}
 
-calculate.accumulateSize = () => {
+calculate.accumulateSize = (object) => {
 
   const reducer = (accumulator, currentValue) => accumulator + currentValue
   const data = object.map(fill => fill.size).reduce(reducer, 0)

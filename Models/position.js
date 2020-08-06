@@ -7,6 +7,7 @@ var positionSchema = new mongoose.Schema({
   stop: Number,
   timeframe: String,
   strategy: String,
+  isShort: String,
   date: String,
   tf1: String,
   tf2: String,
