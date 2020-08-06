@@ -7,12 +7,13 @@ class OrderInput extends Component {
   constructor() {
     super()
     this.state = {
-      pair: '',
+      pair: 'BTC-PERP',
       strategy: 'cradle',
       timefame: 60,
       entry: 0,
       stop: 0,
       positionSize: 0,
+      risked: 0,
       portfolioSize: 10000,
       portfolioRisk: 0.01,
       orderDate: '',
@@ -28,6 +29,7 @@ class OrderInput extends Component {
     this.submitForm = this.submitForm.bind(this)
     this.updateBalances = this.updateBalances.bind(this)
     this.exitPosition = this.exitPosition.bind(this)
+    this.risked = this.risked.bind(this)
 
   }
 
@@ -50,6 +52,13 @@ class OrderInput extends Component {
         this.setState({ ...this.state, pairs: pairs })
       })
       .catch(error => console.log(error))
+  }
+
+
+  risked(state) {
+    const isShort = state.entry > state.stop ? false : true
+    const risked = isShort ? this.state.portfolioSize * this.state.portfolioRisk * -1 : this.state.portfolioSize * this.state.portfolioRisk
+    return Number(risked)
   }
 
   updateBalances(e) {
@@ -75,13 +84,16 @@ class OrderInput extends Component {
           positionSize:
             // if positionSize is negative, make it positive
             newPositionSize < 0 ? newPositionSize * -1 : newPositionSize,
+          risked: this.risked(this.state)
         })
+        console.log(this.state);
       })
       .catch((err) => console.log(err))
     const { name, value } = e.target
     this.setState({
       [name]: parseFloat(value),
     })
+
   }
   updatePair(e) {
     e.preventDefault()
@@ -98,14 +110,15 @@ class OrderInput extends Component {
       entry: this.state.entry,
       stop: this.state.stop,
       strategy: this.state.strategy,
+      risked: this.state.risked,
       timeframe: this.state.timeframe,
-      orderDate: this.state.orderDate,
+      portfolioSize: this.state.portfolioSize,
       tf1: this.state.tf1,
       tf2: this.state.tf2,
       tf3: this.state.tf3,
       isShort: this.state.entry > this.state.stop ? false : true
     }
-    console.log(this.state);
+    console.log('state before submission', order);
     const route =
       process.env.NODE_ENV === 'production' ? '/position' : `${local}position`
     axios
@@ -190,7 +203,7 @@ class OrderInput extends Component {
             <option value="breakout" >Breakout</option>
           </select>
           <label className="input-label">Risk</label>
-          <input
+          <select
             name="portfolioRisk"
             placeholder="0.01"
             step="0.001"
@@ -198,8 +211,12 @@ class OrderInput extends Component {
             onChange={this.updateBalances}
             type="number"
           >
-
-          </input>
+            <option value="0.01">1%</option>
+            <option value="0.005">0.5%</option>
+            <option value="0.003333">0.33%</option>
+            <option value="0.0025">0.25%</option>
+            <option value="0.02">2%</option>
+          </select>
           <label className="input-label">Entry</label>
           <input
             type="number"

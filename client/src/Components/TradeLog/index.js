@@ -10,11 +10,10 @@ const Row = props => (
     <td className="table-body-item" >{props.position.pair}</td>
 
     <td className="table-body-item" >{date(props.position)}</td>
-    <td className="table-body-item" >{props.position.strategy ? props.position.strategy : ''}</td>
-    <td className="table-body-item" >{direction(props.position)}</td>
+    <td className="table-body-item" >{props.position.strategy ? props.position.strategy : 'cradle'}</td>
+    <td className="table-body-item" >{props.position.isShort ? 'short' : 'long'}</td>
     <td className="table-body-item" >{props.position.timeframe}</td>
     <td className="table-body-item" >{props.position.pnl ? props.position.pnl : ''}</td>
-    <td className="table-body-item" >-</td>
     <td className="table-body-item" >${risked(props.position)}</td>
     <td className="table-body-item" >{}%</td>
     <td className="table-body-item" ><Link exact='true' to={{ pathname: `/position/${props.position._id}`, state: props.position }}><button>View</button></Link></td>
@@ -26,12 +25,6 @@ function date(position) {
   const date = new Date(position.date)
   return date.getDate() + '-' + date.getMonth() + '-' + date.getFullYear()
 }
-
-
-function direction(position) {
-  return position.entry > position.stop ? 'long' : 'short'
-}
-
 
 function slippage(position) {
   const isShort = position.entry > position.stop ? false : true
@@ -89,7 +82,6 @@ export default class TradeLog extends Component {
 
   makeRows() {
     return this.state.positions.map(position => {
-
       return <Row position={position} key={position._id} />
     })
   }
@@ -100,7 +92,7 @@ export default class TradeLog extends Component {
     return (
       <div className="table-wrapper">
         <table className="table">
-          <caption className="table-caption">The current positions</caption>
+          <caption className="table-caption">Trade Log</caption>
           <thead className="table-head">
             <tr>
               <th className='table-head-item'>Pair</th>
