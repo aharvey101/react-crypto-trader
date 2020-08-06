@@ -118,7 +118,6 @@ class OrderInput extends Component {
       tf3: this.state.tf3,
       isShort: this.state.entry > this.state.stop ? false : true
     }
-    console.log('state before submission', order);
     const route =
       process.env.NODE_ENV === 'production' ? '/position' : `${local}position`
     axios
