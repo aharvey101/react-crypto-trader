@@ -9,6 +9,7 @@ class EditTrade extends Component {
     this.state = props.location.state
     this.updatePair = this.updatePair.bind(this)
     this.submitForm = this.submitForm.bind(this)
+    this.calculatePnl = this.calculatePnl.bind(this)
     console.log(this.state);
 
   }
@@ -19,6 +20,40 @@ class EditTrade extends Component {
       [name]: value,
     })
     console.log(this.state)
+  }
+
+  calculatePnl(e) {
+    e.preventDefault()
+
+    // gets size by maping over entry order fills and adding up the size
+    function accumulateSize(object) {
+      const reducer = (accumulator, currentValue) => accumulator + currentValue
+      const data = object.fill.map(fill => fill.size).reduce(reducer)
+      return data
+    }
+
+    // gets fee's adding up the fill fees
+    function accumulateFee(object) {
+      const reducer = (accumulator, currentValue) => accumulator + currentValue
+      const data = object.fill.map(fill => fill.fee).reduce(reducer)
+      return data
+    }
+
+    function orderPriceAverage(object) {
+      const data = object.fill.map(fill => fill.price)
+      const average = data.reduce((p, c) => p + c, 0) / data.length;
+      return average
+    }
+    const entryAmount = accumulateSize(this.state.entryOrder)
+    const entryPrice = orderPriceAverage(this.state.entryOrder)
+    const entryResult = entryAmount * entryPrice
+    const entryOrderFee = accumulateFee(this.state.entryOrder)
+    const stopAmount = entryAmount;
+    const stopPrice = orderPriceAverage(this.state.stopOrder)
+    const stopResult = stopAmount * stopPrice;
+    const stopOrderFee = accumulateFee(this.state.stopOrder)
+    const result = entryPrice > stopPrice ? ((entryResult - stopResult) * -1) - entryOrderFee - stopOrderFee : entryResult - stopResult - entryOrderFee - stopOrderFee
+    this.setState({ ...this.state, pnl: result.toFixed(2) })
   }
 
   submitForm() {
@@ -37,7 +72,6 @@ class EditTrade extends Component {
   }
 
   render() {
-
     return (
       <div className="order-component">
         <h1 className="order-component-form-title">Edit Trade</h1>
@@ -52,7 +86,7 @@ class EditTrade extends Component {
           <label className="input-label">Pair</label>
           <input
             name="pair"
-            defaultValue={this.state.pair}
+            value={this.state.pair}
             className="input-field"
             onChange={this.updatePair}
           >
@@ -63,7 +97,7 @@ class EditTrade extends Component {
             placeholder="Timeframe"
             className="input-field"
             onChange={this.updatePair}
-            defaultValue={this.state.timeframe}
+            value={this.state.timeframe}
           >
             <option value="60">1m</option>
             <option value="300">5m</option>
@@ -84,22 +118,47 @@ class EditTrade extends Component {
           <label className="input-label">Risk</label>
           <input
             name="portfolioRisk"
-            defaultValue="0.01"
+            value="0.01"
             step="0.001"
             className="input-field"
-            // onChange={this.updateBalances}
+            onChange={this.updatePair}
             type="number"
           >
-
           </input>
+          <label className="input-label">PortfolioSize</label>
+          <input
+            name="portfolioSize"
+            value="0.01"
+            step="0.001"
+            className="input-field"
+            onChange={this.updatePair}
+            type="number"
+          >
+          </input>
+          <label className="input-label">PortfolioRisk</label>
+          <input
+            name="portfolioRisk"
+            value="0.01"
+            step="0.001"
+            className="input-field"
+            onChange={this.updatePair}
+            type="number"
+          >
+          </input>
+          <label className="input-label">Strategy</label>
+          <select name="strategy" placeholder="cradle" onChange={this.updatePair}>
+            <option value="cradle" >Cradle</option>
+            <option value="fib-booster" >Fib Booster</option>
+            <option value="breakout" >Breakout</option>
+          </select>
           <label className="input-label">Entry</label>
           <input
             type="number"
             name="entry"
             step="0.000001"
-            defaultValue={this.state.entry}
+            value={this.state.entry}
             className="input-field"
-            // onChange={this.updateBalances}
+            onChange={this.updatePair}
             required
           ></input>
           <label className="input-label">Stop</label>
@@ -107,16 +166,16 @@ class EditTrade extends Component {
             type="number"
             name="stop"
             step="0.000001"
-            defaultValue={this.state.stop}
+            value={this.state.stop}
             className="input-field"
-            // onChange={this.updateBalances}
+            onChange={this.updatePair}
             required
           ></input>
           <label className="input-label">Entry Timeframe</label>
           <input
             type="text"
             name="tf1"
-            defaultValue={this.state.tf1}
+            value={this.state.tf1}
             className="input-field"
             onChange={this.updatePair}>
           </input>
@@ -124,7 +183,7 @@ class EditTrade extends Component {
           <input
             type="text"
             name="tf2"
-            defaultValue={this.state.tf2}
+            value={this.state.tf2}
             className="input-field"
             onChange={this.updatePair}>
           </input>
@@ -132,19 +191,129 @@ class EditTrade extends Component {
           <input
             type="text"
             name="tf3"
-            defaultValue={this.state.tf3}
+            value={this.state.tf3}
             className="input-field"
             onChange={this.updatePair}>
           </input>
-          <h3 className="order-component-form-title">Entry Fill</h3>
-          <label className="input-label">fee</label>
+          <h3 className="order-component-form-title">Entry Order</h3>
+          <label className="input-label">Entry Order Size</label>
           <input
-            name="fee"
-            defaultValue={this.state.entryOrder.fill[0].fee}
+            name="entryOrder.size"
             className="input-field"
             onChange={this.updatePair}
           >
           </input>
+          <h3 className="order-component-form-title">Fill 1</h3>
+          <label className="input-label">Future</label>
+          <input
+            name="entryOrder.fill[0].future"
+            className="input-field"
+            onChange={this.updatePair}
+          >
+          </input>
+          <label className="input-label">Fee</label>
+          <input
+            name="entryOrder.fill[0].fee"
+            className="input-field"
+            onChange={this.updatePair}
+          >
+          </input>
+          <label className="input-label">Size</label>
+          <input
+            name="entryOrder.fill[0].size"
+            className="input-field"
+            onChange={this.updatePair}
+          >
+          </input>
+          <h3 className="order-component-form-title">Fill 2</h3>
+          <label className="input-label">Future</label>
+          <input
+            name="entryOrder.fill[1].future"
+
+            className="input-field"
+            onChange={this.updatePair}
+          >
+          </input>
+          <label className="input-label">Fee</label>
+          <input
+            name="entryOrder.fill[1].fee"
+
+            className="input-field"
+            onChange={this.updatePair}
+          >
+          </input>
+          <label className="input-label">Size</label>
+          <input
+            name="entryOrder.fill[1].size"
+
+            className="input-field"
+            onChange={this.updatePair}
+          >
+          </input>
+
+          <h3 className="order-component-form-title">Stop Order</h3>
+          <label className="input-label">Stop Order Size</label>
+          <input
+            name="stopOrder.size"
+            className="input-field"
+            onChange={this.updatePair}
+          >
+          </input>
+          <h3 className="order-component-form-title">Fill 1</h3>
+          <label className="input-label">Fee</label>
+          <input
+            name="stopOrder.fill[0].fee"
+            className="input-field"
+            onChange={this.updatePair}
+          >
+          </input>
+          <label className="input-label">Size</label>
+          <input
+            name="stopOrder.fill[0].size"
+            className="input-field"
+            onChange={this.updatePair}
+          >
+          </input>
+          <label className="input-label">Future</label>
+          <input
+            name="stopOrder.fill[0].future"
+            className="input-field"
+            onChange={this.updatePair}
+          >
+          </input>
+          <h3 className="order-component-form-title">Fill 2</h3>
+          <label className="input-label">Fee</label>
+          <input
+            name="stopOrder.fill[1].fee"
+            className="input-field"
+            onChange={this.updatePair}
+          >
+          </input>
+          <label className="input-label">Size</label>
+          <input
+            name="stopOrder.fill[1].size"
+            className="input-field"
+            onChange={this.updatePair}
+          >
+          </input>
+          <label className="input-label">Future</label>
+          <input
+            name="stopOrder.fill[1].future"
+            className="input-field"
+            onChange={this.updatePair}
+          >
+          </input>
+          <label className="input-label">Pnl</label>
+          <input
+            name="pnl"
+            value={this.state.pnl || ''}
+            className="input-field"
+            onChange={this.updatePair}
+            type="number"
+            step="0.01"
+          >
+          </input>
+          <button onClick={this.calculatePnl}>Calculate PnL</button>
           <button className="submit-button">Submit</button>
         </form>
       </div>

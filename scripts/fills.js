@@ -12,15 +12,18 @@ fills.fills = async (fill, positions) => {
 
   // Works
   setTimeout(async (fill, positions) => {
+    console.log('fill is', fill);
+    console.log('positions is', positions);
     // Get fill, get all positions from database, 
 
     // filter positions to match only the ones that match the pair of the fill and the stop order isn't filled
     const filteredPosition = positions.filter((pos) => pos.pair === fill.future && pos.stopOrder.filled === undefined)
     if (filteredPosition.length === 0) {
       console.log('No position match');
-      return
+      return false
     }
     const pos = filteredPosition[0]
+    console.log(pos);
 
     // check the entry order filled value, if not true, put the fill in the entryOrder
     if (pos.entryOrder.filled !== true) {

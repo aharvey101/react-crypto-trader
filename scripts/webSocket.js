@@ -17,10 +17,16 @@ const go = async () => {
 
     // Make array of the fills because there may be more than one fill
     const fill = res
-    console.log(fill);
+    console.log('got fill from exchange', fill);
     const positions = await databaseManager.getPositions()
-    const filledPos = await fills.fills(fill, positions)
-    databaseManager.findByIdAndUpdate(filledPos)
+    console.log('positions are', positions);
+    fills.fills(fill, positions)
+      .then(result => {
+        if (result) {
+          console.log(result);
+          databaseManager.findByIdAndUpdate(result)
+        }
+      })
   })
 }
 

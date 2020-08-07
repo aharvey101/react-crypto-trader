@@ -20,45 +20,17 @@ The itnention of this app is to place positions, without the main strategy but w
 
 # TODO Frontend
 
-- [x] Add Trade Log functions
-
-  - [x] Date time
-  - [x] Strategy (if no strategy, assume cradle)
-  - [x] Trigger timeframe
-  - [] Trade Rating (maybe hold off on this,)
-  - [x] PnL
-  - [x] \$ Risked
-  - [x] Slippage
-
-- [] All trade log functions should be added to backend to update position
-
-- [x] Update PnL when position is closed:
-
-  - [x] info needed:
-  - [x] Entry - from order input
-  - [x] position size: from order inputing
-
-- [x] Strategy Input on input form
-
-  - [x] frontend on form and in state
-  - [x] Backend on Model
-
-- [x] isShort
-
-  - [x] On input form and state
-  - [x] On Model on backend
-
 - [] Slippage
-  []
+
+## Edit Trade
+
+- [] portfolio risk
+- [] strategy
+- []
 
 - Overview
   - [] Graph of account size: Thought, for every trade, take total profit or loss off previous account balance, much like a spreadsheet.
 
 ## Edit Trades Functionality
 
-- [x] Frontend - Edit page
-- [x] Backend - update route
-
 ## Telegram Bot
-
-- [x] There is a problem with initializing teh bot twice, need to fix
