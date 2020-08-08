@@ -6,48 +6,15 @@ class Position extends Component {
   constructor(props) {
     super(props)
     this.state = this.props.location.state
-    console.log(`state is`, this.state);
+
   }
 
   onComponentDidMount() {
     this.setState(this.props.location.state)
   }
 
-  calculatePnl(position) {
-
-    function accumulateSize(object) {
-      const reducer = (accumulator, currentValue) => accumulator + currentValue
-      const data = object.fill.map(fill => fill.size).reduce(reducer)
-      return data
-    }
-    function accumulateFee(object) {
-      const reducer = (accumulator, currentValue) => accumulator + currentValue
-      const data = object.fill.map(fill => fill.fee).reduce(reducer)
-      return data
-    }
-
-    function orderPriceAverage(object) {
-      const data = object.fill.map(fill => fill.price)
-      const average = data.reduce((p, c) => p + c, 0) / data.length;
-      return average
-    }
-
-    const entryAmount = accumulateSize(position.entryOrder)
-    const entryPrice = orderPriceAverage(position.entryOrder)
-    const entryResult = entryAmount * entryPrice
-    const entryOrderFee = accumulateFee(position.entryOrder)
-
-    const stopAmount = entryAmount;
-    const stopPrice = orderPriceAverage(position.stopOrder)
-    const stopResult = stopAmount * stopPrice;
-    const stopOrderFee = accumulateFee(position.stopOrder)
 
 
-
-    const result = entryPrice > stopPrice ? ((entryResult - stopResult) * -1) - entryOrderFee - stopOrderFee : entryResult - stopResult - entryOrderFee - stopOrderFee
-    return result.toFixed(2)
-
-  }
   render() {
     return (
       <div className="container">
@@ -97,10 +64,11 @@ class Position extends Component {
           </p>
           <h3 className="position-information__title-Exit">Exit information</h3>
           <p>
-            {/* Profit and loss: {this.calculatePnl(this.state)} */}
+            Profit and loss: {this.state.pnl}
           </p>
           {/* <td className="table-body-item" >{slippage(props.position)}%</td> */}
           <Link exact='true' to={{ pathname: `/position/${this.state._id}/edit/`, state: this.state }}><button>Edit</button></Link>
+
         </div>
       </div>
     )

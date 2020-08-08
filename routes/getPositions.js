@@ -10,6 +10,7 @@ router.get('/', async (req, res) => {
 })
 
 router.put('/', async (req, res) => {
+  console.log('posting');
   // create position from post request, find in database and update
   const position = req.body
   const newPosition = await Position.findByIdAndUpdate(req.body._id, position, { new: true }, (err, position) => {
@@ -21,6 +22,14 @@ router.put('/', async (req, res) => {
     }
   })
 
+})
+
+router.delete('/', async (req, res) => {
+  // delete position from db
+  console.log('deleting');
+  const position = req.body
+  Position.findByIdAndDelete(position._id)
+    .then()
 })
 
 module.exports = router

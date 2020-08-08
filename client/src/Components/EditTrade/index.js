@@ -10,7 +10,7 @@ class EditTrade extends Component {
     this.updatePair = this.updatePair.bind(this)
     this.submitForm = this.submitForm.bind(this)
     this.calculatePnl = this.calculatePnl.bind(this)
-
+    this.deletePosition = this.deletePosition.bind(this)
   }
   updatePair(e) {
     e.preventDefault()
@@ -18,6 +18,15 @@ class EditTrade extends Component {
     this.setState({
       [name]: value,
     })
+  }
+
+  deletePosition(e) {
+    e.preventDefault()
+    const route =
+      process.env.NODE_ENV === 'production' ? '/getPositions' : `${local}getPositions`
+    console.log('deleting position');
+    axios.delete(route, { data: this.state })
+    window.location = '/tradelog'
   }
 
   calculatePnl(e) {
@@ -63,7 +72,6 @@ class EditTrade extends Component {
       .put(route, position)
       .then((res) => {
         console.log(res.data)
-        this.setState({ ...this.state, response: res.data })
       })
       .catch((err) => console.log(err))
     window.location = '/tradelog'
@@ -73,6 +81,7 @@ class EditTrade extends Component {
     return (
       <div className="order-component">
         <h1 className="order-component-form-title">Edit Trade</h1>
+        <button className="submit-button" onClick={this.deletePosition}>Delete</button>
         <h3 className="order-component-form-title">Entry Order</h3>
         <form
           onSubmit={(event) => {
