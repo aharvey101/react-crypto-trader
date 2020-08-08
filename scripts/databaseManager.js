@@ -12,7 +12,7 @@ databaseManager.draftPositions = async (draftPosition) => {
     if (err) {
       console.log(err)
     } else {
-      console.log('submitted draft position to db for watching', position)
+      console.log('submitted draft position to db for watching')
       return position
     }
   })
@@ -47,7 +47,7 @@ databaseManager.updateDraftPosition = async function (draftPosition, entryPlaced
     if (err) {
       console.log(err);
     }
-    else console.log(`updated draft position with entryPlaced:`, newCurrentPos);
+    else console.log(`updated draft position with entryOrder placed`,);
   })
   return response
 }
@@ -59,7 +59,7 @@ databaseManager.updateDraftPositionStop = async function (currentPosition, stopE
     if (err) {
       console.log(err);
     }
-    console.log('updated draft position:', newCurrentPos);
+    console.log('updated draft position',);
   })
   return response
 }
@@ -92,7 +92,7 @@ databaseManager.createPosition = async (draftPosition, exchangePostionInfo, entr
       console.log(err)
     } else {
       console.log(
-        `the newly created position is:`, newlyCreated
+        `position in database has been created`,
       )
     }
 
@@ -151,7 +151,7 @@ databaseManager.updatePosition = async (
 databaseManager.findByIdAndUpdate = async (pos) => {
   Position.findByIdAndUpdate(pos._id, pos, (err, newPosition) => {
     if (err) console.log(err);
-    console.log('updated position is', newPosition);
+    console.log('position has been updated',);
   })
 }
 
@@ -178,8 +178,8 @@ databaseManager.lookup = () => {
   return positions
 }
 databaseManager.getPositions = async () => {
-  const response = await Position.find({}).catch(err => console.log(err))
-
+  const response = await Position.find({})
+    .catch(err => console.log(err))
   return response
 }
 

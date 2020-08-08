@@ -10,10 +10,17 @@ const fills = {}
 
 fills.fills = async (fill, positions) => {
 
+  async function wait() {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        return resolve(processFills(fill, positions))
+      }, 5000, fill, positions)
+    })
+  }
   // Works
-  setTimeout(async (fill, positions) => {
-    console.log('fill is', fill);
-    console.log('positions is', positions);
+  function processFills(fill, positions) {
+
+
     // Get fill, get all positions from database, 
 
     // filter positions to match only the ones that match the pair of the fill and the stop order isn't filled
@@ -40,6 +47,7 @@ fills.fills = async (fill, positions) => {
         pos.entryOrder.filled = true
         return pos
       }
+      return pos
     } else if (pos.stopOrder.filled !== true) {
       console.log('filling stoporder');
       if (pos.stopOrder.fill === undefined) {
@@ -58,13 +66,14 @@ fills.fills = async (fill, positions) => {
         console.log(pnl);
         return pos
       }
+      return pos
     } else {
       return
     }
+  }
+  const response = await wait()
 
-
-
-  }, 5000, fill, positions)
+  return response
 }
 
 module.exports = fills

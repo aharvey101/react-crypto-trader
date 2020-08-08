@@ -30,7 +30,6 @@ const exchange = {
         console.log(err)
         return false
       })
-    console.log(response);
     return response
   },
   stopOrder: async function (order, isShort) {

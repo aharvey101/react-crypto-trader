@@ -3,6 +3,8 @@ process.env.NTBA_FIX_319 = 1;
 const ftxws = require('ftx-api-ws')
 const fills = require('./fills')
 const databaseManager = require('./databaseManager')
+const bot = require('./telegramBot')
+const chatId = process.env.TELEGRAM_CHAT_ID
 
 const ws = new ftxws({
   key: process.env.API_KEY,
@@ -19,14 +21,14 @@ const go = async () => {
     const fill = res
     console.log('got fill from exchange', fill);
     const positions = await databaseManager.getPositions()
-    console.log('positions are', positions);
-    fills.fills(fill, positions)
+    const result = await fills.fills(fill, positions)
       .then(result => {
-        if (result) {
-          console.log(result);
-          databaseManager.findByIdAndUpdate(result)
+        if (result === false) {
+          console.log('result was false');
         }
+        databaseManager.findByIdAndUpdate(result)
       })
+    bot.sendMessage(chatId, 'got fill')
   })
 }
 

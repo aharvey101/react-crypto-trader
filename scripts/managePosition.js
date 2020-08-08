@@ -30,7 +30,7 @@ managePosition.inputNewPosition = (draftPosition) => {
   // delete all 'current pos' on that pair
   databaseManager.deleteDraftPosition(draftPosition)
     .then((res) => {
-      console.log('deleted', res);
+      console.log('deleted draft positions',);
     })
     .then(() => {
       // create new draft position
@@ -130,8 +130,8 @@ managePosition.position = async (draftPosition) => {
       // console.log('checking to place stop');
       // console.log(positionEntered, stopPlaced);
       if (
-        (isShort && pairPrice < draftPosition.entry) ||
-        (!isShort && pairPrice > draftPosition.entry)
+        (isShort && pairPrice <= draftPosition.entry) ||
+        (!isShort && pairPrice >= draftPosition.entry)
       ) {
         console.log('placing stop');
 
