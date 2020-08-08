@@ -5,6 +5,7 @@ import Nav from './Components/Nav/'
 import TradeLog from './Components/TradeLog'
 import Position from './Components/Position'
 import EditTrade from './Components/EditTrade'
+import Overview from './Components/Overview'
 import {
   BrowserRouter as Router,
   Switch,
@@ -35,6 +36,9 @@ function App() {
           </Route>
           <Route exact path="/tradelog">
             <TradeLog />
+          </Route>
+          <Route exact path="/overview">
+            <Overview />
           </Route>
         </Switch>
       </div>

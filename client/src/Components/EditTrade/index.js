@@ -10,7 +10,6 @@ class EditTrade extends Component {
     this.updatePair = this.updatePair.bind(this)
     this.submitForm = this.submitForm.bind(this)
     this.calculatePnl = this.calculatePnl.bind(this)
-    console.log(this.state);
 
   }
   updatePair(e) {
@@ -19,7 +18,6 @@ class EditTrade extends Component {
     this.setState({
       [name]: value,
     })
-    console.log(this.state)
   }
 
   calculatePnl(e) {
@@ -116,29 +114,24 @@ class EditTrade extends Component {
             <option value="172800">2d</option>
           </select>
           <label className="input-label">Risk</label>
-          <input
+          <select
             name="portfolioRisk"
-            value="0.01"
+            placeholder="0.01"
             step="0.001"
             className="input-field"
-            onChange={this.updatePair}
+            onChange={this.updateBalances}
             type="number"
           >
-          </input>
-          <label className="input-label">PortfolioSize</label>
+            <option value="0.001">0.1%</option>
+            <option value="0.01">1%</option>
+            <option value="0.005">0.5%</option>
+            <option value="0.003333">0.33%</option>
+            <option value="0.0025">0.25%</option>
+            <option value="0.02">2%</option>
+          </select>
+          <label className="input-label">Portfolio Size</label>
           <input
             name="portfolioSize"
-            value="0.01"
-            step="0.001"
-            className="input-field"
-            onChange={this.updatePair}
-            type="number"
-          >
-          </input>
-          <label className="input-label">PortfolioRisk</label>
-          <input
-            name="portfolioRisk"
-            value="0.01"
             step="0.001"
             className="input-field"
             onChange={this.updatePair}

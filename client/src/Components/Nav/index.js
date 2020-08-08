@@ -16,6 +16,9 @@ function Nav() {
         <li className="nav-li">
           <Link exact='true' to="/tradelog" className="nav-link">Trade Log</Link>
         </li>
+        <li className="nav-li">
+          <Link exact='true' to="/overview" className="nav-link">Overview</Link>
+        </li>
       </ul>
     </nav>
   )
