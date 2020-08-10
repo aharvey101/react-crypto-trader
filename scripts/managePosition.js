@@ -107,7 +107,7 @@ managePosition.position = async (draftPosition) => {
       ) {
         //cancel all orders on pair
         //TODO: Error handle if orders aren't cancelled
-        // console.log('cancelling orders on pair')
+        console.log('cancelling orders on pair')
         cancelOrdersOnpair(draftPosition)
           .then((res) => {
             console.log(res)

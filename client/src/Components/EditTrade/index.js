@@ -18,6 +18,7 @@ class EditTrade extends Component {
     this.setState({
       [name]: value,
     })
+    console.log(this.state);
   }
 
   deletePosition(e) {
@@ -207,9 +208,9 @@ class EditTrade extends Component {
           >
           </input>
           <h3 className="order-component-form-title">Fill 1</h3>
-          <label className="input-label">Future</label>
+          <label className="input-label">price</label>
           <input
-            name="entryOrder.fill[0].future"
+            name="entryOrder.fill[0].price"
             className="input-field"
             onChange={this.updatePair}
           >
@@ -229,9 +230,9 @@ class EditTrade extends Component {
           >
           </input>
           <h3 className="order-component-form-title">Fill 2</h3>
-          <label className="input-label">Future</label>
+          <label className="input-label">price</label>
           <input
-            name="entryOrder.fill[1].future"
+            name="entryOrder.fill[1].price"
 
             className="input-field"
             onChange={this.updatePair}
@@ -277,9 +278,9 @@ class EditTrade extends Component {
             onChange={this.updatePair}
           >
           </input>
-          <label className="input-label">Future</label>
+          <label className="input-label">price</label>
           <input
-            name="stopOrder.fill[0].future"
+            name="stopOrder.fill[0].price"
             className="input-field"
             onChange={this.updatePair}
           >
@@ -299,9 +300,9 @@ class EditTrade extends Component {
             onChange={this.updatePair}
           >
           </input>
-          <label className="input-label">Future</label>
+          <label className="input-label">price</label>
           <input
-            name="stopOrder.fill[1].future"
+            name="stopOrder.fill[1].price"
             className="input-field"
             onChange={this.updatePair}
           >

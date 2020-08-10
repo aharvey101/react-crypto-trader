@@ -49,8 +49,6 @@ const exchange = {
   },
 
   cancelOrdersOnpair: async function (order) {
-    console.log('cancelOrdersOnpair')
-
     const response = await ftx.request({
       method: 'DELETE',
       path: '/orders',

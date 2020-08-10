@@ -162,7 +162,7 @@ databaseManager.deleteDraftPosition = async (draftPosition) => {
   filtered.forEach((position) => {
     DraftPosition.findByIdAndDelete(position.id, function (err, res) {
       if (err) console.log(err);
-      console.log('deleted: ', res);
+      console.log('deleted draft poisition ',);
     })
   })
 }

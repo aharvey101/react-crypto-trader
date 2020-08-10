@@ -5,6 +5,8 @@ import anychart from 'anychart'
 import './overview.css'
 const local = 'http://localhost:3001'
 
+anychart.theme = 'lightBlue'
+
 
 class Overview extends Component {
   constructor(props) {
@@ -39,6 +41,7 @@ class Overview extends Component {
 
   makePortfolioData() {
     const portfolioSizeArray = this.state.positions.map(position => position.portfolioSize)
+    // const tradetype = this.state.positions.map(position => position.type)
     this.setState({ ...this.state, portfolioSizeArray: portfolioSizeArray })
     console.log(this.state);
   }
@@ -51,13 +54,13 @@ class Overview extends Component {
             type="line"
             data={this.state.portfolioSizeArray}
             title="Portfolio"
-            // width={600}
-            // height={400}
+            height={200}
             className="chart 1"
+            theme="lightBlue"
           ></AnyChart>
         </div>
 
-      </div>
+      </div >
     )
   }
 }
