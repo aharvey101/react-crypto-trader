@@ -145,6 +145,7 @@ class EditTrade extends Component {
             className="input-field"
             onChange={this.updatePair}
             type="number"
+            value={this.state.portfolioSize}
           >
           </input>
           <label className="input-label">Strategy</label>

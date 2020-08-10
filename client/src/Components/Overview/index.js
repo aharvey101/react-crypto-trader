@@ -11,6 +11,7 @@ class Overview extends Component {
     super(props)
     this.state = {}
     this.configureChart = this.configureChart.bind(this)
+    this.makePortfolioData = this.makePortfolioData.bind(this)
   }
 
   componentDidMount() {
@@ -18,8 +19,9 @@ class Overview extends Component {
     const route = process.env.NODE_ENV === 'production' ? '/getPositions' : `${local}/getPositions`
     axios.get(route)
       .then(response => {
-        this.setState({ positions: response.data })
+        this.setState({ ...this.state, positions: response.data })
         console.log(this.state);
+        this.makePortfolioData()
       })
     this.configureChart()
     console.log(this.state);
@@ -35,15 +37,26 @@ class Overview extends Component {
     console.log(this.state);
   }
 
+  makePortfolioData() {
+    const portfolioSizeArray = this.state.positions.map(position => position.portfolioSize)
+    this.setState({ ...this.state, portfolioSizeArray: portfolioSizeArray })
+    console.log(this.state);
+  }
+
   render() {
     return (
       <div className="box">
-        <AnyChart
-          // instance={this.state.chart.instance}
-          width={600}
-          height={400}
-        // charts={this.state.chart.chart1}
-        ></AnyChart>
+        <div className="box-item">
+          <AnyChart
+            type="line"
+            data={this.state.portfolioSizeArray}
+            title="Portfolio"
+            // width={600}
+            // height={400}
+            className="chart 1"
+          ></AnyChart>
+        </div>
+
       </div>
     )
   }
