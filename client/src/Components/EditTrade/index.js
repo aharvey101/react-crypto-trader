@@ -11,6 +11,7 @@ class EditTrade extends Component {
     this.submitForm = this.submitForm.bind(this)
     this.calculatePnl = this.calculatePnl.bind(this)
     this.deletePosition = this.deletePosition.bind(this)
+    this.updateEntry = this.updateEntry.bind(this)
   }
   updatePair(e) {
     e.preventDefault()
@@ -20,6 +21,16 @@ class EditTrade extends Component {
     })
     console.log(this.state);
   }
+
+  updateEntry(e) {
+    e.preventDefault()
+    const { name, value } = e.target
+    const entry = this.state.entryOrder.fill
+    this.setState({
+      entryOrder: { ...this.state.entryOrder, fill: [...this.state.entryOrder.fill, { [name]: value }] },
+    })
+  }
+
 
   deletePosition(e) {
     e.preventDefault()
@@ -62,6 +73,7 @@ class EditTrade extends Component {
     const stopOrderFee = accumulateFee(this.state.stopOrder)
     const result = entryPrice > stopPrice ? ((entryResult - stopResult) * -1) - entryOrderFee - stopOrderFee : entryResult - stopResult - entryOrderFee - stopOrderFee
     this.setState({ ...this.state, pnl: result.toFixed(2) })
+
   }
 
   submitForm() {
@@ -71,11 +83,10 @@ class EditTrade extends Component {
       process.env.NODE_ENV === 'production' ? '/getPositions' : `${local}getPositions`
     axios
       .put(route, position)
-      .then((res) => {
-        console.log(res.data)
-      })
       .catch((err) => console.log(err))
-    window.location = '/tradelog'
+    setTimeout(() => {
+      window.location = '/tradelog'
+    }, 500)
   }
 
   render() {
@@ -202,7 +213,7 @@ class EditTrade extends Component {
           <h3 className="order-component-form-title">Entry Order</h3>
           <label className="input-label">Entry Order Size</label>
           <input
-            name="entryOrder.size"
+            name="entryOrder:{size:"
             className="input-field"
             onChange={this.updatePair}
           >
@@ -210,9 +221,9 @@ class EditTrade extends Component {
           <h3 className="order-component-form-title">Fill 1</h3>
           <label className="input-label">price</label>
           <input
-            name="entryOrder.fill[0].price"
+            name="price"
             className="input-field"
-            onChange={this.updatePair}
+            onChange={this.updateEntry}
           >
           </input>
           <label className="input-label">Fee</label>

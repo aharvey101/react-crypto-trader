@@ -10,23 +10,23 @@ const ftx = new ftxrest({
   subaccount: 'initial',
 })
 
-const uri = process.env.DATABASEURI
-mongoose
-  .connect(process.env.MONGODB_URI || uri, {
-    useUnifiedTopology: true,
-    useNewUrlParser: true,
-    useFindAndModify: false,
-  })
-  .then((res) => {
-    console.log('connected to remote DB')
-    positions.forEach(position => {
-      cp(position)
-    })
-  })
-  .catch((err) => console.log(err))
+// const uri = process.env.DATABASEURI
+// mongoose
+//   .connect(process.env.MONGODB_URI || uri, {
+//     useUnifiedTopology: true,
+//     useNewUrlParser: true,
+//     useFindAndModify: false,
+//   })
+//   .then((res) => {
+//     console.log('connected to remote DB')
+//     positions.forEach(position => {
+//       cp(position)
+//     })
+//   })
+//   .catch((err) => console.log(err))
 
 
-const pair = 'ETH-PERP'
+const pair = 'BTC-PERP'
 async function getFills(pair) {
 
   const response = await ftx.request({
