@@ -20,13 +20,16 @@ const go = async () => {
     // Make array of the fills because there may be more than one fill
     const fill = res
     console.log('got fill from exchange', fill);
-    const positions = await databaseManager.getPositions()
-    const result = await fills.fills(fill, positions)
-      .then(result => {
-        if (result === false) {
-          console.log('result was false');
-        }
-        databaseManager.findByIdAndUpdate(result)
+    databaseManager.getPositions()
+      .then(positions => {
+        console.log(positions);
+        fills.fills(fill, positions)
+          .then(result => {
+            if (result === false) {
+              console.log('result was false');
+            }
+            databaseManager.findByIdAndUpdate(result)
+          })
       })
     bot.sendMessage(chatId, 'got fill')
   })

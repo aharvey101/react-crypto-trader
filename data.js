@@ -1,27 +1,2 @@
 const data =
-{
-  fee: 1.496673738,
-  price: 11997,
-  size: 0.1876,
-},
-  {
-    fee: 1.587622995,
-    price: 11997,
-    size: 0.199,
-  },
-  {
-    fee: 0.0534526335,
-    price: 11997,
-    size: 0.0067,
-  },
-  {
-    fee: 0.2082259305,
-    price: 11997,
-    size: 0.0261,
-  },
-  {
-    fee: 0.0215406135,
-    price: 11997,
-    size: 0.0027,
-  },
-  }
+  { "_id": { "$oid": "5f0bf25566c077694d336097" }, "pair": "BCH-PERP", "positionSize": { "$numberDouble": "1.426246985765314" }, "entry": { "$numberDouble": "220.5" }, "stop": { "$numberDouble": "221.2" }, "tf1": "https://www.tradingview.com/x/Tm8KdgBs/", "tf2": "https://www.tradingview.com/x/Q02ze40b/", "tf3": "https://www.tradingview.com/x/fel4YTJW/", "date": "Mon Jun 29 2020 10:35:49 GMT+0000 (Coordinated Universal Time)", "entryOrder": { "cancelReason": null, "cancelledAt": null, "createdAt": "2020-06-29T10:29:00.012730+00:00", "error": null, "future": "BCH-PERP", "id": { "$numberInt": "4242107" }, "market": "BCH-PERP", "orderId": null, "orderPrice": null, "orderType": "market", "reduceOnly": false, "retryUntilFilled": true, "side": "sell", "size": { "$numberDouble": "1.426" }, "status": "open", "trailStart": null, "trailValue": null, "triggerPrice": { "$numberDouble": "220.5" }, "triggeredAt": null, "type": "stop", "fill": [{ "baseCurrency": null, "fee": { "$numberDouble": "0.209097945" }, "feeCurrency": "USD", "feeRate": { "$numberDouble": "0.000665" }, "future": "BCH-PERP", "id": { "$numberInt": "115630114" }, "liquidity": "taker", "market": "BCH-PERP", "orderId": { "$numberDouble": "6237580077" }, "price": { "$numberDouble": "220.5" }, "quoteCurrency": null, "side": "sell", "size": { "$numberDouble": "1.426" }, "time": "2020-06-29T10:31:25.011650+00:00", "tradeId": { "$numberInt": "57410355" }, "type": "order" }, { "id": { "$numberInt": "162497889" }, "market": "BCH-PERP", "future": "BCH-PERP", "baseCurrency": null, "quoteCurrency": null, "type": "order", "side": "buy", "price": { "$numberDouble": "306.75" }, "size": { "$numberDouble": "0.01" }, "orderId": { "$numberDouble": "7463452165" }, "time": "2020-08-10T06:00:32.148310+00:00", "tradeId": { "$numberInt": "80739234" }, "feeRate": { "$numberDouble": "0.00019" }, "fee": { "$numberDouble": "0.000582825" }, "feeCurrency": "USD", "liquidity": "maker" }, { "id": { "$numberInt": "162498263" }, "market": "BCH-PERP", "future": "BCH-PERP", "baseCurrency": null, "quoteCurrency": null, "type": "order", "side": "buy", "price": { "$numberDouble": "306.75" }, "size": { "$numberDouble": "0.612" }, "orderId": { "$numberDouble": "7463452165" }, "time": "2020-08-10T06:00:57.413511+00:00", "tradeId": { "$numberInt": "80739416" }, "feeRate": { "$numberDouble": "0.00019" }, "fee": { "$numberDouble": "0.03566889" }, "feeCurrency": "USD", "liquidity": "maker" }, { "id": { "$numberInt": "162592402" }, "market": "BCH-PERP", "future": "BCH-PERP", "baseCurrency": null, "quoteCurrency": null, "type": "order", "side": "sell", "price": { "$numberDouble": "305.8" }, "size": { "$numberDouble": "6.83" }, "orderId": { "$numberDouble": "7465852243" }, "time": "2020-08-10T08:00:08.929070+00:00", "tradeId": { "$numberInt": "80786244" }, "feeRate": { "$numberDouble": "0.000665" }, "fee": { "$numberDouble": "1.38892831" }, "feeCurrency": "USD", "liquidity": "taker" }, { "id": { "$numberInt": "165311909" }, "market": "BCH-PERP", "future": "BCH-PERP", "baseCurrency": null, "quoteCurrency": null, "type": "order", "side": "sell", "price": { "$numberDouble": "280.6" }, "size": { "$numberDouble": "21.007" }, "orderId": { "$numberDouble": "7531409917" }, "time": "2020-08-12T00:02:44.136575+00:00", "tradeId": { "$numberInt": "82137650" }, "feeRate": { "$numberDouble": "0.000665" }, "fee": { "$numberDouble": "3.919885193" }, "feeCurrency": "USD", "liquidity": "taker" }] }, "position": { "collateralUsed": { "$numberDouble": "31.45043" }, "cost": { "$numberDouble": "-314.5756" }, "entryPrice": { "$numberDouble": "220.6" }, "estimatedLiquidationPrice": { "$numberDouble": "913.858108759268" }, "future": "BCH-PERP", "initialMarginRequirement": { "$numberDouble": "0.1" }, "longOrderSize": { "$numberInt": "0" }, "maintenanceMarginRequirement": { "$numberDouble": "0.03" }, "netSize": { "$numberDouble": "-1.426" }, "openSize": { "$numberDouble": "1.426" }, "realizedPnl": { "$numberDouble": "-0.1426" }, "recentAverageOpenPrice": { "$numberDouble": "220.5" }, "recentBreakEvenPrice": { "$numberDouble": "220.5" }, "recentPnl": { "$numberDouble": "-0.0713" }, "shortOrderSize": { "$numberInt": "0" }, "side": "sell", "size": { "$numberDouble": "1.426" }, "unrealizedPnl": { "$numberDouble": "0.0713" } }, "stopOrder": { "avgFillPrice": { "$numberDouble": "221.4" }, "clientId": null, "createdAt": "2020-06-29T12:36:37.901730+00:00", "filledSize": { "$numberDouble": "1.426" }, "future": "BCH-PERP", "id": { "$numberDouble": "6238867463" }, "ioc": true, "liquidation": false, "market": "BCH-PERP", "postOnly": false, "price": null, "reduceOnly": true, "remainingSize": { "$numberInt": "0" }, "side": "buy", "size": { "$numberDouble": "1.426" }, "status": "closed", "type": "market", "fill": [{ "baseCurrency": null, "fee": { "$numberDouble": "0.209951406" }, "feeCurrency": "USD", "feeRate": { "$numberDouble": "0.000665" }, "future": "BCH-PERP", "id": { "$numberInt": "115676102" }, "liquidity": "taker", "market": "BCH-PERP", "orderId": { "$numberDouble": "6238867463" }, "price": { "$numberDouble": "221.4" }, "quoteCurrency": null, "side": "buy", "size": { "$numberDouble": "1.426" }, "time": "2020-06-29T12:36:37.951017+00:00", "tradeId": { "$numberInt": "57433269" }, "type": "order" }] }, "__v": { "$numberInt": "0" }, "timeframe": "1800", "pnl": { "$numberDouble": "-1.7" }, "portfolioSize": "982.82" }

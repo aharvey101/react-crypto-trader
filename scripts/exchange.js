@@ -20,7 +20,7 @@ const exchange = {
     const { pair, positionSize, entry: entryPrice, stop: stopPrice } = order
     const side = isShort ? 'sell' : 'buy'
     const ccxtOverride = {
-      'orderPrice': entryPrice * 1.0004
+      'orderPrice': entryPrice * 1.001
     }
     const response = await ftxccxt.createOrder(pair, 'stop', side, positionSize, entryPrice, ccxtOverride)
       .then(res => {

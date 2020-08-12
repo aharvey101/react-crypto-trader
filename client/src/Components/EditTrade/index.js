@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import axios from 'axios'
+import update from 'immutability-helper'
 import './editTrade.css'
 const local = 'http://localhost:3001/'
 
@@ -24,11 +25,17 @@ class EditTrade extends Component {
 
   updateEntry(e) {
     e.preventDefault()
+    const position = this.state
+
     const { name, value } = e.target
-    const entry = this.state.entryOrder.fill
-    this.setState({
-      entryOrder: { ...this.state.entryOrder, fill: [...this.state.entryOrder.fill, { [name]: value }] },
-    })
+    console.log(name, value);
+    // const stateObj = this.state
+    // const state2 =
+    // console.log(state2);
+    // this.setState(
+
+    // )
+
   }
 
 
@@ -38,7 +45,9 @@ class EditTrade extends Component {
       process.env.NODE_ENV === 'production' ? '/getPositions' : `${local}getPositions`
     console.log('deleting position');
     axios.delete(route, { data: this.state })
-    window.location = '/tradelog'
+    setTimeout(() => {
+      window.location = '/tradelog'
+    }, 500)
   }
 
   calculatePnl(e) {
@@ -213,7 +222,7 @@ class EditTrade extends Component {
           <h3 className="order-component-form-title">Entry Order</h3>
           <label className="input-label">Entry Order Size</label>
           <input
-            name="entryOrder:{size:"
+            name="size"
             className="input-field"
             onChange={this.updatePair}
           >
@@ -221,14 +230,14 @@ class EditTrade extends Component {
           <h3 className="order-component-form-title">Fill 1</h3>
           <label className="input-label">price</label>
           <input
-            name="price"
+            name="triggerPrice"
             className="input-field"
             onChange={this.updateEntry}
           >
           </input>
           <label className="input-label">Fee</label>
           <input
-            name="entryOrder.fill[0].fee"
+            name="fee"
             className="input-field"
             onChange={this.updatePair}
           >
