@@ -29,7 +29,10 @@ router.delete('/', async (req, res) => {
   console.log('deleting');
   const position = req.body
   Position.findByIdAndDelete(position._id)
-  res.send('position Updated')
+    .then(() => {
+
+      res.send('position Updated')
+    })
 })
 
 module.exports = router

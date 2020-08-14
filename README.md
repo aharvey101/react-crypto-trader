@@ -20,7 +20,7 @@ The itnention of this app is to place positions, without the main strategy but w
 
 # TODO Frontend
 
-- [] Slippage
+- [] Slippage!
 
 ## Edit Trade
 
