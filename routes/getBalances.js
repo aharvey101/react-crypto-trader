@@ -18,15 +18,6 @@ router.get('/', async (req, res) => {
       .get(process.env.ethPlorerURI)
       .then((res) => {
         const dai = res.data.tokens.filter(token => token.tokenInfo.symbol === 'DAI')
-
-        // map(token => {
-        //   if (token.tokenInfo.name === 'Multi-Collateral DAI') {
-        //     return token
-        //   }
-        // })
-        console.log(dai)
-        //TODO:
-        // Currently this works, but it would be better to map over the tokens array instead of referencing a specific element
         const hwb = dai[0].balance / 1000000000000000000
         return hwb
       })
