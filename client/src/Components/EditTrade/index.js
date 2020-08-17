@@ -14,6 +14,7 @@ class EditTrade extends Component {
     this.deletePosition = this.deletePosition.bind(this)
     this.updateEntry = this.updateEntry.bind(this)
     this.updateBulkFills = this.updateBulkFills.bind(this)
+    this.updatedFilled = this.updatedFilled.bind(this)
   }
   updatePair(e) {
     e.preventDefault()
@@ -21,7 +22,7 @@ class EditTrade extends Component {
     this.setState({
       [name]: value,
     })
-    console.log(this.state);
+
   }
 
   updateEntry(e) {
@@ -59,13 +60,17 @@ class EditTrade extends Component {
 
       order[name].fill = []
       order[name].fill = parsed
-
+      order[name].filled = true
       return order
-    }, () => {
-      console.log(this.state);
     })
   }
 
+  updatedFilled(e) {
+    e.preventDefault()
+    this.setState(prevState => ({
+      ...prevState.entryOrder.filled = true, ...prevState.stopOrder.filled = true
+    }))
+  }
 
   deletePosition(e) {
     e.preventDefault()
@@ -116,14 +121,14 @@ class EditTrade extends Component {
   submitForm() {
     const position = this.state
     console.log(position)
-    // const route =
-    //   process.env.NODE_ENV === 'production' ? '/getPositions' : `${local}getPositions`
-    // axios
-    //   .put(route, position)
-    //   .catch((err) => console.log(err))
-    // setTimeout(() => {
-    //   window.location = '/tradelog'
-    // }, 500)
+    const route =
+      process.env.NODE_ENV === 'production' ? '/getPositions' : `${local}getPositions`
+    axios
+      .put(route, position)
+      .catch((err) => console.log(err))
+    setTimeout(() => {
+      window.location = '/tradelog'
+    }, 500)
   }
 
   render() {
@@ -369,6 +374,7 @@ class EditTrade extends Component {
           >
           </input>
           <button onClick={this.calculatePnl}>Calculate PnL</button>
+          <button onClick={this.updatedFilled}>Update Filled</button>
           <button className="submit-button">Submit</button>
         </form>
       </div>
