@@ -29,6 +29,7 @@
 
 .input-field {
   display: block;
+  resize: vertical;
 }
 
 .input-label {

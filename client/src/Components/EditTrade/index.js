@@ -13,6 +13,7 @@ class EditTrade extends Component {
     this.calculatePnl = this.calculatePnl.bind(this)
     this.deletePosition = this.deletePosition.bind(this)
     this.updateEntry = this.updateEntry.bind(this)
+    this.updateBulkFills = this.updateBulkFills.bind(this)
   }
   updatePair(e) {
     e.preventDefault()
@@ -25,17 +26,44 @@ class EditTrade extends Component {
 
   updateEntry(e) {
     e.preventDefault()
-    const position = this.state
+
 
     const { name, value } = e.target
-    console.log(name, value);
-    // const stateObj = this.state
-    // const state2 =
-    // console.log(state2);
-    // this.setState(
+    this.setState((prevState) => {
+      const key = { ...prevState.entryOrder.fill }
+      key[0][name] = Number(value)
+      return key
+    })
+    console.log(this.state);
+  }
 
-    // )
+  updateBulkFills(e) {
+    e.preventDefault()
+    const { name, value } = e.target
 
+    // split value string by '},'
+    const split = value.split('},')
+    // parse split array into arra of objects
+    const parsed = split.map((fill) => {
+      fill = fill + '}'
+      const regex = /(}})$/g
+      if (regex.test(fill)) {
+        fill = fill.substring(0, fill.length - 1)
+      }
+      const fixedFill = fill
+      const newOBJ = eval("(" + fixedFill + ')')
+      return newOBJ
+    })
+    this.setState(prevState => {
+      const order = { ...prevState }
+
+      order[name].fill = []
+      order[name].fill = parsed
+
+      return order
+    }, () => {
+      console.log(this.state);
+    })
   }
 
 
@@ -88,14 +116,14 @@ class EditTrade extends Component {
   submitForm() {
     const position = this.state
     console.log(position)
-    const route =
-      process.env.NODE_ENV === 'production' ? '/getPositions' : `${local}getPositions`
-    axios
-      .put(route, position)
-      .catch((err) => console.log(err))
-    setTimeout(() => {
-      window.location = '/tradelog'
-    }, 500)
+    // const route =
+    //   process.env.NODE_ENV === 'production' ? '/getPositions' : `${local}getPositions`
+    // axios
+    //   .put(route, position)
+    //   .catch((err) => console.log(err))
+    // setTimeout(() => {
+    //   window.location = '/tradelog'
+    // }, 500)
   }
 
   render() {
@@ -220,6 +248,8 @@ class EditTrade extends Component {
             onChange={this.updatePair}>
           </input>
           <h3 className="order-component-form-title">Entry Order</h3>
+          <p> Bulk Upload</p>
+          <textarea name="entryOrder" rows={10} className="input-field" onChange={this.updateBulkFills}></textarea>
           <label className="input-label">Entry Order Size</label>
           <input
             name="size"
@@ -230,7 +260,7 @@ class EditTrade extends Component {
           <h3 className="order-component-form-title">Fill 1</h3>
           <label className="input-label">price</label>
           <input
-            name="triggerPrice"
+            name="price"
             className="input-field"
             onChange={this.updateEntry}
           >
@@ -274,8 +304,9 @@ class EditTrade extends Component {
             onChange={this.updatePair}
           >
           </input>
-
           <h3 className="order-component-form-title">Stop Order</h3>
+          <p>Bulk Upload</p>
+          <textarea name="stopOrder" rows={10} className="input-field" onChange={this.updateBulkFills}></textarea>
           <label className="input-label">Stop Order Size</label>
           <input
             name="stopOrder.size"
