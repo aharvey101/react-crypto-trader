@@ -24,9 +24,9 @@ The itnention of this app is to place positions, without the main strategy but w
 
 ## Edit Trade
 
-- [] portfolio risk
-- [] strategy
-- []
+- [x] portfolio risk
+- [x] strategy
+- [] Portfolio Size
 
 - Overview
   - [] Graph of account size: Thought, for every trade, take total profit or loss off previous account balance, much like a spreadsheet.
