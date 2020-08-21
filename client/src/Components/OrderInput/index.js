@@ -112,6 +112,7 @@ class OrderInput extends Component {
       risked: this.state.risked,
       timeframe: this.state.timeframe,
       portfolioSize: this.state.portfolioSize,
+      portfolioRisk: this.state.portfolioRisk,
       tf1: this.state.tf1,
       tf2: this.state.tf2,
       tf3: this.state.tf3,

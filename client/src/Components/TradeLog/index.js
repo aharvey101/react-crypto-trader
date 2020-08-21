@@ -14,8 +14,7 @@ const Row = props => (
     <td className="table-body-item" >{props.position.isShort ? 'short' : 'long'}</td>
     <td className="table-body-item" >{props.position.timeframe}</td>
     <td className="table-body-item" >{props.position.pnl ? props.position.pnl : ''}</td>
-    <td className="table-body-item" >${risked(props.position)}</td>
-    <td className="table-body-item" >${props.position.portfolioSize}</td>
+    <td className="table-body-item" >${props.position.portfolioRisk || risked(props.position)}</td>
     <td className="table-body-item" ><Link exact='true' to={{ pathname: `/position/${props.position._id}`, state: props.position }}><button>View</button></Link></td>
 
   </tr>
@@ -83,7 +82,7 @@ export default class TradeLog extends Component {
   makeRows() {
     return this.state.positions.map(position => {
       return <Row position={position} key={position._id} />
-    })
+    }).reverse()
   }
 
   render() {
@@ -102,7 +101,6 @@ export default class TradeLog extends Component {
               <th className='table-head-item'>Timeframe</th>
               <th className='table-head-item'>PnL</th>
               <th className='table-head-item'>$ Risked</th>
-              <th className='table-head-item'>Portfolio Size</th>
               <th className='table-head-item'>ViewPositon</th>
             </tr>
           </thead>

@@ -74,6 +74,7 @@ databaseManager.createPosition = async (draftPosition, exchangePostionInfo, entr
     isShort: draftPosition.isShort,
     risked: draftPosition.risked,
     portfolioRisk: draftPosition.portfolioRisk,
+    portfolioSize: draftPosition.portfolioSize,
     timeframe: draftPosition.timeframe,
     tf1: draftPosition.tf1,
     tf2: draftPosition.tf2,
