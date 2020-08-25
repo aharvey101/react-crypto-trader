@@ -30,15 +30,19 @@ fills.fills = async (fill, positions) => {
       return false
     }
     const pos = filteredPosition[0]
-    console.log(pos);
 
-    // check the entry order filled value, if not true, put the fill in the entryOrder
-    if (pos.entryOrder.filled !== true) {
+    // if position isShort = true and fill.side = sell, place fill in entryOrder.fill
+    // || isShort = false and fill.side = buy, place fill in entryOrder.fill
+    // else if isShort = false and fill.side = sell, place fill in stopOrder.fill
+    // || if isShort = "true" and fill.side = buy, place fill in StopOrder.fill
+
+    if (pos.isShort === "true" && fill.side === "sell" || pos.isShort === "false" && fill.side === "buy") {
       if (pos.entryOrder.fill === undefined) {
         pos.entryOrder.fill = []
       }
+      console.log('filling entryOrder');
       pos.entryOrder.fill.push(fill)
-      console.log('entry order fill', pos.entryOrder.fill);
+      console.log('entry order fill is', pos.entryOrder.fill);
       const size = calculate.accumulateSize(pos.entryOrder.fill)
 
       // if the combination of the fills adds up to be equal to or greater than the entryOrder size value
@@ -48,8 +52,8 @@ fills.fills = async (fill, positions) => {
         return pos
       }
       return pos
-    } else if (pos.stopOrder.filled !== true) {
-      console.log('filling stoporder');
+    } else if (pos.isShort === "true" && fill.side === "buy" || pos.isShort === "false" && fill.side === "sell") {
+      console.log('filling Stop Order');
       if (pos.stopOrder.fill === undefined) {
         pos.stopOrder.fill = []
       }
@@ -63,6 +67,7 @@ fills.fills = async (fill, positions) => {
         pos.stopOrder.filled = true
         const pnl = calculate.calculatePnl(pos)
         filteredPosition[0].pnl = Number(pnl)
+        bot.sendMessage(chatId, `pnl for ${pos.pair} is ${pnl}`)
         console.log(pnl);
         return pos
       }
