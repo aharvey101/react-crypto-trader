@@ -31,7 +31,7 @@ const go = async () => {
             databaseManager.findByIdAndUpdate(result)
           })
       })
-    bot.sendMessage(chatId, `got fill for ${fill.pair} at ${fill.price} side was ${fill.side}`)
+    bot.sendMessage(chatId, `got fill for ${fill.future} at ${fill.price} side was ${fill.side}`)
   })
 }
 
