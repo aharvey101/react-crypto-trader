@@ -255,114 +255,12 @@ class EditTrade extends Component {
           <h3 className="order-component-form-title">Entry Order</h3>
           <p> Bulk Upload</p>
           <textarea name="entryOrder" rows={10} className="input-field" onChange={this.updateBulkFills}></textarea>
-          <label className="input-label">Entry Order Size</label>
-          <input
-            name="size"
-            className="input-field"
-            onChange={this.updatePair}
-          >
-          </input>
-          <h3 className="order-component-form-title">Fill 1</h3>
-          <label className="input-label">price</label>
-          <input
-            name="price"
-            className="input-field"
-            onChange={this.updateEntry}
-          >
-          </input>
-          <label className="input-label">Fee</label>
-          <input
-            name="fee"
-            className="input-field"
-            onChange={this.updatePair}
-          >
-          </input>
-          <label className="input-label">Size</label>
-          <input
-            name="entryOrder.fill[0].size"
-            className="input-field"
-            onChange={this.updatePair}
-          >
-          </input>
-          <h3 className="order-component-form-title">Fill 2</h3>
-          <label className="input-label">price</label>
-          <input
-            name="entryOrder.fill[1].price"
-
-            className="input-field"
-            onChange={this.updatePair}
-          >
-          </input>
-          <label className="input-label">Fee</label>
-          <input
-            name="entryOrder.fill[1].fee"
-
-            className="input-field"
-            onChange={this.updatePair}
-          >
-          </input>
-          <label className="input-label">Size</label>
-          <input
-            name="entryOrder.fill[1].size"
-
-            className="input-field"
-            onChange={this.updatePair}
-          >
-          </input>
+          
           <h3 className="order-component-form-title">Stop Order</h3>
           <p>Bulk Upload</p>
           <textarea name="stopOrder" rows={10} className="input-field" onChange={this.updateBulkFills}></textarea>
-          <label className="input-label">Stop Order Size</label>
-          <input
-            name="stopOrder.size"
-            className="input-field"
-            onChange={this.updatePair}
-          >
-          </input>
-          <h3 className="order-component-form-title">Fill 1</h3>
-          <label className="input-label">Fee</label>
-          <input
-            name="stopOrder.fill[0].fee"
-            className="input-field"
-            onChange={this.updatePair}
-          >
-          </input>
-          <label className="input-label">Size</label>
-          <input
-            name="stopOrder.fill[0].size"
-            className="input-field"
-            onChange={this.updatePair}
-          >
-          </input>
-          <label className="input-label">price</label>
-          <input
-            name="stopOrder.fill[0].price"
-            className="input-field"
-            onChange={this.updatePair}
-          >
-          </input>
-          <h3 className="order-component-form-title">Fill 2</h3>
-          <label className="input-label">Fee</label>
-          <input
-            name="stopOrder.fill[1].fee"
-            className="input-field"
-            onChange={this.updatePair}
-          >
-          </input>
-          <label className="input-label">Size</label>
-          <input
-            name="stopOrder.fill[1].size"
-            className="input-field"
-            onChange={this.updatePair}
-          >
-          </input>
-          <label className="input-label">price</label>
-          <input
-            name="stopOrder.fill[1].price"
-            className="input-field"
-            onChange={this.updatePair}
-          >
-          </input>
+
+
           <label className="input-label">Pnl</label>
           <input
             name="pnl"
