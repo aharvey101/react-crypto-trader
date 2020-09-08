@@ -26,7 +26,7 @@ const ftx = new ftxrest({
 //   .catch((err) => console.log(err))
 
 
-const pair = 'SXP-PERP'
+const pair = 'MTA-PERP'
 async function getFills(pair) {
 
   const response = await ftx.request({

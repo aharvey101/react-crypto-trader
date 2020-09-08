@@ -18,7 +18,9 @@ router.get('/', async (req, res) => {
       .get(process.env.ethPlorerURI)
       .then((res) => {
         const dai = res.data.tokens.filter(token => token.tokenInfo.symbol === 'DAI')
-        const hwb = dai[0].balance / 1000000000000000000
+        const USDT = res.data.tokens.filter(token => token.tokenInfo.symbol === 'USDT')
+        
+        const hwb = (dai[0].balance / 1000000000000000000) + (USDT[0].balance / 1000000)
         return hwb
       })
     const total = process.env.NODE_ENV === "production" ? ftxBalance.result.collateral + hardwareWalletBalance : ftxBalance.result.collateral
