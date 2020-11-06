@@ -116,7 +116,8 @@ class OrderInput extends Component {
       tf1: this.state.tf1,
       tf2: this.state.tf2,
       tf3: this.state.tf3,
-      isShort: this.state.entry > this.state.stop ? false : true
+      isShort: this.state.entry > this.state.stop ? false : true,
+      adminCode: this.state.adminCode
     }
     const route =
       process.env.NODE_ENV === 'production' ? '/position' : `${local}position`
@@ -257,6 +258,14 @@ class OrderInput extends Component {
             type="text"
             name="tf3"
             placeholder="Third Timeframe"
+            className="input-field"
+            onChange={this.updatePair}>
+          </input>
+          <label className="input-label">Admin Code</label>
+          <input
+            type="password"
+            name="adminCode"
+            placeholder="Admin Code"
             className="input-field"
             onChange={this.updatePair}>
           </input>

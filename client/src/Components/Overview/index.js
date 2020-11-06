@@ -22,11 +22,11 @@ class Overview extends Component {
     axios.get(route)
       .then(response => {
         this.setState({ ...this.state, positions: response.data })
-        console.log(this.state);
+       
         this.makePortfolioData()
       })
     this.configureChart()
-    console.log(this.state);
+    
   }
 
   configureChart() {
@@ -34,16 +34,16 @@ class Overview extends Component {
     const chart1 = anychart.line([1, 2, 3])
     chart1.bounds(0, 0, '100%', '50%')
     const data = this.state.positions
-    console.log(data);
+  
     this.setState({ ...this.state, chart: { instance: stage, chart1: chart1 } })
-    console.log(this.state);
+    
   }
 
   makePortfolioData() {
     const portfolioSizeArray = this.state.positions.map(position => position.portfolioSize)
     // const tradetype = this.state.positions.map(position => position.type)
     this.setState({ ...this.state, portfolioSizeArray: portfolioSizeArray })
-    console.log(this.state);
+  
   }
 
   render() {

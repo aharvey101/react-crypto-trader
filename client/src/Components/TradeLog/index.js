@@ -11,14 +11,14 @@ const Row = props => (
 
     <td className="table-body-item" >{date(props.position)}</td>
     <td className="table-body-item" >{props.position.strategy ? props.position.strategy : 'cradle'}</td>
-    <td className="table-body-item" >{props.position.isShort ? 'short' : 'long'}</td>
-    <td className="table-body-item" >{props.position.timeframe}</td>
-    <td className="table-body-item" >{props.position.pnl ? props.position.pnl : ''}</td>
-    <td className="table-body-item" >${props.position.portfolioRisk || risked(props.position)}</td>
+    <td className="table-body-item" >{props.position.isShort === 'true' ? 'short' : 'long'}</td>
+    <td className="table-body-item" >{props.position.timeframe  / 60 >= 60 ? props.position.timeframe / 60 / 60 + `hr` : props.position.timeframe / 60 + `m`}</td>
     <td className="table-body-item" ><Link exact='true' to={{ pathname: `/position/${props.position._id}`, state: props.position }}><button>View</button></Link></td>
 
   </tr>
 )
+
+
 
 function date(position) {
   const date = new Date(position.date)
@@ -99,8 +99,6 @@ export default class TradeLog extends Component {
               <th className='table-head-item'>Strategy</th>
               <th className='table-head-item'>Direction</th>
               <th className='table-head-item'>Timeframe</th>
-              <th className='table-head-item'>PnL</th>
-              <th className='table-head-item'>$ Risked</th>
               <th className='table-head-item'>ViewPositon</th>
             </tr>
           </thead>

@@ -11,7 +11,6 @@ const Row = props => (
     <td className="table-body-item" >{props.position.entryPrice}</td>
     <td className="table-body-item" >{props.position.side}</td>
     <td className="table-body-item" >{props.position.size}</td>
-    <td className="table-body-item" >{props.position.realizedPnl}</td>
     <td className="table-body-item" ><button >View</button></td>
 
   </tr>
@@ -47,9 +46,9 @@ export default class TableOfPositions extends Component {
     const route = process.env.NODE_ENV === 'production' ? '/getCurrentPositions' : `${local}/getCurrentPositions`
     axios.get(route)
       .then(response => {
-        console.log(response);
+        
         this.setState({ positions: response.data })
-        console.log(this.state);
+       
       })
 
   }
@@ -71,7 +70,6 @@ export default class TableOfPositions extends Component {
               <th className='table-head-item'>EntryPrice</th>
               <th className='table-head-item'>Side</th>
               <th className='table-head-item'>Size</th>
-              <th className='table-head-item'>PnL</th>
               <th className='table-head-item'>View Position</th>
             </tr>
           </thead>
@@ -80,7 +78,6 @@ export default class TableOfPositions extends Component {
           </tbody>
         </table>
       </div>
-
     )
   }
 }
