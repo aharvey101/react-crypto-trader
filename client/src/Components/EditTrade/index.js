@@ -15,9 +15,11 @@ class EditTrade extends Component {
     this.updateEntry = this.updateEntry.bind(this)
     this.updateBulkFills = this.updateBulkFills.bind(this)
     this.updatedFilled = this.updatedFilled.bind(this)
+    this.state.adminCode = ''
   }
   updatePair(e) {
     e.preventDefault()
+    console.log(e.target)
     const { name, value } = e.target
     this.setState({
       [name]: value,
@@ -120,30 +122,38 @@ class EditTrade extends Component {
 
   submitForm() {
     const position = this.state
-    console.log(position)
+    console.log(this.state)
     const route =
       process.env.NODE_ENV === 'production' ? '/getPositions' : `${local}getPositions`
     axios
       .put(route, position)
+      
       .catch((err) => console.log(err))
-    setTimeout(() => {
-      window.location = '/tradelog'
-    }, 500)
+    // setTimeout(() => {
+    //   window.location = '/tradelog'
+    // }, 500)
   }
 
   render() {
     return (
       <div className="order-component">
         <h1 className="order-component-form-title">Edit Trade</h1>
-        <button className="submit-button" onClick={this.deletePosition}>Delete</button>
-        <h3 className="order-component-form-title">Entry Order</h3>
-        <form
+          <form
           onSubmit={(event) => {
             event.preventDefault()
             this.submitForm()
           }}
           className="order-input-form"
         >
+        <label className="input-label">Admin Code</label>
+        <input
+          type="password"
+          value={this.state.adminCode}
+          className="input-field"
+          onChange={this.updatePair}
+        ></input>
+        <button className="submit-button" onClick={this.deletePosition}>Delete</button>
+      
           <label className="input-label">Pair</label>
           <input
             name="pair"

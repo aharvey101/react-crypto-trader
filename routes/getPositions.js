@@ -11,16 +11,25 @@ router.get('/', async (req, res) => {
 
 router.put('/', async (req, res) => {
   console.log('posting');
-  // create position from post request, find in database and update
-  const position = req.body
-  const newPosition = await Position.findByIdAndUpdate(req.body._id, position, { new: true }, (err, position) => {
-    if (err) {
-      res.send('Error', err.message)
-    }
-    else {
-      console.log('position updated');
-    }
-  })
+  //check if admin Code was supplied
+  if(req.body.adminCode === process.env.ADMINCODE){
+    // create position from post request, find in database and update
+    const position = req.body
+    const newPosition = await Position.findByIdAndUpdate(req.body._id, position, { new: true }, (err, position) => {
+      if (err) {
+        res.send('Error', err.message)
+      }
+      else {
+        console.log('position updated');
+      }
+    })
+  } else {
+    // res.send(res.status(500).json({
+    //   status: 'error',
+    //   message:"an error occured"
+    // }))
+    res.send(new Error("there was an error"))
+  }
 
 })
 
