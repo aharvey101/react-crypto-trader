@@ -1,17 +1,33 @@
-### Trading App React Testing
+# Crypto React Trading App
 
-# Known Errors:
+This is a Mongo Express React Node stack app built for trading [TraderCobb](https://tradercobb.com/) strategies specifically on the [FTX](ftx.com) exchange.
 
-# SCOPE OF APP:
+After a new order has been submitted to the backend, an algorithm is ran that watches the price, submits the information about the position to the database once the trade has been entered, or cancels the orders if the price goes through the stop before entry.
 
-The itention of this app is to place positions, without the main strategy but with the order management rules
+There is also a web socket connection, that is waiting for fills for the orders submitted, once done, it updates the positions in the database accordingly.
 
-# TODO - Backend
+## Installation
 
-- [] Fix fills algorithm, probably change so that it enters fills into db position based on isShort and calculates pnl based on each fill not average fill
-- [] fix not entering in Portfolio size
+To get this app running:
 
-# TODO Frontend
+1. Clone App
+2. npm i
+3. Setup required environment variables in a .env file in the root of the app:
+   - FTX API Key: API_KEY=""
+   - FTX API Secret: API_SECRET=""
+   - MongoDBA connection: DATABASEURI=""
+   - Ethplorer API (to see the balance of your eth wallet to correctly calculate position size): ethPlorerURI=""
+   - Telegram Token: TELEGRAM_TOKEN=""
+   - Your Telegram Chat ID: TELEGRAM_CHAT_ID=""
+   - ADMINCODE (set to whatever you want) : ADMINCODE=""
+4. To make a trade, just input the details, in the order input form and the algorithm does the rest.
 
-- [] Slippage!
-- [] 
+There are a few hard coded variables such as the name of the database. You may want to change those but its not necissary.
+
+## Contributing
+
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+## License
+
+[MIT](https://choosealicense.com/licenses/mit/)
