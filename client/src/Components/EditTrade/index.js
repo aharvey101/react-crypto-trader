@@ -15,7 +15,7 @@ class EditTrade extends Component {
     this.updateEntry = this.updateEntry.bind(this)
     this.updateBulkFills = this.updateBulkFills.bind(this)
     this.updatedFilled = this.updatedFilled.bind(this)
-    this.state.adminCode = ''
+    
   }
   updatePair(e) {
     e.preventDefault()

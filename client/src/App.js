@@ -14,10 +14,18 @@ import {
 
 import './App.css'
 
-// Order input
-// form for inputing order
-
 function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  const login = () => {
+    setIsAuthenticated(true);
+  };
+
+  const logout = () => {
+    setIsAuthenticated(false);
+  };
+
+
   return (
     <Router>
       <div className="container">
@@ -26,7 +34,9 @@ function App() {
         {/* A <Switch> looks through its children <Route>s and
           renders the first one that matches the current URL. */}
         <Switch>
-          <Route exact path='/position/:id' render={(props) => <Position {...props} />} />
+          <Route exact path='/position/:id' render={(props) => <Position {...props} />}>
+            {isAuthenticated}
+            </Route>
           <Route exact path="/position/:id/edit/" render={(props) => <EditTrade {...props} />} />
           <Route exact path="/">
             <OrderInput />
