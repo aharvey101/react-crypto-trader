@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import React from 'react'
 import OrderInput from './Components/OrderInput/'
 import TableOfPositions from './Components/TableOfPositions/'
 import Nav from './Components/Nav/'
 import TradeLog from './Components/TradeLog'
 import Position from './Components/Position'
 import EditTrade from './Components/EditTrade'
+import Overview from './Components/Overview'
 
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
@@ -46,6 +47,9 @@ function App() {
           </Route>
           <Route exact path="/tradelog">
             <TradeLog />
+          </Route>
+          <Route exact path="/overview">
+            <Overview />
           </Route>
         </Switch>
       </div>
