@@ -3,13 +3,6 @@ import axios from 'axios'
 import './orderInput.css'
 const local = 'http://localhost:3001/'
 
-// TODO
-// - [x] Handle Change
-// - [x] Get Pairs
-// - [x] Get Balances
-// - [] Form Submit
-// - [] Update Position Size
-
 const OrderInput = () => {
   const [state, setState] = useState({
     pair: 'BTC-PERP',
