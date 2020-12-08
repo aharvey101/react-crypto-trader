@@ -5,10 +5,7 @@ const databaseManager = {}
 
 databaseManager.draftPositions = async (draftPosition) => {
   const newCurrentPostion = draftPosition
-  DraftPosition.create(newCurrentPostion, function (
-    err,
-    position
-  ) {
+  DraftPosition.create(newCurrentPostion, function (err, position) {
     if (err) {
       console.log(err)
     } else {
@@ -20,7 +17,7 @@ databaseManager.draftPositions = async (draftPosition) => {
   const findInDB = async () => {
     const dbResponse = await DraftPosition.find({}, (err, res) => {
       if (err) {
-        console.log(err);
+        console.log(err)
       } else {
         return res
       }
@@ -32,38 +29,55 @@ databaseManager.draftPositions = async (draftPosition) => {
     return new Promise((resolve, reject) => {
       setTimeout(async () => {
         return resolve(findInDB())
-      }, 500);
+      }, 500)
     })
   }
-
 
   return find()
 }
 //Updates current positions with entry order information
-databaseManager.updateDraftPosition = async function (draftPosition, entryPlaced) {
+databaseManager.updateDraftPosition = async function (
+  draftPosition,
+  entryPlaced
+) {
   // process entry Order information
   const newCurrentPos = { ...draftPosition, entryPlaced: entryPlaced }
-  const response = await DraftPosition.findOneAndUpdate(draftPosition.pair, newCurrentPos, function (err, newCurrentPos) {
-    if (err) {
-      console.log(err);
+  const response = await DraftPosition.findOneAndUpdate(
+    draftPosition.pair,
+    newCurrentPos,
+    function (err, newCurrentPos) {
+      if (err) {
+        console.log(err)
+      } else console.log(`updated draft position with entryOrder placed`)
     }
-    else console.log(`updated draft position with entryOrder placed`,);
-  })
+  )
   return response
 }
 
-databaseManager.updateDraftPositionStop = async function (currentPosition, stopEntered) {
+databaseManager.updateDraftPositionStop = async function (
+  currentPosition,
+  stopEntered
+) {
   // process entry Order information
   const newCurrentPos = { ...currentPosition, stopPlaced: stopEntered }
-  const response = await DraftPosition.findOneAndUpdate(currentPosition.pair, newCurrentPos, function (err, newCurrentPos) {
-    if (err) {
-      console.log(err);
+  const response = await DraftPosition.findOneAndUpdate(
+    currentPosition.pair,
+    newCurrentPos,
+    function (err, newCurrentPos) {
+      if (err) {
+        console.log(err)
+      }
+      console.log('updated draft position')
     }
-    console.log('updated draft position',);
-  })
+  )
   return response
 }
-databaseManager.createPosition = async (draftPosition, exchangePostionInfo, entryOrder, stopOrder) => {
+databaseManager.createPosition = async (
+  draftPosition,
+  exchangePostionInfo,
+  entryOrder,
+  stopOrder
+) => {
   //create position
   const newPosition = {
     pair: draftPosition.pair,
@@ -82,21 +96,15 @@ databaseManager.createPosition = async (draftPosition, exchangePostionInfo, entr
     date: new Date(),
     entryOrder: entryOrder,
     position: exchangePostionInfo,
-    stopOrder: stopOrder
+    stopOrder: stopOrder,
   }
 
-  Position.create(newPosition, function (
-    err,
-    newlyCreated
-  ) {
+  Position.create(newPosition, function (err, newlyCreated) {
     if (err) {
       console.log(err)
     } else {
-      console.log(
-        `position in database has been created`,
-      )
+      console.log(`position in database has been created`)
     }
-
   })
 
   function returnPromise() {
@@ -110,9 +118,9 @@ databaseManager.createPosition = async (draftPosition, exchangePostionInfo, entr
   const findInDB = async () => {
     const dbResponse = await Position.findOne(newPosition, (err, res) => {
       if (err) {
-        console.log(err);
+        console.log(err)
       } else {
-        console.log('found position in DB');
+        console.log('found position in DB')
         return res
       }
     })
@@ -120,18 +128,13 @@ databaseManager.createPosition = async (draftPosition, exchangePostionInfo, entr
   }
 
   const found = await returnPromise()
-
-
   return found
 }
 
-databaseManager.updatePosition = async (
-  existingPositionInfo,
-  stopOrder
-) => {
+databaseManager.updatePosition = async (existingPositionInfo, stopOrder) => {
   // process new position info
   const test = { ...existingPositionInfo }
-  console.log('test is,', test);
+  console.log('test is,', test)
   const existing = existingPositionInfo
   const newDBPosition = { ...existing, stopOrder: stopOrder }
   console.log('newDBPosition is ', newDBPosition)
@@ -151,19 +154,21 @@ databaseManager.updatePosition = async (
 }
 databaseManager.findByIdAndUpdate = async (pos) => {
   Position.findByIdAndUpdate(pos._id, pos, (err, newPosition) => {
-    if (err) console.log(err);
-    console.log('position has been updated',);
+    if (err) console.log(err)
+    console.log('position has been updated')
   })
 }
 
 // When a position has been exited, it needs to ne removed from the current posisitons collection
 databaseManager.deleteDraftPosition = async (draftPosition) => {
   const dbCurrentPositions = await DraftPosition.find({})
-  const filtered = dbCurrentPositions.filter((pos) => pos.pair === draftPosition.pair)
+  const filtered = dbCurrentPositions.filter(
+    (pos) => pos.pair === draftPosition.pair
+  )
   filtered.forEach((position) => {
     DraftPosition.findByIdAndDelete(position.id, function (err, res) {
-      if (err) console.log(err);
-      console.log('deleted draft poisition ',);
+      if (err) console.log(err)
+      console.log('deleted draft poisition ')
     })
   })
 }
@@ -179,8 +184,7 @@ databaseManager.lookup = () => {
   return positions
 }
 databaseManager.getPositions = async () => {
-  const response = await Position.find({})
-    .catch(err => console.log(err))
+  const response = await Position.find({}).catch((err) => console.log(err))
   return response
 }
 
