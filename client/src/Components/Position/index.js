@@ -78,8 +78,8 @@ class Position extends Component {
           <p>Size: {this.state.positionSize}</p>
           <p>Date: {this.state.date}</p>
           <h3 className="position-information__title-Exit">Exit information</h3>
-          <p>Profit and loss: {this.state.pnl}</p>
-          {/* <td className="table-body-item" >{slippage(props.position)}%</td> */}
+          <p>Profit and loss:{`$${this.state.pnl}`}</p>
+
           <Link
             exact="true"
             to={{

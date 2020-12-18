@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, useState } from 'react'
 import axios from 'axios'
 import update from 'immutability-helper'
 import './editTrade.css'
@@ -15,21 +15,17 @@ class EditTrade extends Component {
     this.updateEntry = this.updateEntry.bind(this)
     this.updateBulkFills = this.updateBulkFills.bind(this)
     this.updatedFilled = this.updatedFilled.bind(this)
-    
   }
   updatePair(e) {
     e.preventDefault()
-    console.log(e.target)
     const { name, value } = e.target
     this.setState({
       [name]: value,
     })
-
   }
 
   updateEntry(e) {
     e.preventDefault()
-
 
     const { name, value } = e.target
     this.setState((prevState) => {
@@ -37,7 +33,7 @@ class EditTrade extends Component {
       key[0][name] = Number(value)
       return key
     })
-    console.log(this.state);
+    console.log(this.state)
   }
 
   updateBulkFills(e) {
@@ -54,10 +50,10 @@ class EditTrade extends Component {
         fill = fill.substring(0, fill.length - 1)
       }
       const fixedFill = fill
-      const newOBJ = eval("(" + fixedFill + ')')
+      const newOBJ = eval('(' + fixedFill + ')')
       return newOBJ
     })
-    this.setState(prevState => {
+    this.setState((prevState) => {
       const order = { ...prevState }
 
       order[name].fill = []
@@ -69,16 +65,19 @@ class EditTrade extends Component {
 
   updatedFilled(e) {
     e.preventDefault()
-    this.setState(prevState => ({
-      ...prevState.entryOrder.filled = true, ...prevState.stopOrder.filled = true
+    this.setState((prevState) => ({
+      ...(prevState.entryOrder.filled = true),
+      ...(prevState.stopOrder.filled = true),
     }))
   }
 
   deletePosition(e) {
     e.preventDefault()
     const route =
-      process.env.NODE_ENV === 'production' ? '/getPositions' : `${local}getPositions`
-    console.log('deleting position');
+      process.env.NODE_ENV === 'production'
+        ? '/getPositions'
+        : `${local}getPositions`
+    console.log('deleting position')
     axios.delete(route, { data: this.state })
     setTimeout(() => {
       window.location = '/tradelog'
@@ -91,77 +90,83 @@ class EditTrade extends Component {
     // gets size by maping over entry order fills and adding up the size
     function accumulateSize(object) {
       const reducer = (accumulator, currentValue) => accumulator + currentValue
-      const data = object.fill.map(fill => fill.size).reduce(reducer)
+      const data = object.fill.map((fill) => fill.size).reduce(reducer)
       return data
     }
 
     // gets fee's adding up the fill fees
     function accumulateFee(object) {
       const reducer = (accumulator, currentValue) => accumulator + currentValue
-      const data = object.fill.map(fill => fill.fee).reduce(reducer)
+      const data = object.fill.map((fill) => fill.fee).reduce(reducer)
       return data
     }
 
     function orderPriceAverage(object) {
-      const data = object.fill.map(fill => fill.price)
-      const average = data.reduce((p, c) => p + c, 0) / data.length;
+      const data = object.fill.map((fill) => fill.price)
+      const average = data.reduce((p, c) => p + c, 0) / data.length
       return average
     }
     const entryAmount = accumulateSize(this.state.entryOrder)
     const entryPrice = orderPriceAverage(this.state.entryOrder)
     const entryResult = entryAmount * entryPrice
     const entryOrderFee = accumulateFee(this.state.entryOrder)
-    const stopAmount = entryAmount;
+    const stopAmount = entryAmount
     const stopPrice = orderPriceAverage(this.state.stopOrder)
-    const stopResult = stopAmount * stopPrice;
+    const stopResult = stopAmount * stopPrice
     const stopOrderFee = accumulateFee(this.state.stopOrder)
-    const result = entryPrice > stopPrice ? ((entryResult - stopResult) * -1) - entryOrderFee - stopOrderFee : entryResult - stopResult - entryOrderFee - stopOrderFee
+    const result =
+      entryPrice > stopPrice
+        ? (entryResult - stopResult) * -1 - entryOrderFee - stopOrderFee
+        : entryResult - stopResult - entryOrderFee - stopOrderFee
     this.setState({ ...this.state, pnl: result.toFixed(2) })
-
   }
 
   submitForm() {
     const position = this.state
     console.log(this.state)
     const route =
-      process.env.NODE_ENV === 'production' ? '/getPositions' : `${local}getPositions`
+      process.env.NODE_ENV === 'production'
+        ? '/getPositions'
+        : `${local}getPositions`
     axios
       .put(route, position)
-      
+      .then((res) => {
+        console.log(res)
+        window.location = '/tradelog'
+      })
       .catch((err) => console.log(err))
-    // setTimeout(() => {
-    //   window.location = '/tradelog'
-    // }, 500)
   }
 
   render() {
     return (
       <div className="order-component">
         <h1 className="order-component-form-title">Edit Trade</h1>
-          <form
+        <form
           onSubmit={(event) => {
             event.preventDefault()
             this.submitForm()
           }}
           className="order-input-form"
         >
-        <label className="input-label">Admin Code</label>
-        <input
-          type="password"
-          value={this.state.adminCode}
-          className="input-field"
-          onChange={this.updatePair}
-        ></input>
-        <button className="submit-button" onClick={this.deletePosition}>Delete</button>
-      
+          <label className="input-label">Admin Code</label>
+          <input
+            name="adminCode"
+            type="password"
+            value={this.state.adminCode}
+            className="input-field"
+            onChange={this.updatePair}
+          ></input>
+          <button className="submit-button" onClick={this.deletePosition}>
+            Delete
+          </button>
+
           <label className="input-label">Pair</label>
           <input
             name="pair"
             value={this.state.pair}
             className="input-field"
             onChange={this.updatePair}
-          >
-          </input>
+          ></input>
           <label className="input-label">Timeframe</label>
           <select
             name="timeframe"
@@ -210,13 +215,16 @@ class EditTrade extends Component {
             onChange={this.updatePair}
             type="number"
             value={this.state.portfolioSize}
-          >
-          </input>
+          ></input>
           <label className="input-label">Strategy</label>
-          <select name="strategy" placeholder="cradle" onChange={this.updatePair}>
-            <option value="cradle" >Cradle</option>
-            <option value="fib-booster" >Fib Booster</option>
-            <option value="breakout" >Breakout</option>
+          <select
+            name="strategy"
+            placeholder="cradle"
+            onChange={this.updatePair}
+          >
+            <option value="cradle">Cradle</option>
+            <option value="fib-booster">Fib Booster</option>
+            <option value="breakout">Breakout</option>
           </select>
           <label className="input-label">Entry</label>
           <input
@@ -244,32 +252,41 @@ class EditTrade extends Component {
             name="tf1"
             value={this.state.tf1}
             className="input-field"
-            onChange={this.updatePair}>
-          </input>
+            onChange={this.updatePair}
+          ></input>
           <label className="input-label">Second Timeframe</label>
           <input
             type="text"
             name="tf2"
             value={this.state.tf2}
             className="input-field"
-            onChange={this.updatePair}>
-          </input>
+            onChange={this.updatePair}
+          ></input>
           <label className="input-label">Third Timeframe</label>
           <input
             type="text"
             name="tf3"
             value={this.state.tf3}
             className="input-field"
-            onChange={this.updatePair}>
-          </input>
+            onChange={this.updatePair}
+          ></input>
           <h3 className="order-component-form-title">Entry Order</h3>
           <p> Bulk Upload</p>
-          <textarea name="entryOrder" rows={10} className="input-field" onChange={this.updateBulkFills}></textarea>
-          
+          <textarea
+            name="entryOrder"
+            rows={10}
+            className="input-field"
+            onChange={this.updateBulkFills}
+          ></textarea>
+
           <h3 className="order-component-form-title">Stop Order</h3>
           <p>Bulk Upload</p>
-          <textarea name="stopOrder" rows={10} className="input-field" onChange={this.updateBulkFills}></textarea>
-
+          <textarea
+            name="stopOrder"
+            rows={10}
+            className="input-field"
+            onChange={this.updateBulkFills}
+          ></textarea>
 
           <label className="input-label">Pnl</label>
           <input
@@ -279,8 +296,7 @@ class EditTrade extends Component {
             onChange={this.updatePair}
             type="number"
             step="0.01"
-          >
-          </input>
+          ></input>
           <button onClick={this.calculatePnl}>Calculate PnL</button>
           <button onClick={this.updatedFilled}>Update Filled</button>
           <button className="submit-button">Submit</button>

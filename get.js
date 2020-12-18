@@ -25,42 +25,31 @@ const ftx = new ftxrest({
 //   })
 //   .catch((err) => console.log(err))
 
-
-const pair = 'MID-PERP'
+const pair = 'BTC-PERP'
 async function getFills(pair) {
-
   const response = await ftx.request({
     method: 'GET',
     path: `/fills?market=${pair}`,
   })
 
-  console.log(response);
-
+  console.log(response)
 }
 
 getFills(pair)
 
 async function getOrders() {
-
-
   const response = await ftx.request({
     method: 'GET',
     path: `/conditional_orders/history?market=${pair}`,
   })
 
-  console.log(response);
-
+  console.log(response)
 }
-
 
 async function getPostions() {
-
   const response = await ftx.request({
     method: 'GET',
-    path: `/positions`
+    path: `/positions`,
   })
-  console.log(response);
+  console.log(response)
 }
-
-
-
